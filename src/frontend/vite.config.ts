@@ -10,7 +10,9 @@ import { __INVENTREE_VERSION_INFO__ } from './version-info';
 
 // Detect if the current environment is WSL
 // Required for enabling file system polling
-const IS_IN_WSL = platform().includes('WSL') || release().includes('WSL');
+//const IS_IN_WSL = platform().includes('WSL') || release().includes('WSL');
+const IS_IN_WSL = false;
+
 
 if (IS_IN_WSL) {
   console.debug('WSL detected: using polling for file system events');
@@ -71,6 +73,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
     server: {
+      host: '0.0.0.0',
       proxy: {
         '/media': {
           target: 'http://localhost:8000',
