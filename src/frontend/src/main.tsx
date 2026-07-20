@@ -69,7 +69,7 @@ window.INVENTREE_SETTINGS = {
     ...(IS_DEV
       ? {
           'server-localhost': {
-            host: 'http://localhost:8000',
+            host: `${window.location.protocol}//${window.location.hostname}:8000`,
             name: 'Localhost'
           }
         }
@@ -93,6 +93,9 @@ window.INVENTREE_SETTINGS = {
       ? 'server-demo'
       : 'server-current',
   show_server_selector: IS_DEV_OR_DEMO,
+  api_host: IS_DEV
+    ? `${window.location.protocol}//${window.location.hostname}:8000`
+    : undefined,
 
   // Merge in settings that are already set via django's spa_view or for development
   ...loaded_vals
