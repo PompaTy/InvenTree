@@ -305,6 +305,7 @@ INSTALLED_APPS = [
     'part.apps.PartConfig',
     'report.apps.ReportConfig',
     'stock.apps.StockConfig',
+    'vhc.apps.VhcConfig',
     'users.apps.UsersConfig',
     'machine.apps.MachineConfig',
     'data_exporter.apps.DataExporterConfig',

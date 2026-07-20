@@ -140,6 +140,17 @@ export enum ApiEndpoints {
   stock_location_type_list = 'stock/location-type/',
   stock_location_tree = 'stock/location/tree/',
 
+
+  // VHC box inventory endpoints
+  vhc_team_list = 'vhc/team/',
+  vhc_shipment_list = 'vhc/shipment/',
+  vhc_pallet_list = 'vhc/pallet/',
+  vhc_box_list = 'vhc/box/',
+  vhc_box_scan = 'vhc/box/scan/',
+  vhc_box_bulk_move = 'vhc/box/bulk-move/',
+  vhc_box_move = 'vhc/box/:id/move/',
+  vhc_box_status = 'vhc/box/:id/status/',
+  vhc_box_event_list = 'vhc/event/',
   // Stock item API endpoints
   stock_item_list = 'stock/',
   stock_tracking_list = 'stock/track/',

@@ -90,6 +90,11 @@ export const ReturnOrderDetail = Loadable(
 
 export const Scan = Loadable(lazy(() => import('./pages/Index/Scan')));
 
+export const BoxIndex = Loadable(lazy(() => import('./pages/vhc/BoxIndex')));
+export const BoxForm = Loadable(lazy(() => import('./pages/vhc/BoxForm')));
+export const BoxDetail = Loadable(lazy(() => import('./pages/vhc/BoxDetail')));
+export const BoxScan = Loadable(lazy(() => import('./pages/vhc/BoxScan')));
+
 export const ErrorPage = Loadable(lazy(() => import('./pages/ErrorPage')));
 
 export const Notifications = Loadable(
@@ -154,6 +159,13 @@ export const routes = (
       <Route path='home/' element={<Home />} />,
       <Route path='notifications/*' element={<Notifications />} />,
       <Route path='scan/' element={<Scan />} />,
+      <Route path='boxes/'>
+        <Route index element={<BoxIndex />} />
+        <Route path='new/' element={<BoxForm />} />
+        <Route path='scan/' element={<BoxScan />} />
+        <Route path=':id/edit/' element={<BoxForm />} />
+        <Route path=':id/' element={<BoxDetail />} />
+      </Route>
       <Route path='settings/'>
         <Route index element={<Navigate to='admin/' />} />
         <Route path='admin/*' element={<AdminCenter />} />

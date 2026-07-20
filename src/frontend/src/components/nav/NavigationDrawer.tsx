@@ -80,6 +80,12 @@ function DrawerContent({ closeFunc }: Readonly<{ closeFunc?: () => void }>) {
         icon: 'stock'
       },
       {
+        id: 'vhc-boxes',
+        title: t`VHC Boxes`,
+        link: '/boxes',
+        icon: 'stock'
+      },
+      {
         id: 'build',
         title: t`Manufacturing`,
         link: '/manufacturing/',
@@ -123,6 +129,12 @@ function DrawerContent({ closeFunc }: Readonly<{ closeFunc?: () => void }>) {
         link: '/scan',
         icon: 'barcode',
         hidden: !globalSettings.isSet('BARCODE_ENABLE')
+      },
+      {
+        id: 'vhc-box-scan',
+        title: t`Scan VHC Box`,
+        link: '/boxes/scan',
+        icon: 'barcode'
       }
     ];
   }, [user, globalSettings]);

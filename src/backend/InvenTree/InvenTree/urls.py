@@ -28,6 +28,7 @@ import plugin.api
 import report.api
 import stock.api
 import users.api
+import vhc.api
 from plugin.urls import get_plugin_urls
 from web.urls import cui_compatibility_urls
 from web.urls import urlpatterns as platform_urls
@@ -65,6 +66,7 @@ apipatterns = [
     path('search/', APISearchView.as_view(), name='api-search'),
     path('settings/', include(common.api.settings_api_urls)),
     path('stock/', include(stock.api.stock_api_urls)),
+    path('vhc/', include(vhc.api.vhc_api_urls)),
     path(
         'generate/',
         include([

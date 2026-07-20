@@ -1,0 +1,1 @@
+"""VHC box inventory application."""
