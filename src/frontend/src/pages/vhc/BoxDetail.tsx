@@ -1,5 +1,6 @@
 import { t } from '@lingui/core/macro';
 import {
+  Anchor,
   Badge,
   Button,
   Card,
@@ -17,7 +18,7 @@ import {
 } from '@mantine/core';
 import { IconEdit, IconMapPin, IconPackage, IconPrinter } from '@tabler/icons-react';
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { ApiEndpoints } from '@lib/enums/ApiEndpoints';
 import { apiUrl } from '@lib/functions/Api';
@@ -154,6 +155,38 @@ export default function BoxDetail() {
           </Stack>
           <QRCode data={box.box_number} margin={1} />
         </SimpleGrid>
+      </Card>
+      <Card withBorder p='md'>
+        <Title order={3} mb='md'>{t`Box items`}</Title>
+        <Table striped highlightOnHover>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>{t`Part`}</Table.Th>
+              <Table.Th>{t`Description`}</Table.Th>
+              <Table.Th>{t`Quantity`}</Table.Th>
+              <Table.Th>{t`Stock item`}</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {box.items.map((item) => (
+              <Table.Tr key={item.pk}>
+                <Table.Td>
+                  <Anchor component={Link} to={`/part/${item.part}`} fw={600}>
+                    {item.part_detail.name}
+                  </Anchor>
+                  {item.part_detail.IPN && <Text size='xs' c='dimmed'>{item.part_detail.IPN}</Text>}
+                </Table.Td>
+                <Table.Td>{item.part_detail.description || '-'}</Table.Td>
+                <Table.Td>{Number(item.quantity).toLocaleString()} {item.part_detail.units || ''}</Table.Td>
+                <Table.Td>
+                  <Anchor component={Link} to={`/stock/item/${item.stock_item}`}>
+                    #{item.stock_item}
+                  </Anchor>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
       </Card>
 
       <Card withBorder p='md'>

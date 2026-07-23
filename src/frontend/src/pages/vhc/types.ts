@@ -25,11 +25,28 @@ export interface VhcLocation {
   name: string;
   pathstring?: string;
 }
+export interface VhcPartSummary {
+  pk: number;
+  name: string;
+  description: string;
+  IPN?: string | null;
+  revision?: string | null;
+  units?: string | null;
+}
+
+export interface VhcBoxItem {
+  pk: number;
+  part: number;
+  part_detail: VhcPartSummary;
+  stock_item: number;
+  quantity: number;
+}
 
 export interface VhcBox {
   pk: number;
   box_number: string;
   contents: string;
+  items: VhcBoxItem[];
   team: number;
   team_detail: VhcTeam;
   other_team_description: string;

@@ -18,19 +18,36 @@ msgstr ""
 "X-Crowdin-File: /src/frontend/src/locales/en/messages.po\n"
 "X-Crowdin-File-ID: 252\n"
 
+#: lib/components/Boundary.tsx:14
+msgid "Error rendering component"
+msgstr "Σφάλμα κατά την απόδοση του component"
+
+#: lib/components/Boundary.tsx:16
+msgid "An error occurred while rendering this component. Refer to the console for more information."
+msgstr ""
+
+#: lib/components/CopyButton.tsx:49
+msgid "Copied"
+msgstr "Αντιγράφηκε"
+
+#: lib/components/CopyButton.tsx:49
+msgid "Copy"
+msgstr "Αντιγραφή"
+
 #: lib/components/RowActions.tsx:36
 #: src/components/items/ActionDropdown.tsx:289
-#: src/pages/Index/Scan.tsx:64
+#: src/pages/Index/Scan.tsx:62
 msgid "Duplicate"
 msgstr "Δημιουργία αντιγράφου"
 
 #: lib/components/RowActions.tsx:46
 #: src/components/items/ActionDropdown.tsx:245
+#: src/pages/vhc/BoxDetail.tsx:138
 msgid "Edit"
 msgstr "Επεξεργασία"
 
 #: lib/components/RowActions.tsx:56
-#: src/components/forms/ApiForm.tsx:770
+#: src/components/forms/ApiForm.tsx:769
 #: src/components/items/ActionDropdown.tsx:257
 #: src/components/items/RoleTable.tsx:155
 #: src/hooks/UseForm.tsx:170
@@ -49,13 +66,15 @@ msgstr "Διαγραφή"
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:148
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:323
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:414
+#: src/pages/vhc/BoxDetail.tsx:247
+#: src/pages/vhc/BoxForm.tsx:458
 #: src/tables/FilterSelectDrawer.tsx:382
 #: src/tables/build/BuildOutputTable.tsx:610
 msgid "Cancel"
 msgstr "Ακύρωση"
 
 #: lib/components/RowActions.tsx:136
-#: src/components/nav/NavigationDrawer.tsx:190
+#: src/components/nav/NavigationDrawer.tsx:202
 #: src/forms/PurchaseOrderForms.tsx:891
 #: src/forms/StockForms.tsx:805
 #: src/forms/StockForms.tsx:852
@@ -76,6 +95,11 @@ msgstr "Ενέργειες"
 #: src/pages/part/PartDetail.tsx:1168
 msgid "Search"
 msgstr "Αναζήτηση"
+
+#: lib/components/TableColumnSelect.tsx:16
+#: lib/components/TableColumnSelect.tsx:23
+msgid "Select Columns"
+msgstr "Επιλογή Στηλών"
 
 #: lib/components/YesNoButton.tsx:20
 msgid "Pass"
@@ -120,6 +144,7 @@ msgstr "Όχι"
 #: src/forms/StockForms.tsx:1187
 #: src/pages/build/BuildDetail.tsx:219
 #: src/pages/part/PartDetail.tsx:1220
+#: src/pages/vhc/BoxDetail.tsx:164
 #: src/tables/ColumnRenderers.tsx:91
 #: src/tables/build/BuildOrderParametricTable.tsx:26
 #: src/tables/part/PartTestResultTable.tsx:247
@@ -458,6 +483,7 @@ msgstr "Ιδιοκτήτες"
 #: lib/enums/ModelInformation.tsx:231
 #: src/pages/Auth/ChangePassword.tsx:36
 #: src/pages/core/UserDetail.tsx:220
+#: src/pages/vhc/BoxDetail.tsx:218
 #: src/tables/ColumnRenderers.tsx:599
 #: src/tables/Filter.tsx:395
 #: src/tables/settings/ApiTokenTable.tsx:107
@@ -471,7 +497,7 @@ msgid "User"
 msgstr "Χρήστης"
 
 #: lib/enums/ModelInformation.tsx:232
-#: src/components/nav/NavigationDrawer.tsx:105
+#: src/components/nav/NavigationDrawer.tsx:111
 #: src/pages/Index/Settings/AdminCenter/UserManagementPanel.tsx:15
 #: src/pages/core/CoreIndex.tsx:21
 #: src/pages/core/UserDetail.tsx:226
@@ -484,7 +510,7 @@ msgid "Group"
 msgstr "Ομάδα"
 
 #: lib/enums/ModelInformation.tsx:239
-#: src/components/nav/NavigationDrawer.tsx:111
+#: src/components/nav/NavigationDrawer.tsx:117
 #: src/pages/Index/Settings/AdminCenter/UserManagementPanel.tsx:23
 #: src/pages/core/CoreIndex.tsx:27
 #: src/pages/core/GroupDetail.tsx:82
@@ -556,7 +582,7 @@ msgstr ""
 #: lib/enums/ModelInformation.tsx:298
 #: src/components/barcodes/BarcodeInput.tsx:114
 #: src/components/buttons/StarredToggleButton.tsx:46
-#: src/components/dashboard/DashboardLayout.tsx:281
+#: src/components/dashboard/DashboardLayout.tsx:284
 #: src/components/editors/NotesEditor.tsx:74
 #: src/components/editors/TemplateEditor/TemplateEditor.tsx:158
 #: src/components/forms/fields/ApiFormField.tsx:251
@@ -572,7 +598,7 @@ msgstr ""
 #: src/components/wizards/ImportPartWizard.tsx:574
 #: src/components/wizards/ImportPartWizard.tsx:719
 #: src/forms/BomForms.tsx:74
-#: src/functions/auth.tsx:687
+#: src/functions/auth.tsx:691
 #: src/pages/ErrorPage.tsx:11
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:317
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:408
@@ -582,7 +608,7 @@ msgstr ""
 #: src/pages/part/PartPricingPanel.tsx:71
 #: src/states/IconState.tsx:46
 #: src/states/IconState.tsx:76
-#: src/tables/InvenTreeTableHeader.tsx:124
+#: src/tables/InvenTreeTableHeader.tsx:128
 #: src/tables/bom/BomTable.tsx:557
 #: src/tables/settings/EmailTable.tsx:109
 #: src/tables/stock/StockItemTestResultTable.tsx:338
@@ -608,6 +634,39 @@ msgstr "Διαχειριστής"
 msgid "Build Orders"
 msgstr "Εντολές Κατασκευής"
 
+#: lib/functions/Notification.tsx:11
+msgid "Not implemented"
+msgstr "Δεν έχει υλοποιηθεί"
+
+#: lib/functions/Notification.tsx:12
+msgid "This feature is not yet implemented"
+msgstr "Αυτή η λειτουργία δεν έχει υλοποιηθεί ακόμη"
+
+#: lib/functions/Notification.tsx:23
+#: src/components/errors/PermissionDenied.tsx:8
+msgid "Permission Denied"
+msgstr "Άρνηση πρόσβασης"
+
+#: lib/functions/Notification.tsx:24
+msgid "You do not have permission to perform this action"
+msgstr "Δεν έχετε δικαιώματα για να πραγματοποιήσετε αυτή την ενέργεια"
+
+#: lib/functions/Notification.tsx:35
+msgid "Invalid Return Code"
+msgstr "Μη έγκυρος κωδικός επιστροφής"
+
+#: lib/functions/Notification.tsx:36
+msgid "Server returned status {returnCode}"
+msgstr "Ο διακομιστής επέστρεψε κατάσταση {returnCode}"
+
+#: lib/functions/Notification.tsx:46
+msgid "Timeout"
+msgstr "Λήξη χρόνου"
+
+#: lib/functions/Notification.tsx:47
+msgid "The request timed out"
+msgstr "Το αίτημα έληξε χρονικά"
+
 #: lib/hooks/MonitorDataOutput.tsx:57
 #: lib/hooks/MonitorDataOutput.tsx:116
 msgid "Process failed"
@@ -616,14 +675,6 @@ msgstr "Η διαδικασία απέτυχε"
 #: lib/hooks/MonitorDataOutput.tsx:75
 msgid "Process completed successfully"
 msgstr "Η διαδικασία ολοκληρώθηκε επιτυχώς"
-
-#: src/components/Boundary.tsx:14
-msgid "Error rendering component"
-msgstr "Σφάλμα κατά την απόδοση του component"
-
-#: src/components/Boundary.tsx:16
-msgid "An error occurred while rendering this component. Refer to the console for more information."
-msgstr ""
 
 #: src/components/DashboardItemProxy.tsx:34
 #~ msgid "Title"
@@ -658,6 +709,7 @@ msgstr "Γραμμοκώδικας"
 #: src/components/barcodes/BarcodeInput.tsx:35
 #: src/components/barcodes/BarcodeKeyboardInput.tsx:18
 #: src/defaults/actions.tsx:137
+#: src/pages/vhc/BoxIndex.tsx:95
 msgid "Scan"
 msgstr "Σάρωση"
 
@@ -687,7 +739,7 @@ msgstr "Εισάγετε δεδομένα γραμμοκώδικα"
 
 #: src/components/barcodes/BarcodeScanDialog.tsx:56
 #: src/components/buttons/ScanButton.tsx:27
-#: src/components/nav/NavigationDrawer.tsx:122
+#: src/components/nav/NavigationDrawer.tsx:128
 #: src/forms/PurchaseOrderForms.tsx:507
 #: src/forms/PurchaseOrderForms.tsx:648
 msgid "Scan Barcode"
@@ -704,7 +756,7 @@ msgstr "Ο γραμμοκώδικας δεν ταιριάζει με τον αν
 #: src/components/barcodes/BarcodeScanDialog.tsx:161
 #: src/components/editors/NotesEditor.tsx:84
 #: src/components/editors/NotesEditor.tsx:118
-#: src/components/forms/ApiForm.tsx:496
+#: src/components/forms/ApiForm.tsx:495
 #: src/components/wizards/ImportPartWizard.tsx:566
 #: src/components/wizards/ImportPartWizard.tsx:691
 #: src/pages/Index/Settings/AdminCenter/CurrencyManagementPanel.tsx:45
@@ -718,7 +770,7 @@ msgid "Failed to handle barcode"
 msgstr "Αποτυχία επεξεργασίας γραμμοκώδικα"
 
 #: src/components/barcodes/BarcodeScanDialog.tsx:183
-#: src/pages/Index/Scan.tsx:129
+#: src/pages/Index/Scan.tsx:127
 msgid "Failed to scan barcode"
 msgstr "Αποτυχία σάρωσης γραμμοκώδικα"
 
@@ -785,14 +837,6 @@ msgstr "Άνοιγμα στο περιβάλλον διαχειριστή"
 #: src/components/buttons/CopyButton.tsx:18
 #~ msgid "Copy to clipboard"
 #~ msgstr "Copy to clipboard"
-
-#: src/components/buttons/CopyButton.tsx:50
-msgid "Copied"
-msgstr "Αντιγράφηκε"
-
-#: src/components/buttons/CopyButton.tsx:50
-msgid "Copy"
-msgstr "Αντιγραφή"
 
 #: src/components/buttons/PrintingActions.tsx:56
 msgid "Printing Labels"
@@ -930,7 +974,7 @@ msgstr "Επόμενος μήνας"
 #~ msgstr "Download data"
 
 #: src/components/calendar/Calendar.tsx:194
-#: src/tables/InvenTreeTableHeader.tsx:288
+#: src/tables/InvenTreeTableHeader.tsx:292
 msgid "Export data"
 msgstr ""
 
@@ -947,15 +991,15 @@ msgstr "Σφάλμα κατά την ενημέρωση της παραγγελ�
 msgid "Overdue"
 msgstr "Εκπρόθεσμο"
 
-#: src/components/dashboard/DashboardLayout.tsx:282
+#: src/components/dashboard/DashboardLayout.tsx:285
 msgid "Failed to load dashboard widgets."
 msgstr "Αποτυχία φόρτωσης widgets του πίνακα ελέγχου."
 
-#: src/components/dashboard/DashboardLayout.tsx:293
+#: src/components/dashboard/DashboardLayout.tsx:296
 msgid "No Widgets Selected"
 msgstr "Δεν έχουν επιλεγεί Widgets"
 
-#: src/components/dashboard/DashboardLayout.tsx:296
+#: src/components/dashboard/DashboardLayout.tsx:299
 msgid "Use the menu to add widgets to the dashboard"
 msgstr "Χρησιμοποιήστε το μενού για να προσθέσετε widgets στον πίνακα ελέγχου"
 
@@ -1351,7 +1395,7 @@ msgid "Clear"
 msgstr "Εκκαθάριση"
 
 #: src/components/details/DetailsImage.tsx:306
-#: src/components/forms/ApiForm.tsx:712
+#: src/components/forms/ApiForm.tsx:711
 #: src/contexts/ThemeContext.tsx:56
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:151
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:570
@@ -1587,11 +1631,6 @@ msgstr "Η σελίδα δεν βρέθηκε"
 msgid "This page does not exist"
 msgstr "Αυτή η σελίδα δεν υπάρχει"
 
-#: src/components/errors/PermissionDenied.tsx:8
-#: src/functions/notifications.tsx:25
-msgid "Permission Denied"
-msgstr "Άρνηση πρόσβασης"
-
 #: src/components/errors/PermissionDenied.tsx:9
 msgid "You do not have permission to view this page."
 msgstr "Δεν έχετε δικαίωμα πρόσβασης σε αυτήν τη σελίδα."
@@ -1604,8 +1643,8 @@ msgstr "Σφάλμα διακομιστή"
 msgid "A server error occurred"
 msgstr "Προέκυψε σφάλμα διακομιστή"
 
-#: src/components/forms/ApiForm.tsx:108
-#: src/components/forms/ApiForm.tsx:624
+#: src/components/forms/ApiForm.tsx:107
+#: src/components/forms/ApiForm.tsx:623
 msgid "Form Error"
 msgstr "Σφάλμα Φόρμας"
 
@@ -1613,11 +1652,11 @@ msgstr "Σφάλμα Φόρμας"
 #~ msgid "Form Errors Exist"
 #~ msgstr "Form Errors Exist"
 
-#: src/components/forms/ApiForm.tsx:634
+#: src/components/forms/ApiForm.tsx:633
 msgid "Errors exist for one or more form fields"
 msgstr "Υπάρχουν σφάλματα σε ένα ή περισσότερα πεδία της φόρμας"
 
-#: src/components/forms/ApiForm.tsx:750
+#: src/components/forms/ApiForm.tsx:749
 #: src/hooks/UseForm.tsx:139
 #: src/tables/plugin/PluginListTable.tsx:210
 msgid "Update"
@@ -1661,12 +1700,12 @@ msgstr "Αποτυχία σύνδεσης"
 #: src/components/forms/AuthenticationForm.tsx:90
 #: src/components/forms/AuthenticationForm.tsx:106
 #: src/functions/auth.tsx:134
-#: src/functions/auth.tsx:350
+#: src/functions/auth.tsx:354
 msgid "Check your input and try again."
 msgstr "Ελέγξτε τα στοιχεία σας και προσπαθήστε ξανά."
 
 #: src/components/forms/AuthenticationForm.tsx:100
-#: src/functions/auth.tsx:341
+#: src/functions/auth.tsx:345
 msgid "Mail delivery successful"
 msgstr "Το email στάλθηκε με επιτυχία"
 
@@ -1894,7 +1933,7 @@ msgid "API Version"
 msgstr "Έκδοση API"
 
 #: src/components/forms/InstanceOptions.tsx:143
-#: src/components/nav/NavigationDrawer.tsx:197
+#: src/components/nav/NavigationDrawer.tsx:209
 #: src/defaults/actions.tsx:173
 #: src/pages/Index/Settings/AdminCenter/Index.tsx:228
 #: src/pages/Index/Settings/AdminCenter/PluginManagementPanel.tsx:46
@@ -2060,7 +2099,7 @@ msgstr "Επεξεργασία δεδομένων"
 #: src/components/importer/ImporterColumnSelector.tsx:247
 #: src/components/items/ErrorItem.tsx:12
 #: src/functions/api.tsx:60
-#: src/functions/auth.tsx:397
+#: src/functions/auth.tsx:401
 msgid "An error occurred"
 msgstr "Παρουσιάστηκε σφάλμα"
 
@@ -2150,6 +2189,7 @@ msgstr "Τα δεδομένα εισήχθησαν με επιτυχία"
 #: src/components/wizards/ImportPartWizard.tsx:773
 #: src/forms/BomForms.tsx:137
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:687
+#: src/pages/vhc/BoxDetail.tsx:213
 msgid "Close"
 msgstr "Κλείσιμο"
 
@@ -2182,8 +2222,8 @@ msgstr "Επιλογές"
 #~ msgstr "Link custom barcode"
 
 #: src/components/items/ActionDropdown.tsx:171
-#: src/tables/InvenTreeTableHeader.tsx:192
-#: src/tables/InvenTreeTableHeader.tsx:193
+#: src/tables/InvenTreeTableHeader.tsx:196
+#: src/tables/InvenTreeTableHeader.tsx:197
 msgid "Barcode Actions"
 msgstr "Ενέργειες Barcode"
 
@@ -2408,7 +2448,7 @@ msgstr "Σύνδεσμοι"
 #~ msgstr "View Code on GitHub"
 
 #: src/components/modals/AboutInvenTreeModal.tsx:175
-#: src/components/nav/NavigationDrawer.tsx:208
+#: src/components/nav/NavigationDrawer.tsx:220
 #: src/defaults/actions.tsx:49
 msgid "Documentation"
 msgstr "Τεκμηρίωση"
@@ -2603,7 +2643,7 @@ msgid "Learn more about {code}"
 msgstr "Μάθετε περισσότερα για {code}"
 
 #: src/components/nav/Header.tsx:209
-#: src/components/nav/NavigationDrawer.tsx:134
+#: src/components/nav/NavigationDrawer.tsx:146
 #: src/components/nav/NotificationDrawer.tsx:181
 #: src/pages/Index/Settings/SystemSettings.tsx:124
 #: src/pages/Index/Settings/UserSettings.tsx:107
@@ -2617,11 +2657,11 @@ msgstr "Ειδοποιήσεις"
 #~ msgstr "Administrator Mode"
 
 #: src/components/nav/Header.tsx:231
-msgid "Admin Mode"
+msgid "Superuser Mode"
 msgstr ""
 
 #: src/components/nav/Header.tsx:231
-msgid "Superuser Mode"
+msgid "Admin Mode"
 msgstr ""
 
 #: src/components/nav/Header.tsx:237
@@ -2638,7 +2678,7 @@ msgstr "Δεν βρέθηκε τίποτα..."
 #~ msgstr "Profile"
 
 #: src/components/nav/MainMenu.tsx:54
-#: src/components/nav/NavigationDrawer.tsx:185
+#: src/components/nav/NavigationDrawer.tsx:197
 #: src/pages/Index/Settings/AdminCenter/EmailManagementPanel.tsx:21
 #: src/pages/Index/Settings/AdminCenter/UserManagementPanel.tsx:39
 msgid "Settings"
@@ -2650,7 +2690,7 @@ msgstr "Ρυθμίσεις"
 #~ msgstr "Account settings"
 
 #: src/components/nav/MainMenu.tsx:61
-#: src/components/nav/NavigationDrawer.tsx:140
+#: src/components/nav/NavigationDrawer.tsx:152
 #: src/components/nav/SettingsHeader.tsx:40
 #: src/defaults/actions.tsx:86
 #: src/pages/Index/Settings/UserSettings.tsx:142
@@ -2668,7 +2708,7 @@ msgstr "Ρυθμίσεις χρήστη"
 #~ msgstr "Current language {locale}"
 
 #: src/components/nav/MainMenu.tsx:69
-#: src/components/nav/NavigationDrawer.tsx:146
+#: src/components/nav/NavigationDrawer.tsx:158
 #: src/components/nav/SettingsHeader.tsx:41
 #: src/defaults/actions.tsx:155
 #: src/pages/Index/Settings/SystemSettings.tsx:368
@@ -2681,7 +2721,7 @@ msgstr "Ρυθμίσεις συστήματος"
 #~ msgstr "Switch to pseudo language"
 
 #: src/components/nav/MainMenu.tsx:78
-#: src/components/nav/NavigationDrawer.tsx:153
+#: src/components/nav/NavigationDrawer.tsx:165
 #: src/components/nav/SettingsHeader.tsx:42
 #: src/defaults/actions.tsx:164
 #: src/pages/Index/Settings/AdminCenter/Index.tsx:293
@@ -2732,13 +2772,18 @@ msgid "Stock"
 msgstr "Απόθεμα"
 
 #: src/components/nav/NavigationDrawer.tsx:84
+#: src/pages/vhc/BoxIndex.tsx:90
+msgid "VHC Boxes"
+msgstr ""
+
+#: src/components/nav/NavigationDrawer.tsx:90
 #: src/defaults/links.tsx:48
 #: src/pages/build/BuildDetail.tsx:775
 #: src/pages/build/BuildIndex.tsx:101
 msgid "Manufacturing"
 msgstr "Κατασκευή"
 
-#: src/components/nav/NavigationDrawer.tsx:91
+#: src/components/nav/NavigationDrawer.tsx:97
 #: src/defaults/links.tsx:54
 #: src/pages/company/ManufacturerDetail.tsx:9
 #: src/pages/company/ManufacturerPartDetail.tsx:268
@@ -2749,7 +2794,7 @@ msgstr "Κατασκευή"
 msgid "Purchasing"
 msgstr "Προμήθειες"
 
-#: src/components/nav/NavigationDrawer.tsx:98
+#: src/components/nav/NavigationDrawer.tsx:104
 #: src/defaults/links.tsx:60
 #: src/pages/company/CustomerDetail.tsx:9
 #: src/pages/sales/ReturnOrderDetail.tsx:569
@@ -2759,11 +2804,15 @@ msgstr "Προμήθειες"
 msgid "Sales"
 msgstr "Πωλήσεις"
 
-#: src/components/nav/NavigationDrawer.tsx:180
+#: src/components/nav/NavigationDrawer.tsx:135
+msgid "Scan VHC Box"
+msgstr ""
+
+#: src/components/nav/NavigationDrawer.tsx:192
 msgid "Navigation"
 msgstr "Πλοήγηση"
 
-#: src/components/nav/NavigationDrawer.tsx:214
+#: src/components/nav/NavigationDrawer.tsx:226
 msgid "About"
 msgstr "Σχετικά"
 
@@ -2874,6 +2923,7 @@ msgid "Attachments"
 msgstr "Συνημμένα"
 
 #: src/components/panels/NotesPanel.tsx:25
+#: src/pages/vhc/BoxDetail.tsx:218
 #: src/tables/part/PartTestResultTable.tsx:214
 #: src/tables/stock/StockTrackingTable.tsx:267
 msgid "Notes"
@@ -2925,6 +2975,7 @@ msgstr "Πληροφορίες πρόσθετου"
 #: src/pages/sales/ReturnOrderDetail.tsx:130
 #: src/pages/sales/SalesOrderDetail.tsx:120
 #: src/pages/stock/LocationDetail.tsx:111
+#: src/pages/vhc/BoxDetail.tsx:165
 #: src/tables/ColumnRenderers.tsx:459
 #: src/tables/build/BuildAllocatedStockTable.tsx:91
 #: src/tables/machine/MachineTypeTable.tsx:159
@@ -3080,6 +3131,9 @@ msgstr "Άγνωστο μοντέλο: {model_name}"
 #~ msgstr "Unknown Models"
 
 #: src/components/render/Order.tsx:122
+#: src/pages/vhc/BoxDetail.tsx:196
+#: src/pages/vhc/BoxForm.tsx:427
+#: src/pages/vhc/BoxIndex.tsx:64
 #: src/tables/sales/SalesOrderAllocationTable.tsx:172
 msgid "Shipment"
 msgstr "Αποστολή"
@@ -3192,6 +3246,8 @@ msgstr "Σειριακός αριθμός"
 #: src/pages/part/pricing/PriceBreakPanel.tsx:172
 #: src/pages/stock/StockDetail.tsx:258
 #: src/pages/stock/StockDetail.tsx:938
+#: src/pages/vhc/BoxDetail.tsx:166
+#: src/pages/vhc/BoxForm.tsx:399
 #: src/tables/build/BuildLineTable.tsx:86
 #: src/tables/part/PartPurchaseOrdersTable.tsx:94
 #: src/tables/part/PartTestResultTable.tsx:277
@@ -3228,6 +3284,8 @@ msgid "Setting"
 msgstr "Ρύθμιση"
 
 #: src/components/settings/ConfigValueList.tsx:39
+#: src/pages/vhc/BoxDetail.tsx:198
+#: src/pages/vhc/BoxForm.tsx:452
 msgid "Source"
 msgstr "Πηγή"
 
@@ -4533,6 +4591,8 @@ msgstr "Ποσότητα προς ολοκλήρωση"
 #: src/pages/sales/ReturnOrderDetail.tsx:136
 #: src/pages/sales/SalesOrderDetail.tsx:126
 #: src/pages/stock/StockDetail.tsx:170
+#: src/pages/vhc/BoxForm.tsx:453
+#: src/pages/vhc/BoxIndex.tsx:56
 #: src/tables/Filter.tsx:334
 #: src/tables/build/BuildOutputTable.tsx:442
 #: src/tables/machine/MachineListTable.tsx:387
@@ -4871,6 +4931,7 @@ msgstr "Συσκευασία"
 
 #: src/forms/PurchaseOrderForms.tsx:816
 #: src/pages/company/SupplierPartDetail.tsx:121
+#: src/pages/vhc/BoxForm.tsx:455
 #: src/tables/ColumnRenderers.tsx:517
 msgid "Note"
 msgstr "Σημείωση"
@@ -4999,6 +5060,7 @@ msgid "Move to default location"
 msgstr "Μετακίνηση στην προεπιλεγμένη τοποθεσία"
 
 #: src/forms/StockForms.tsx:804
+#: src/pages/vhc/BoxDetail.tsx:142
 msgid "Move"
 msgstr "Μετακίνηση"
 
@@ -5007,7 +5069,7 @@ msgid "Return"
 msgstr "Επιστροφή"
 
 #: src/forms/StockForms.tsx:988
-#: src/pages/Index/Scan.tsx:182
+#: src/pages/Index/Scan.tsx:180
 msgid "Count"
 msgstr "Καταμέτρηση"
 
@@ -5229,7 +5291,7 @@ msgstr "Εσωτερικό σφάλμα διακομιστή"
 #~ msgstr "You have been logged out"
 
 #: src/functions/auth.tsx:124
-#: src/functions/auth.tsx:216
+#: src/functions/auth.tsx:220
 msgid "Logged Out"
 msgstr "Αποσυνδεθήκατε"
 
@@ -5257,81 +5319,81 @@ msgstr "Επιτυχής σύνδεση με MFA"
 msgid "MFA details were automatically provided in the browser"
 msgstr "Οι λεπτομέρειες MFA παρέχθηκαν αυτόματα από τον browser"
 
-#: src/functions/auth.tsx:217
+#: src/functions/auth.tsx:221
 msgid "Successfully logged out"
 msgstr "Αποσυνδεθήκατε με επιτυχία"
 
-#: src/functions/auth.tsx:284
+#: src/functions/auth.tsx:288
 msgid "Language changed"
 msgstr "Η γλώσσα άλλαξε"
 
-#: src/functions/auth.tsx:285
+#: src/functions/auth.tsx:289
 msgid "Your active language has been changed to the one set in your profile"
 msgstr "Η ενεργή γλώσσα σας άλλαξε σε αυτή που έχει οριστεί στο προφίλ σας"
 
-#: src/functions/auth.tsx:306
+#: src/functions/auth.tsx:310
 msgid "Theme changed"
 msgstr "Το θέμα άλλαξε"
 
-#: src/functions/auth.tsx:307
+#: src/functions/auth.tsx:311
 msgid "Your active theme has been changed to the one set in your profile"
 msgstr "Το ενεργό θέμα άλλαξε σε αυτό που έχει οριστεί στο προφίλ σας"
 
-#: src/functions/auth.tsx:342
+#: src/functions/auth.tsx:346
 msgid "Check your inbox for a reset link. This only works if you have an account. Check in spam too."
 msgstr "Ελέγξτε τα εισερχόμενά σας για τον σύνδεσμο επαναφοράς. Λειτουργεί μόνο αν έχετε λογαριασμό. Ελέγξτε και στα spam."
 
-#: src/functions/auth.tsx:349
-#: src/functions/auth.tsx:613
+#: src/functions/auth.tsx:353
+#: src/functions/auth.tsx:617
 msgid "Reset failed"
 msgstr "Η επαναφορά απέτυχε"
 
-#: src/functions/auth.tsx:376
+#: src/functions/auth.tsx:380
 msgid "Already logged in"
 msgstr "Ήδη συνδεδεμένος"
 
-#: src/functions/auth.tsx:377
+#: src/functions/auth.tsx:381
 msgid "There is a conflicting session on the server for this browser. Please logout of that first."
 msgstr "Υπάρχει αντικρουόμενη συνεδρία στον διακομιστή για αυτόν τον browser. Παρακαλώ αποσυνδεθείτε πρώτα από αυτή."
 
-#: src/functions/auth.tsx:433
+#: src/functions/auth.tsx:437
 msgid "Logged In"
 msgstr "Συνδεθήκατε"
 
-#: src/functions/auth.tsx:434
+#: src/functions/auth.tsx:438
 msgid "Successfully logged in"
 msgstr "Συνδεθήκατε με επιτυχία"
 
-#: src/functions/auth.tsx:568
+#: src/functions/auth.tsx:572
 msgid "Failed to set up MFA"
 msgstr "Αποτυχία ρύθμισης MFA"
 
-#: src/functions/auth.tsx:587
+#: src/functions/auth.tsx:591
 msgid "MFA Setup successful"
 msgstr ""
 
-#: src/functions/auth.tsx:588
+#: src/functions/auth.tsx:592
 msgid "MFA via TOTP has been set up successfully; you will need to login again."
 msgstr ""
 
-#: src/functions/auth.tsx:603
+#: src/functions/auth.tsx:607
 msgid "Password set"
 msgstr "Ο κωδικός ορίστηκε"
 
-#: src/functions/auth.tsx:604
-#: src/functions/auth.tsx:713
+#: src/functions/auth.tsx:608
+#: src/functions/auth.tsx:717
 msgid "The password was set successfully. You can now login with your new password"
 msgstr "Ο κωδικός ορίστηκε με επιτυχία. Μπορείτε πλέον να συνδεθείτε με τον νέο σας κωδικό"
 
-#: src/functions/auth.tsx:678
+#: src/functions/auth.tsx:682
 msgid "Password could not be changed"
 msgstr "Ο κωδικός δεν μπόρεσε να αλλάξει"
 
-#: src/functions/auth.tsx:696
+#: src/functions/auth.tsx:700
 msgid "The two password fields didn’t match"
 msgstr "Οι δύο πεδία κωδικού δεν ταιριάζουν"
 
-#: src/functions/auth.tsx:712
+#: src/functions/auth.tsx:716
 msgid "Password Changed"
 msgstr "Ο κωδικός άλλαξε"
 
@@ -5351,37 +5413,9 @@ msgstr "Ο κωδικός άλλαξε"
 #~ msgid "method parameter not supplied"
 #~ msgstr "method parameter not supplied"
 
-#: src/functions/notifications.tsx:13
-msgid "Not implemented"
-msgstr "Δεν έχει υλοποιηθεί"
-
-#: src/functions/notifications.tsx:14
-msgid "This feature is not yet implemented"
-msgstr "Αυτή η λειτουργία δεν έχει υλοποιηθεί ακόμη"
-
 #: src/functions/notifications.tsx:24
 #~ msgid "Permission denied"
 #~ msgstr "Permission denied"
-
-#: src/functions/notifications.tsx:26
-msgid "You do not have permission to perform this action"
-msgstr "Δεν έχετε δικαιώματα για να πραγματοποιήσετε αυτή την ενέργεια"
-
-#: src/functions/notifications.tsx:37
-msgid "Invalid Return Code"
-msgstr "Μη έγκυρος κωδικός επιστροφής"
-
-#: src/functions/notifications.tsx:38
-msgid "Server returned status {returnCode}"
-msgstr "Ο διακομιστής επέστρεψε κατάσταση {returnCode}"
-
-#: src/functions/notifications.tsx:48
-msgid "Timeout"
-msgstr "Λήξη χρόνου"
-
-#: src/functions/notifications.tsx:49
-msgid "The request timed out"
-msgstr "Το αίτημα έληξε χρονικά"
 
 #: src/hooks/UseDataExport.tsx:34
 msgid "Exporting Data"
@@ -5811,73 +5845,74 @@ msgstr "Προέκυψε ένα απρόσμενο σφάλμα"
 #~ msgid "Design <0/>"
 #~ msgstr "Design <0/>"
 
-#: src/pages/Index/Scan.tsx:65
+#: src/pages/Index/Scan.tsx:63
 msgid "Item already scanned"
 msgstr "Το Προϊόν έχει ήδη σαρωθεί"
 
-#: src/pages/Index/Scan.tsx:82
+#: src/pages/Index/Scan.tsx:80
 msgid "API Error"
 msgstr "Σφάλμα API"
 
-#: src/pages/Index/Scan.tsx:83
+#: src/pages/Index/Scan.tsx:81
 msgid "Failed to fetch instance data"
 msgstr "Αποτυχία λήψης δεδομένων της εγκατάστασης"
 
-#: src/pages/Index/Scan.tsx:130
+#: src/pages/Index/Scan.tsx:128
 msgid "Scan Error"
 msgstr "Σφάλμα σάρωσης"
 
-#: src/pages/Index/Scan.tsx:162
+#: src/pages/Index/Scan.tsx:160
 msgid "Selected elements are not known"
 msgstr "Τα επιλεγμένα στοιχεία δεν είναι γνωστά"
 
-#: src/pages/Index/Scan.tsx:169
+#: src/pages/Index/Scan.tsx:167
 msgid "Multiple object types selected"
 msgstr "Επιλέχθηκαν πολλοί τύποι Προϊόντων"
+
+#: src/pages/Index/Scan.tsx:175
+msgid "Actions ... "
+msgstr "Ενέργειες ... "
 
 #: src/pages/Index/Scan.tsx:175
 #~ msgid "Actions ..."
 #~ msgstr "Actions ..."
 
-#: src/pages/Index/Scan.tsx:177
-msgid "Actions ... "
-msgstr "Ενέργειες ... "
-
-#: src/pages/Index/Scan.tsx:194
-#: src/pages/Index/Scan.tsx:198
+#: src/pages/Index/Scan.tsx:192
+#: src/pages/Index/Scan.tsx:196
 msgid "Barcode Scanning"
 msgstr "Σάρωση barcode"
 
-#: src/pages/Index/Scan.tsx:207
+#: src/pages/Index/Scan.tsx:205
 msgid "Barcode Input"
 msgstr "Εισαγωγή barcode"
 
-#: src/pages/Index/Scan.tsx:214
+#: src/pages/Index/Scan.tsx:212
+#: src/pages/vhc/BoxDetail.tsx:218
 msgid "Action"
 msgstr "Ενέργεια"
 
-#: src/pages/Index/Scan.tsx:217
+#: src/pages/Index/Scan.tsx:215
 msgid "No Items Selected"
 msgstr "Δεν έχουν επιλεγεί Προϊόντα"
+
+#: src/pages/Index/Scan.tsx:216
+msgid "Scan and select items to perform actions"
+msgstr "Σαρώστε και επιλέξτε Προϊόντα για να εκτελέσετε ενέργειες"
 
 #: src/pages/Index/Scan.tsx:217
 #~ msgid "Manual input"
 #~ msgstr "Manual input"
 
 #: src/pages/Index/Scan.tsx:218
-msgid "Scan and select items to perform actions"
-msgstr "Σαρώστε και επιλέξτε Προϊόντα για να εκτελέσετε ενέργειες"
-
-#: src/pages/Index/Scan.tsx:218
 #~ msgid "Image Barcode"
 #~ msgstr "Image Barcode"
 
 #. placeholder {0}: selection.length
-#: src/pages/Index/Scan.tsx:223
+#: src/pages/Index/Scan.tsx:221
 msgid "{0} items selected"
 msgstr "Έχουν επιλεγεί {0} Προϊόντα"
 
-#: src/pages/Index/Scan.tsx:235
+#: src/pages/Index/Scan.tsx:233
 msgid "Scanned Items"
 msgstr "Σαρωμένα Προϊόντα"
 
@@ -6889,10 +6924,6 @@ msgstr "Προγραμματισμένες εργασίες"
 msgid "Failed Tasks"
 msgstr "Αποτυχημένες εργασίες"
 
-#: src/pages/Index/Settings/AdminCenter/TemplateManagementPanel.tsx:67
-#~ msgid "Stock item"
-#~ msgstr "Stock item"
-
 #: src/pages/Index/Settings/AdminCenter/TemplateManagementPanel.tsx:76
 #~ msgid "Build line"
 #~ msgstr "Build line"
@@ -7091,6 +7122,7 @@ msgstr "Το συναρμολογημένο Προϊόν μπορεί να μη�
 #: src/pages/build/BuildDetail.tsx:234
 #: src/pages/part/PartDetail.tsx:457
 #: src/pages/stock/StockDetail.tsx:161
+#: src/pages/vhc/BoxDetail.tsx:201
 #: src/tables/bom/UsedInTable.tsx:49
 #: src/tables/build/BuildOrderTable.tsx:87
 #: src/tables/stock/StockItemTable.tsx:66
@@ -8433,6 +8465,10 @@ msgid "Completed Line Items"
 msgstr "Ολοκληρωμένες Γραμμές Είδους"
 
 #: src/pages/purchasing/PurchaseOrderDetail.tsx:197
+#: src/pages/vhc/BoxDetail.tsx:154
+#: src/pages/vhc/BoxDetail.tsx:195
+#: src/pages/vhc/BoxForm.tsx:446
+#: src/pages/vhc/BoxIndex.tsx:79
 #: src/tables/purchasing/PurchaseOrderLineItemTable.tsx:270
 msgid "Destination"
 msgstr "Προορισμός"
@@ -9041,6 +9077,325 @@ msgstr "Έχει λήξει"
 msgid "Unavailable"
 msgstr "Μη διαθέσιμο"
 
+#: src/pages/vhc/BoxDetail.tsx:38
+#: src/pages/vhc/BoxForm.tsx:48
+msgid "Packed"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:39
+#: src/pages/vhc/BoxForm.tsx:49
+msgid "Palletized"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:40
+#: src/pages/vhc/BoxForm.tsx:50
+msgid "In transit"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:41
+#: src/pages/vhc/BoxForm.tsx:51
+msgid "Honduras warehouse"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:42
+#: src/pages/vhc/BoxDetail.tsx:210
+#: src/pages/vhc/BoxForm.tsx:52
+msgid "Distributed"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:43
+#: src/pages/vhc/BoxDetail.tsx:211
+#: src/pages/vhc/BoxForm.tsx:53
+msgid "Returned"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:80
+#: src/pages/vhc/BoxForm.tsx:296
+msgid "Could not load box"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:91
+msgid "Could not update status"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:111
+msgid "Could not move box"
+msgstr ""
+
+#. placeholder {0}: box.box_number
+#: src/pages/vhc/BoxDetail.tsx:132
+msgid "Box {0}"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:137
+msgid "Print label"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:160
+#: src/pages/vhc/BoxForm.tsx:383
+msgid "Box items"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:167
+msgid "Stock item"
+msgstr "Stock item"
+
+#: src/pages/vhc/BoxDetail.tsx:194
+#: src/pages/vhc/BoxForm.tsx:439
+#: src/pages/vhc/BoxIndex.tsx:74
+msgid "Current location"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:197
+#: src/pages/vhc/BoxForm.tsx:437
+#: src/pages/vhc/BoxIndex.tsx:69
+msgid "Pallet"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:199
+msgid "Created by"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:200
+msgid "Last updated by"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:208
+msgid "Lifecycle"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:212
+#: src/pages/vhc/BoxForm.tsx:54
+msgid "Lost"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:218
+#: src/tables/settings/ErrorTable.tsx:103
+msgid "When"
+msgstr "Πότε"
+
+#: src/pages/vhc/BoxDetail.tsx:218
+msgid "Movement"
+msgstr ""
+
+#. placeholder {0}: box.box_number
+#: src/pages/vhc/BoxDetail.tsx:234
+msgid "Move box {0}"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:237
+msgid "New location"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:244
+msgid "New status"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:245
+msgid "Movement note"
+msgstr ""
+
+#: src/pages/vhc/BoxDetail.tsx:248
+msgid "Move box"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:55
+msgid "Closed / empty"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:59
+msgid "Donation / purchase"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:60
+msgid "Container arrival"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:61
+msgid "Returned inventory"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:62
+msgid "Local Honduras purchase"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:63
+msgid "Stock adjustment"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:100
+#~ msgid "Contents are required"
+#~ msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:150
+#: src/tables/general/BarcodeScanTable.tsx:35
+msgid "Item"
+msgstr "Προϊόν"
+
+#: src/pages/vhc/BoxForm.tsx:153
+msgid "Search parts or enter a new item name"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:174
+msgid "Type at least two characters to search"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:175
+msgid "No existing part found. This item will be created."
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:192
+msgid "Existing part selected; stock will be linked automatically."
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:193
+msgid "If no exact part exists, a new part and stock record will be created."
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:227
+#: src/pages/vhc/BoxIndex.tsx:42
+#~ msgid "Contents"
+#~ msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:228
+msgid "Use exactly six digits"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:230
+msgid "Add at least one item"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:231
+msgid "Every item needs a name"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:232
+msgid "Every quantity must be greater than zero"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:234
+msgid "The same item cannot be listed twice"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:237
+msgid "Team is required"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:268
+msgid "Could not load box choices"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:340
+msgid "Box updated"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:340
+msgid "Box packed"
+msgstr ""
+
+#. placeholder {0}: data.box_number
+#: src/pages/vhc/BoxForm.tsx:341
+msgid "Box {0} was saved"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:345
+msgid "Could not save box"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:352
+msgid "Edit box"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:352
+msgid "Pack a box"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:353
+msgid "Record a packed box and its starting location"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:361
+msgid "Box number"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:362
+msgid "Leave blank to assign the next annual number"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:368
+#: src/pages/vhc/BoxIndex.tsx:47
+msgid "Team"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:376
+msgid "Other team"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:384
+msgid "Select an existing part or type a new item name."
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:392
+msgid "Add item"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:413
+msgid "Remove item"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:461
+msgid "Save box"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:31
+msgid "Box"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:42
+#: src/tables/sales/SalesOrderShipmentTable.tsx:159
+msgid "Items"
+msgstr "Προϊόντα"
+
+#: src/pages/vhc/BoxIndex.tsx:82
+msgid "Last updated"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:91
+msgid "Pack, locate, move, and audit mission inventory boxes"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:98
+msgid "Pack box"
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:23
+msgid "This is not a six-digit VHC box number"
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:36
+msgid "No box was found for {boxNumber}"
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:39
+msgid "The box lookup failed"
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:46
+msgid "Scan VHC box"
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:47
+msgid "Open a box record by scanning or entering its six-digit label"
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:52
+msgid "Scan the QR code on a VHC box label, or enter the number manually."
+msgstr ""
+
+#: src/pages/vhc/BoxScan.tsx:53
+msgid "Find box"
+msgstr ""
+
 #: src/states/IconState.tsx:47
 #: src/states/IconState.tsx:77
 msgid "Error loading icon package from server"
@@ -9131,11 +9486,6 @@ msgstr "Κατανεμημένες γραμμές"
 #: src/tables/ColumnRenderers.tsx:774
 msgid "Line Item"
 msgstr ""
-
-#: src/tables/ColumnSelect.tsx:16
-#: src/tables/ColumnSelect.tsx:23
-msgid "Select Columns"
-msgstr "Επιλογή Στηλών"
 
 #: src/tables/DownloadAction.tsx:13
 #~ msgid "Excel"
@@ -9423,7 +9773,7 @@ msgid "Filter"
 msgstr "Φίλτρο"
 
 #: src/tables/FilterSelectDrawer.tsx:354
-#: src/tables/InvenTreeTableHeader.tsx:259
+#: src/tables/InvenTreeTableHeader.tsx:263
 msgid "Table Filters"
 msgstr "Φίλτρα Πίνακα"
 
@@ -9435,12 +9785,12 @@ msgstr "Προσθήκη Φίλτρου"
 msgid "Clear Filters"
 msgstr "Καθαρισμός Φίλτρων"
 
-#: src/tables/InvenTreeTable.tsx:47
-#: src/tables/InvenTreeTable.tsx:522
+#: src/tables/InvenTreeTable.tsx:52
+#: src/tables/InvenTreeTable.tsx:526
 msgid "No records found"
 msgstr "Δεν βρέθηκαν εγγραφές"
 
-#: src/tables/InvenTreeTable.tsx:154
+#: src/tables/InvenTreeTable.tsx:162
 msgid "Error loading table options"
 msgstr "Σφάλμα φόρτωσης επιλογών πίνακα"
 
@@ -9468,7 +9818,7 @@ msgstr "Σφάλμα φόρτωσης επιλογών πίνακα"
 #~ msgid "This action cannot be undone!"
 #~ msgstr "This action cannot be undone!"
 
-#: src/tables/InvenTreeTable.tsx:567
+#: src/tables/InvenTreeTable.tsx:571
 msgid "Server returned incorrect data type"
 msgstr "Ο διακομιστής επέστρεψε λανθασμένο τύπο δεδομένων"
 
@@ -9477,7 +9827,7 @@ msgstr "Ο διακομιστής επέστρεψε λανθασμένο τύπ
 #~ msgid "Print actions"
 #~ msgstr "Print actions"
 
-#: src/tables/InvenTreeTable.tsx:600
+#: src/tables/InvenTreeTable.tsx:604
 msgid "Error loading table data"
 msgstr "Σφάλμα φόρτωσης δεδομένων πίνακα"
 
@@ -9494,49 +9844,49 @@ msgstr "Σφάλμα φόρτωσης δεδομένων πίνακα"
 #~ msgid "Clear custom query filters"
 #~ msgstr "Clear custom query filters"
 
-#: src/tables/InvenTreeTable.tsx:729
+#: src/tables/InvenTreeTable.tsx:733
 msgid "View details"
 msgstr "Προβολή λεπτομερειών"
 
-#: src/tables/InvenTreeTable.tsx:732
+#: src/tables/InvenTreeTable.tsx:736
 msgid "View {model}"
 msgstr "Προβολή {model}"
 
-#: src/tables/InvenTreeTableHeader.tsx:103
+#: src/tables/InvenTreeTableHeader.tsx:107
 msgid "Delete Selected Items"
 msgstr "Διαγραφή Επιλεγμένων Ειδών"
 
-#: src/tables/InvenTreeTableHeader.tsx:107
+#: src/tables/InvenTreeTableHeader.tsx:111
 msgid "Are you sure you want to delete the selected items?"
 msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε τα επιλεγμένα είδη;"
 
-#: src/tables/InvenTreeTableHeader.tsx:109
+#: src/tables/InvenTreeTableHeader.tsx:113
 #: src/tables/plugin/PluginListTable.tsx:320
 msgid "This action cannot be undone"
 msgstr "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί"
 
-#: src/tables/InvenTreeTableHeader.tsx:120
+#: src/tables/InvenTreeTableHeader.tsx:124
 msgid "Items deleted"
 msgstr "Τα είδη διαγράφηκαν"
 
-#: src/tables/InvenTreeTableHeader.tsx:125
+#: src/tables/InvenTreeTableHeader.tsx:129
 msgid "Failed to delete items"
 msgstr "Αποτυχία διαγραφής ειδών"
 
-#: src/tables/InvenTreeTableHeader.tsx:176
+#: src/tables/InvenTreeTableHeader.tsx:180
 msgid "Custom table filters are active"
 msgstr "Τα προσαρμοσμένα φίλτρα πίνακα είναι ενεργά"
 
-#: src/tables/InvenTreeTableHeader.tsx:202
+#: src/tables/InvenTreeTableHeader.tsx:206
 #: src/tables/general/BarcodeScanTable.tsx:93
 msgid "Delete selected records"
 msgstr "Διαγραφή επιλεγμένων εγγραφών"
 
-#: src/tables/InvenTreeTableHeader.tsx:222
+#: src/tables/InvenTreeTableHeader.tsx:226
 msgid "Refresh data"
 msgstr "Ανανέωση δεδομένων"
 
-#: src/tables/InvenTreeTableHeader.tsx:271
+#: src/tables/InvenTreeTableHeader.tsx:275
 msgid "Active Filters"
 msgstr "Ενεργά Φίλτρα"
 
@@ -10360,10 +10710,6 @@ msgstr "Δεν βρέθηκαν συνημμένα"
 #: src/tables/general/AttachmentTable.tsx:400
 msgid "Drag attachment file here to upload"
 msgstr "Σύρετε το συνημμένο εδώ για μεταφόρτωση"
-
-#: src/tables/general/BarcodeScanTable.tsx:35
-msgid "Item"
-msgstr "Προϊόν"
 
 #: src/tables/general/BarcodeScanTable.tsx:50
 msgid "Model"
@@ -11623,7 +11969,7 @@ msgstr "Φιλτράρισμα βάσει κατάστασης γραμμής"
 msgid "Receive selected items"
 msgstr "Παραλαβή επιλεγμένων Προϊόντων"
 
-#: src/tables/sales/ReturnOrderLineItemTable.tsx:229
+#: src/tables/sales/ReturnOrderLineItemTable.tsx:231
 msgid "Receive Item"
 msgstr "Παραλαβή Προϊόντος"
 
@@ -11726,10 +12072,6 @@ msgstr "Δημιουργία αποστολής"
 #: src/tables/sales/SalesOrderShipmentTable.tsx:80
 msgid "Shipment created"
 msgstr ""
-
-#: src/tables/sales/SalesOrderShipmentTable.tsx:159
-msgid "Items"
-msgstr "Προϊόντα"
 
 #: src/tables/sales/SalesOrderShipmentTable.tsx:243
 msgid "Edit shipment"
@@ -11952,10 +12294,6 @@ msgstr "Εξερχόμενο"
 #: src/tables/settings/ErrorTable.tsx:67
 msgid "Traceback"
 msgstr "Ιχνηλάτηση"
-
-#: src/tables/settings/ErrorTable.tsx:103
-msgid "When"
-msgstr "Πότε"
 
 #: src/tables/settings/ErrorTable.tsx:113
 msgid "Error Information"
@@ -12741,4 +13079,3 @@ msgstr "Διαβάστε την τεκμηρίωση"
 #: src/views/MobileAppView.tsx:42
 msgid "Ignore and continue to Desktop view"
 msgstr "Παράβλεψη και συνέχεια στην προβολή Desktop"
-

@@ -1,17 +1,30 @@
 import { t } from '@lingui/core/macro';
 import {
+  ActionIcon,
   Button,
   Card,
+  Combobox,
   Group,
+  InputBase,
+  Loader,
+  NumberInput,
   Select,
   SimpleGrid,
   Stack,
+  Text,
   TextInput,
-  Textarea
+  Textarea,
+  useCombobox
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useDebouncedValue } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconDeviceFloppy, IconPackage } from '@tabler/icons-react';
+import {
+  IconDeviceFloppy,
+  IconPackage,
+  IconPlus,
+  IconTrash
+} from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -24,6 +37,7 @@ import {
   type VhcBox,
   type VhcLocation,
   type VhcPallet,
+  type VhcPartSummary,
   type VhcShipment,
   type VhcTeam,
   apiResults,
@@ -49,9 +63,16 @@ const SOURCE_OPTIONS = [
   { value: 'ADJUSTMENT', label: t`Stock adjustment` }
 ];
 
+interface BoxItemFormValue {
+  part: string | null;
+  part_name: string;
+  quantity: number | string;
+  part_detail?: VhcPartSummary;
+}
+
 interface BoxFormValues {
   box_number: string;
-  contents: string;
+  items: BoxItemFormValue[];
   team: string;
   other_team_description: string;
   shipment: string | null;
@@ -65,6 +86,114 @@ interface BoxFormValues {
 
 function nullablePk(value: string | null) {
   return value ? Number(value) : null;
+}
+
+function PartAutocomplete({
+  value,
+  onChange
+}: Readonly<{
+  value: BoxItemFormValue;
+  onChange: (value: BoxItemFormValue) => void;
+}>) {
+  const api = useApi();
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption()
+  });
+  const [search] = useDebouncedValue(value.part_name, 250);
+  const [parts, setParts] = useState<VhcPartSummary[]>(
+    value.part_detail ? [value.part_detail] : []
+  );
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const term = search.trim();
+    if (term.length < 2) {
+      setParts(value.part_detail ? [value.part_detail] : []);
+      return;
+    }
+
+    let active = true;
+    setLoading(true);
+    api
+      .get(apiUrl(ApiEndpoints.part_list), {
+        params: { search: term, active: true, limit: 20 }
+      })
+      .then(({ data }) => {
+        if (active) setParts(apiResults<VhcPartSummary>(data));
+      })
+      .catch(() => {
+        if (active) setParts([]);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [api, search]);
+
+  return (
+    <Stack gap={4} style={{ flex: 1 }}>
+      <Combobox
+        store={combobox}
+        onOptionSubmit={(partPk) => {
+          const part = parts.find((candidate) => String(candidate.pk) === partPk);
+          if (part) {
+            onChange({ ...value, part: String(part.pk), part_name: part.name, part_detail: part });
+          }
+          combobox.closeDropdown();
+        }}
+      >
+        <Combobox.Target>
+          <InputBase
+            label={t`Item`}
+            required
+            value={value.part_name}
+            placeholder={t`Search parts or enter a new item name`}
+            onChange={(event) => {
+              onChange({
+                ...value,
+                part: null,
+                part_name: event.currentTarget.value,
+                part_detail: undefined
+              });
+              combobox.openDropdown();
+            }}
+            onFocus={() => combobox.openDropdown()}
+            onClick={() => combobox.openDropdown()}
+            onBlur={() => combobox.closeDropdown()}
+            rightSection={loading ? <Loader size={16} /> : <Combobox.Chevron />}
+          />
+        </Combobox.Target>
+        <Combobox.Dropdown>
+          <Combobox.Options>
+            {parts.length === 0 ? (
+              <Combobox.Empty>
+                {search.trim().length < 2
+                  ? t`Type at least two characters to search`
+                  : t`No existing part found. This item will be created.`}
+              </Combobox.Empty>
+            ) : (
+              parts.map((part) => (
+                <Combobox.Option key={part.pk} value={String(part.pk)}>
+                  <Text size='sm' fw={500}>{part.name}</Text>
+                  <Text size='xs' c='dimmed'>
+                    {[part.IPN, part.description].filter(Boolean).join(' - ')}
+                  </Text>
+                </Combobox.Option>
+              ))
+            )}
+          </Combobox.Options>
+        </Combobox.Dropdown>
+      </Combobox>
+      <Text size='xs' c={value.part ? 'green' : 'dimmed'}>
+        {value.part
+          ? t`Existing part selected; stock will be linked automatically.`
+          : t`If no exact part exists, a new part and stock record will be created.`}
+      </Text>
+    </Stack>
+  );
 }
 
 export default function BoxForm() {
@@ -83,7 +212,7 @@ export default function BoxForm() {
   const form = useForm<BoxFormValues>({
     initialValues: {
       box_number: '',
-      contents: '',
+      items: [{ part: null, part_name: '', quantity: 1 }],
       team: '',
       other_team_description: '',
       shipment: null,
@@ -97,7 +226,14 @@ export default function BoxForm() {
     validate: {
       box_number: (value) =>
         value && !/^\d{6}$/.test(value) ? t`Use exactly six digits` : null,
-      contents: (value) => (value.trim() ? null : t`Contents are required`),
+      items: (items) => {
+        if (!items.length) return t`Add at least one item`;
+        if (items.some((item) => !item.part_name.trim())) return t`Every item needs a name`;
+        if (items.some((item) => Number(item.quantity) <= 0)) return t`Every quantity must be greater than zero`;
+        const names = items.map((item) => item.part_name.trim().toLowerCase());
+        if (new Set(names).size !== names.length) return t`The same item cannot be listed twice`;
+        return null;
+      },
       team: (value) => (value ? null : t`Team is required`)
     }
   });
@@ -140,7 +276,12 @@ export default function BoxForm() {
         setRevision(data.revision);
         form.setValues({
           box_number: data.box_number,
-          contents: data.contents,
+          items: data.items.map((item) => ({
+            part: String(item.part),
+            part_name: item.part_detail.name,
+            quantity: Number(item.quantity),
+            part_detail: item.part_detail
+          })),
           team: String(data.team),
           other_team_description: data.other_team_description,
           shipment: data.shipment ? String(data.shipment) : null,
@@ -165,12 +306,22 @@ export default function BoxForm() {
 
   const selectedTeam = teams.find((team) => String(team.pk) === form.values.team);
 
+  const updateItem = (index: number, item: BoxItemFormValue) => {
+    form.setFieldValue(
+      'items',
+      form.values.items.map((current, itemIndex) => (itemIndex === index ? item : current))
+    );
+  };
+
   const save = form.onSubmit((values) => {
     setSaving(true);
     const payload = {
       ...values,
       box_number: values.box_number.trim(),
-      contents: values.contents.trim(),
+      items: values.items.map((item) => ({
+        ...(item.part ? { part: Number(item.part) } : { part_name: item.part_name.trim() }),
+        quantity: Number(item.quantity)
+      })),
       team: Number(values.team),
       shipment: nullablePk(values.shipment),
       pallet: nullablePk(values.pallet),
@@ -224,7 +375,53 @@ export default function BoxForm() {
             {selectedTeam?.code === 'OTHER' && (
               <TextInput label={t`Other team`} {...form.getInputProps('other_team_description')} />
             )}
-            <Textarea label={t`Contents`} required minRows={3} maxLength={500} {...form.getInputProps('contents')} />
+
+            <Card withBorder p='md'>
+              <Stack>
+                <Group justify='space-between'>
+                  <div>
+                    <Text fw={600}>{t`Box items`}</Text>
+                    <Text size='sm' c='dimmed'>{t`Select an existing part or type a new item name.`}</Text>
+                  </div>
+                  <Button
+                    type='button'
+                    variant='light'
+                    leftSection={<IconPlus size={16} />}
+                    onClick={() => form.insertListItem('items', { part: null, part_name: '', quantity: 1 })}
+                  >
+                    {t`Add item`}
+                  </Button>
+                </Group>
+                {form.values.items.map((item, index) => (
+                  <Group key={`${index}-${item.part ?? 'new'}`} align='flex-start' wrap='nowrap'>
+                    <PartAutocomplete value={item} onChange={(next) => updateItem(index, next)} />
+                    <NumberInput
+                      label={t`Quantity`}
+                      required
+                      min={0.00001}
+                      decimalScale={5}
+                      allowNegative={false}
+                      style={{ width: 150 }}
+                      value={item.quantity}
+                      onChange={(quantity) => updateItem(index, { ...item, quantity })}
+                    />
+                    <ActionIcon
+                      mt={25}
+                      size='lg'
+                      variant='subtle'
+                      color='red'
+                      aria-label={t`Remove item`}
+                      disabled={form.values.items.length === 1}
+                      onClick={() => form.removeListItem('items', index)}
+                    >
+                      <IconTrash size={18} />
+                    </ActionIcon>
+                  </Group>
+                ))}
+                {form.errors.items && <Text size='sm' c='red'>{String(form.errors.items)}</Text>}
+              </Stack>
+            </Card>
+
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
               <Select
                 label={t`Shipment`}

@@ -39,7 +39,7 @@ export default function BoxIndex() {
       },
       {
         accessor: 'contents',
-        title: t`Contents`,
+        title: t`Items`,
         render: (record) => <Text lineClamp={2}>{record.contents}</Text>
       },
       {

@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from vhc.models import Box, BoxEvent, BoxSequence, Pallet, Shipment, Team
+from vhc.models import Box, BoxEvent, BoxItem, BoxSequence, Pallet, Shipment, Team
 
 
 @admin.register(Team)
@@ -32,6 +32,14 @@ class PalletAdmin(admin.ModelAdmin):
     search_fields = ['shipment__reference']
     autocomplete_fields = ['shipment']
 
+class BoxItemInline(admin.TabularInline):
+    """Structured part and stock records contained in a box."""
+
+    model = BoxItem
+    extra = 0
+    autocomplete_fields = ['part', 'stock_item']
+    readonly_fields = ['created', 'updated']
+
 
 class BoxEventInline(admin.TabularInline):
     """Read-only box event history."""
@@ -56,10 +64,12 @@ class BoxAdmin(admin.ModelAdmin):
         'current_location', 'updated',
     ]
     list_filter = ['status', 'source', 'team', 'shipment']
-    search_fields = ['box_number', 'contents', 'note']
+    search_fields = ['box_number', 'contents', 'items__part__name', 'note']
     autocomplete_fields = ['team', 'shipment', 'pallet', 'current_location', 'destination']
-    readonly_fields = ['created', 'updated', 'created_by', 'updated_by', 'revision']
-    inlines = [BoxEventInline]
+    readonly_fields = [
+        'contents', 'created', 'updated', 'created_by', 'updated_by', 'revision'
+    ]
+    inlines = [BoxItemInline, BoxEventInline]
 
 
 @admin.register(BoxEvent)

@@ -123,7 +123,7 @@ class BoxFilter(FilterSet):
 BOX_QUERYSET = Box.objects.select_related(
     'team', 'shipment', 'pallet', 'current_location', 'destination',
     'created_by', 'updated_by',
-)
+).prefetch_related('items__part', 'items__stock_item')
 
 
 class BoxList(VhcAuthenticatedApi, DataExportViewMixin, ListCreateAPI):
@@ -136,7 +136,8 @@ class BoxList(VhcAuthenticatedApi, DataExportViewMixin, ListCreateAPI):
     search_fields = [
         'box_number', 'contents', 'note', 'team__name', 'shipment__reference',
         'current_location__name', 'current_location__pathstring',
-        'destination__name', 'destination__pathstring',
+        'destination__name', 'destination__pathstring', 'items__part__name',
+        'items__part__IPN',
     ]
     ordering_fields = [
         'box_number', 'created', 'updated', 'status', 'team__name',
@@ -204,6 +205,9 @@ class BoxMove(VhcAuthenticatedApi, GenericAPIView):
         box.revision += 1
         box.full_clean()
         box.save()
+        BoxSerializer.sync_stock_locations(
+            box, request.user, serializer.validated_data.get('notes', '')
+        )
         BoxEvent.objects.create(
             box=box,
             action=BoxEventAction.MOVED,
@@ -280,6 +284,9 @@ class BoxBulkMove(VhcAuthenticatedApi, GenericAPIView):
             box.updated_by = request.user
             box.revision += 1
             box.save()
+            BoxSerializer.sync_stock_locations(
+                box, request.user, serializer.validated_data.get('notes', '')
+            )
             BoxEvent.objects.create(
                 box=box,
                 action=BoxEventAction.MOVED,

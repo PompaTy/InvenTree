@@ -1,16 +1,20 @@
 """Database models for the VHC box inventory workflow."""
 
 from datetime import date
+from decimal import Decimal
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models, transaction
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 import InvenTree.models
-from stock.models import StockLocation
+from part.models import Part
+from stock.models import StockItem, StockLocation
 
 
 HEX_COLOR_VALIDATOR = RegexValidator(
@@ -190,7 +194,13 @@ class Box(InvenTree.models.InvenTreeAttachmentMixin, InvenTree.models.InvenTreeM
         validators=[BOX_NUMBER_VALIDATOR],
         verbose_name=_('Box number'),
     )
-    contents = models.TextField(max_length=500, verbose_name=_('Contents'))
+    contents = models.TextField(
+        blank=True,
+        default='',
+        max_length=500,
+        verbose_name=_('Contents'),
+        help_text=_('Generated summary of the structured box items'),
+    )
     team = models.ForeignKey(
         Team, on_delete=models.PROTECT, related_name='boxes', verbose_name=_('Team')
     )
@@ -279,6 +289,43 @@ class Box(InvenTree.models.InvenTreeAttachmentMixin, InvenTree.models.InvenTreeM
             })
         if self.pallet and not self.shipment:
             self.shipment = self.pallet.shipment
+
+class BoxItem(InvenTree.models.InvenTreeModel):
+    """A quantified part and its corresponding stock record inside a VHC box."""
+
+    box = models.ForeignKey(Box, on_delete=models.CASCADE, related_name='items')
+    part = models.ForeignKey(
+        Part, on_delete=models.PROTECT, related_name='vhc_box_items'
+    )
+    stock_item = models.OneToOneField(
+        StockItem, on_delete=models.PROTECT, related_name='vhc_box_item'
+    )
+    quantity = models.DecimalField(
+        max_digits=15,
+        decimal_places=5,
+        validators=[MinValueValidator(Decimal('0.00001'))],
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['part__name', 'pk']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['box', 'part'], name='unique_vhc_part_per_box'
+            )
+        ]
+        verbose_name = _('VHC Box Item')
+        verbose_name_plural = _('VHC Box Items')
+
+    def __str__(self):
+        return f'{self.box.box_number}: {self.part.name} ({self.quantity:g})'
+
+
+@receiver(post_delete, sender=BoxItem)
+def delete_box_item_stock(sender, instance, **kwargs):
+    """Remove the dedicated stock record when a box line item is removed."""
+    StockItem.objects.filter(pk=instance.stock_item_id).delete()
 
 
 class BoxEventAction(models.TextChoices):
