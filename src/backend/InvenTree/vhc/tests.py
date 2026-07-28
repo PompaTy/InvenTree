@@ -18,6 +18,7 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
+        cls.assignRole('stock.view')
         cls.team = Team.objects.create(
             name='General Medicine', code='GENERAL_MEDICINE', color='#228BE6'
         )
@@ -74,6 +75,21 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         self.assertEqual(response.data['items'][0]['part_detail']['name'], 'Bandages')
         self.assertEqual(box.contents, 'Bandages (12)')
 
+        stock_response = self.get(
+            reverse('api-stock-list'),
+            {'part': self.bandages.pk},
+            expected_code=200,
+        )
+        stock_data = next(
+            item
+            for item in stock_response.data
+            if item['pk'] == box_item.stock_item_id
+        )
+        self.assertEqual(
+            stock_data['vhc_box'],
+            {'pk': box.pk, 'box_number': box.box_number},
+        )
+
     def test_unknown_item_creates_part_and_stock(self):
         """An unmatched item name creates a reusable part and stock record."""
         response = self.post(
@@ -91,6 +107,31 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         stock_item = StockItem.objects.get(pk=box_item.stock_item_id)
         self.assertEqual(stock_item.quantity, 4)
         self.assertEqual(stock_item.location, self.va_location)
+
+    def test_stock_table_orders_by_box_number(self):
+        """Stock rows can be ordered by their linked VHC box number."""
+        first_box = Box.objects.get(pk=self.create_box().data['pk'])
+        second_box = Box.objects.get(pk=self.create_box().data['pk'])
+
+        ascending = self.get(
+            reverse('api-stock-list'),
+            {'part': self.bandages.pk, 'ordering': 'box'},
+            expected_code=200,
+        )
+        descending = self.get(
+            reverse('api-stock-list'),
+            {'part': self.bandages.pk, 'ordering': '-box'},
+            expected_code=200,
+        )
+
+        self.assertEqual(
+            [item['vhc_box']['box_number'] for item in ascending.data],
+            [first_box.box_number, second_box.box_number],
+        )
+        self.assertEqual(
+            [item['vhc_box']['box_number'] for item in descending.data],
+            [second_box.box_number, first_box.box_number],
+        )
 
     def test_edit_box_updates_quantity(self):
         """Editing a line item performs a native stocktake."""

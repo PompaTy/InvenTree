@@ -51,6 +51,13 @@ from .models import (
 logger = structlog.get_logger('inventree')
 
 
+class VhcBoxBriefSerializer(serializers.Serializer):
+    """Minimal VHC box information exposed on a stock item."""
+
+    pk = serializers.IntegerField(read_only=True)
+    box_number = serializers.CharField(read_only=True)
+
+
 class GenerateBatchCodeSerializer(serializers.Serializer):
     """Serializer for generating a batch code.
 
@@ -391,6 +398,7 @@ class StockItemSerializer(
             'supplier_part_detail',
             'part_detail',
             'location_detail',
+            'vhc_box',
         ]
         read_only_fields = [
             'allocated',
@@ -510,7 +518,7 @@ class StockItemSerializer(
             'belongs_to',
             'sales_order',
             'consumed_by',
-        ).select_related('part', 'part__pricing_data')
+        ).select_related('part', 'part__pricing_data', 'vhc_box_item__box')
 
         # Annotate the queryset with the total allocated to sales orders
         queryset = queryset.annotate(
@@ -614,6 +622,14 @@ class StockItemSerializer(
         ),
         False,
         prefetch_fields=['location'],
+    )
+
+    vhc_box = VhcBoxBriefSerializer(
+        source='vhc_box_item.box',
+        many=False,
+        read_only=True,
+        allow_null=True,
+        label=_('VHC Box'),
     )
 
     tests = enable_filter(

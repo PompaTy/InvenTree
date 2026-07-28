@@ -1276,6 +1276,7 @@ class StockList(
         'IPN': 'part__IPN',
         'SKU': 'supplier_part__SKU',
         'MPN': 'supplier_part__manufacturer_part__MPN',
+        'box': 'vhc_box_item__box__box_number',
         'stock': ['quantity', 'serial_int', 'serial'],
     }
 
@@ -1292,6 +1293,7 @@ class StockList(
         'packaging',
         'quantity',
         'stock',
+        'box',
         'status',
         'IPN',
         'SKU',

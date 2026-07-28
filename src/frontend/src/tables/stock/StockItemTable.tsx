@@ -1,6 +1,7 @@
 import { t } from '@lingui/core/macro';
+import { Anchor } from '@mantine/core';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { ActionButton } from '@lib/components/ActionButton';
 import { AddItemButton } from '@lib/components/AddItemButton';
@@ -24,7 +25,6 @@ import { useUserState } from '../../states/UserState';
 import {
   DateColumn,
   DescriptionColumn,
-  IPNColumn,
   LocationColumn,
   PartColumn,
   StatusColumn,
@@ -60,7 +60,31 @@ function stockItemTableColumns({
       accessor: 'part',
       part: 'part_detail'
     }),
-    IPNColumn({}),
+    {
+      accessor: 'vhc_box.box_number',
+      title: t`Box`,
+      sortable: true,
+      ordering: 'box',
+      copyable: true,
+      render: (record: any) => {
+        const box = record.vhc_box;
+
+        if (!box) {
+          return '-';
+        }
+
+        return (
+          <Anchor
+            component={Link}
+            to={`/boxes/${box.pk}`}
+            fw={600}
+            onClick={(event) => event.stopPropagation()}
+          >
+            {box.box_number}
+          </Anchor>
+        );
+      }
+    },
     {
       accessor: 'part_detail.revision',
       title: t`Revision`,
