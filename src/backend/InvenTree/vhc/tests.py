@@ -36,7 +36,15 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         return self.post(
             reverse('api-vhc-box-list'),
             {
-                'items': [{'part': self.bandages.pk, 'quantity': 12}],
+                'items': [
+                    {
+                        'part': self.bandages.pk,
+                        'quantity': 12,
+                        'size': 'Large',
+                        'sterile': 'S',
+                        'expiry_date': '2027-06-30',
+                    }
+                ],
                 'team': self.team.pk,
                 'current_location': self.va_location.pk,
                 'source': 'DONATION_PURCHASE',
@@ -72,7 +80,16 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         self.assertEqual(box_item.quantity, 12)
         self.assertEqual(box_item.stock_item.quantity, 12)
         self.assertEqual(box_item.stock_item.location, self.va_location)
+        self.assertEqual(box_item.size, 'Large')
+        self.assertEqual(box_item.sterile, 'S')
+        self.assertEqual(box_item.expiry_date, date(2027, 6, 30))
+        self.assertEqual(box_item.stock_item.size, 'Large')
+        self.assertEqual(box_item.stock_item.sterile, 'S')
+        self.assertEqual(box_item.stock_item.expiry_date, date(2027, 6, 30))
         self.assertEqual(response.data['items'][0]['part_detail']['name'], 'Bandages')
+        self.assertEqual(response.data['items'][0]['size'], 'Large')
+        self.assertEqual(response.data['items'][0]['sterile'], 'S')
+        self.assertEqual(response.data['items'][0]['expiry_date'], '2027-06-30')
         self.assertEqual(box.contents, 'Bandages (12)')
 
         stock_response = self.get(
@@ -89,6 +106,9 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
             stock_data['vhc_box'],
             {'pk': box.pk, 'box_number': box.box_number},
         )
+        self.assertEqual(stock_data['size'], 'Large')
+        self.assertEqual(stock_data['sterile'], 'S')
+        self.assertEqual(stock_data['expiry_date'], '2027-06-30')
 
     def test_unknown_item_creates_part_and_stock(self):
         """An unmatched item name creates a reusable part and stock record."""
@@ -140,7 +160,15 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         self.patch(
             reverse('api-vhc-box-detail', kwargs={'pk': box.pk}),
             {
-                'items': [{'part': self.bandages.pk, 'quantity': 20}],
+                'items': [
+                    {
+                        'part': self.bandages.pk,
+                        'quantity': 20,
+                        'size': 'Medium',
+                        'sterile': 'NS',
+                        'expiry_date': '2028-01-15',
+                    }
+                ],
                 'revision': box.revision,
             },
             expected_code=200,
@@ -148,7 +176,13 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
 
         box_item = BoxItem.objects.select_related('stock_item').get(box=box)
         self.assertEqual(box_item.quantity, 20)
+        self.assertEqual(box_item.size, 'Medium')
+        self.assertEqual(box_item.sterile, 'NS')
+        self.assertEqual(box_item.expiry_date, date(2028, 1, 15))
         self.assertEqual(box_item.stock_item.quantity, 20)
+        self.assertEqual(box_item.stock_item.size, 'Medium')
+        self.assertEqual(box_item.stock_item.sterile, 'NS')
+        self.assertEqual(box_item.stock_item.expiry_date, date(2028, 1, 15))
 
     def test_box_requires_items(self):
         """A box cannot be created without at least one structured item."""

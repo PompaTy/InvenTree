@@ -40,6 +40,9 @@ export interface VhcBoxItem {
   part_detail: VhcPartSummary;
   stock_item: number;
   quantity: number;
+  size: string;
+  sterile: '' | 'S' | 'NS';
+  expiry_date: string | null;
 }
 
 export interface VhcBox {

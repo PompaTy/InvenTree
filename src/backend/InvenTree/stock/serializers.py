@@ -366,6 +366,8 @@ class StockItemSerializer(
             'notes',
             'owner',
             'packaging',
+            'size',
+            'sterile',
             'parent',
             'purchase_order',
             'purchase_order_reference',

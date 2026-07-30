@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 import InvenTree.models
 from part.models import Part
-from stock.models import StockItem, StockLocation
+from stock.models import StockItem, StockLocation, StockSterility
 
 
 HEX_COLOR_VALIDATOR = RegexValidator(
@@ -305,6 +305,11 @@ class BoxItem(InvenTree.models.InvenTreeModel):
         decimal_places=5,
         validators=[MinValueValidator(Decimal('0.00001'))],
     )
+    size = models.CharField(max_length=100, blank=True, default='')
+    sterile = models.CharField(
+        max_length=2, blank=True, default='', choices=StockSterility.choices
+    )
+    expiry_date = models.DateField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

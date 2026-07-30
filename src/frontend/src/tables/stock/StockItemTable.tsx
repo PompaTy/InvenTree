@@ -167,6 +167,18 @@ function stockItemTableColumns({
       sortable: true,
       defaultVisible: false
     },
+    {
+      accessor: 'size',
+      title: t`Size`,
+      sortable: true,
+      defaultVisible: false
+    },
+    {
+      accessor: 'sterile',
+      title: t`Sterile (S/NS)`,
+      sortable: true,
+      defaultVisible: false
+    },
 
     DateColumn({
       title: t`Expiry Date`,

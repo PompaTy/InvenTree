@@ -25,7 +25,7 @@ import {
   IconPlus,
   IconTrash
 } from '@tabler/icons-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ApiEndpoints } from '@lib/enums/ApiEndpoints';
@@ -36,9 +36,7 @@ import { showApiErrorMessage } from '../../functions/notifications';
 import {
   type VhcBox,
   type VhcLocation,
-  type VhcPallet,
   type VhcPartSummary,
-  type VhcShipment,
   type VhcTeam,
   apiResults,
   locationLabel
@@ -63,10 +61,18 @@ const SOURCE_OPTIONS = [
   { value: 'ADJUSTMENT', label: t`Stock adjustment` }
 ];
 
+const STERILITY_OPTIONS = [
+  { value: 'S', label: 'S' },
+  { value: 'NS', label: 'NS' }
+];
+
 interface BoxItemFormValue {
   part: string | null;
   part_name: string;
   quantity: number | string;
+  size: string;
+  sterile: string | null;
+  expiry_date: string | null;
   part_detail?: VhcPartSummary;
 }
 
@@ -75,8 +81,6 @@ interface BoxFormValues {
   items: BoxItemFormValue[];
   team: string;
   other_team_description: string;
-  shipment: string | null;
-  pallet: string | null;
   current_location: string | null;
   destination: string | null;
   note: string;
@@ -205,18 +209,23 @@ export default function BoxForm() {
   const [saving, setSaving] = useState(false);
   const [revision, setRevision] = useState<number | null>(null);
   const [teams, setTeams] = useState<VhcTeam[]>([]);
-  const [shipments, setShipments] = useState<VhcShipment[]>([]);
-  const [pallets, setPallets] = useState<VhcPallet[]>([]);
   const [locations, setLocations] = useState<VhcLocation[]>([]);
 
   const form = useForm<BoxFormValues>({
     initialValues: {
       box_number: '',
-      items: [{ part: null, part_name: '', quantity: 1 }],
+      items: [
+        {
+          part: null,
+          part_name: '',
+          quantity: 1,
+          size: '',
+          sterile: null,
+          expiry_date: null
+        }
+      ],
       team: '',
       other_team_description: '',
-      shipment: null,
-      pallet: null,
       current_location: null,
       destination: null,
       note: '',
@@ -241,16 +250,12 @@ export default function BoxForm() {
   useEffect(() => {
     Promise.all([
       api.get(apiUrl(ApiEndpoints.vhc_team_list), { params: { active: true, limit: 1000 } }),
-      api.get(apiUrl(ApiEndpoints.vhc_shipment_list), { params: { limit: 1000 } }),
-      api.get(apiUrl(ApiEndpoints.vhc_pallet_list), { params: { limit: 1000 } }),
       api.get(apiUrl(ApiEndpoints.stock_location_list), { params: { limit: 1000 } })
     ])
-      .then(([teamResponse, shipmentResponse, palletResponse, locationResponse]) => {
+      .then(([teamResponse, locationResponse]) => {
         const loadedTeams = apiResults<VhcTeam>(teamResponse.data);
         const loadedLocations = apiResults<VhcLocation>(locationResponse.data);
         setTeams(loadedTeams);
-        setShipments(apiResults<VhcShipment>(shipmentResponse.data));
-        setPallets(apiResults<VhcPallet>(palletResponse.data));
         setLocations(loadedLocations);
 
         if (!editing) {
@@ -280,12 +285,13 @@ export default function BoxForm() {
             part: String(item.part),
             part_name: item.part_detail.name,
             quantity: Number(item.quantity),
+            size: item.size || '',
+            sterile: item.sterile || null,
+            expiry_date: item.expiry_date || null,
             part_detail: item.part_detail
           })),
           team: String(data.team),
           other_team_description: data.other_team_description,
-          shipment: data.shipment ? String(data.shipment) : null,
-          pallet: data.pallet ? String(data.pallet) : null,
           current_location: data.current_location ? String(data.current_location) : null,
           destination: data.destination ? String(data.destination) : null,
           note: data.note,
@@ -296,13 +302,6 @@ export default function BoxForm() {
       .catch((error) => showApiErrorMessage({ error, title: t`Could not load box` }));
   }, [boxId]);
 
-  const palletOptions = useMemo(
-    () =>
-      pallets
-        .filter((pallet) => !form.values.shipment || pallet.shipment === Number(form.values.shipment))
-        .map((pallet) => ({ value: String(pallet.pk), label: pallet.display_name })),
-    [pallets, form.values.shipment]
-  );
 
   const selectedTeam = teams.find((team) => String(team.pk) === form.values.team);
 
@@ -320,11 +319,12 @@ export default function BoxForm() {
       box_number: values.box_number.trim(),
       items: values.items.map((item) => ({
         ...(item.part ? { part: Number(item.part) } : { part_name: item.part_name.trim() }),
-        quantity: Number(item.quantity)
+        quantity: Number(item.quantity),
+        size: item.size.trim(),
+        sterile: item.sterile || '',
+        expiry_date: item.expiry_date || null
       })),
       team: Number(values.team),
-      shipment: nullablePk(values.shipment),
-      pallet: nullablePk(values.pallet),
       current_location: nullablePk(values.current_location),
       destination: nullablePk(values.destination),
       ...(revision !== null ? { revision } : {})
@@ -387,54 +387,87 @@ export default function BoxForm() {
                     type='button'
                     variant='light'
                     leftSection={<IconPlus size={16} />}
-                    onClick={() => form.insertListItem('items', { part: null, part_name: '', quantity: 1 })}
+                    onClick={() =>
+                      form.insertListItem('items', {
+                        part: null,
+                        part_name: '',
+                        quantity: 1,
+                        size: '',
+                        sterile: null,
+                        expiry_date: null
+                      })
+                    }
                   >
                     {t`Add item`}
                   </Button>
                 </Group>
                 {form.values.items.map((item, index) => (
-                  <Group key={`${index}-${item.part ?? 'new'}`} align='flex-start' wrap='nowrap'>
-                    <PartAutocomplete value={item} onChange={(next) => updateItem(index, next)} />
-                    <NumberInput
-                      label={t`Quantity`}
-                      required
-                      min={0.00001}
-                      decimalScale={5}
-                      allowNegative={false}
-                      style={{ width: 150 }}
-                      value={item.quantity}
-                      onChange={(quantity) => updateItem(index, { ...item, quantity })}
-                    />
-                    <ActionIcon
-                      mt={25}
-                      size='lg'
-                      variant='subtle'
-                      color='red'
-                      aria-label={t`Remove item`}
-                      disabled={form.values.items.length === 1}
-                      onClick={() => form.removeListItem('items', index)}
-                    >
-                      <IconTrash size={18} />
-                    </ActionIcon>
-                  </Group>
+                  <Card key={`${index}-${item.part ?? 'new'}`} withBorder p='sm'>
+                    <Stack gap='sm'>
+                      <Group align='flex-start' wrap='nowrap'>
+                        <PartAutocomplete value={item} onChange={(next) => updateItem(index, next)} />
+                        <NumberInput
+                          label={t`Quantity`}
+                          required
+                          min={0.00001}
+                          decimalScale={5}
+                          allowNegative={false}
+                          style={{ width: 150 }}
+                          value={item.quantity}
+                          onChange={(quantity) => updateItem(index, { ...item, quantity })}
+                        />
+                        <ActionIcon
+                          mt={25}
+                          size='lg'
+                          variant='subtle'
+                          color='red'
+                          aria-label={t`Remove item`}
+                          disabled={form.values.items.length === 1}
+                          onClick={() => form.removeListItem('items', index)}
+                        >
+                          <IconTrash size={18} />
+                        </ActionIcon>
+                      </Group>
+                      <SimpleGrid cols={{ base: 1, sm: 3 }}>
+                        <TextInput
+                          label={t`Size`}
+                          value={item.size}
+                          onChange={(event) =>
+                            updateItem(index, {
+                              ...item,
+                              size: event.currentTarget.value
+                            })
+                          }
+                        />
+                        <Select
+                          label={t`Sterile (S/NS)`}
+                          clearable
+                          data={STERILITY_OPTIONS}
+                          value={item.sterile}
+                          onChange={(sterile) =>
+                            updateItem(index, { ...item, sterile })
+                          }
+                        />
+                        <TextInput
+                          label={t`Expiration date`}
+                          type='date'
+                          value={item.expiry_date ?? ''}
+                          onChange={(event) =>
+                            updateItem(index, {
+                              ...item,
+                              expiry_date: event.currentTarget.value || null
+                            })
+                          }
+                        />
+                      </SimpleGrid>
+                    </Stack>
+                  </Card>
                 ))}
                 {form.errors.items && <Text size='sm' c='red'>{String(form.errors.items)}</Text>}
               </Stack>
             </Card>
 
             <SimpleGrid cols={{ base: 1, sm: 2 }}>
-              <Select
-                label={t`Shipment`}
-                clearable
-                searchable
-                data={shipments.map((shipment) => ({ value: String(shipment.pk), label: shipment.reference }))}
-                {...form.getInputProps('shipment')}
-                onChange={(value) => {
-                  form.setFieldValue('shipment', value);
-                  form.setFieldValue('pallet', null);
-                }}
-              />
-              <Select label={t`Pallet`} clearable searchable disabled={!form.values.shipment} data={palletOptions} {...form.getInputProps('pallet')} />
               <Select
                 label={t`Current location`}
                 clearable

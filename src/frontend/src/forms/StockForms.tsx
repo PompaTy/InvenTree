@@ -272,6 +272,14 @@ export function useStockFields({
       packaging: {
         icon: <IconPackage />
       },
+      size: {},
+      sterile: {
+        field_type: 'choice',
+        choices: [
+          { value: 'S', display_name: 'S' },
+          { value: 'NS', display_name: 'NS' }
+        ]
+      },
       link: {
         icon: <IconLink />
       },

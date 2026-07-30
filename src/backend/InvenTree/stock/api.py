@@ -1291,6 +1291,8 @@ class StockList(
         'stocktake_date',
         'expiry_date',
         'packaging',
+        'size',
+        'sterile',
         'quantity',
         'stock',
         'box',

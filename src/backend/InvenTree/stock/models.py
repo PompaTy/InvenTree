@@ -398,6 +398,13 @@ class StockItemReportContext(report.mixins.BaseReportContext):
     test_templates: dict[str, PartModels.PartTestTemplate]
 
 
+class StockSterility(models.TextChoices):
+    """Sterility status for a stock item."""
+
+    STERILE = 'S', _('Sterile')
+    NON_STERILE = 'NS', _('Non-sterile')
+
+
 class StockItem(
     InvenTree.models.PluginValidationMixin,
     InvenTree.models.InvenTreeAttachmentMixin,
@@ -1062,6 +1069,23 @@ class StockItem(
         null=True,
         verbose_name=_('Packaging'),
         help_text=_('Packaging this stock item is stored in'),
+    )
+
+    size = models.CharField(
+        max_length=100,
+        blank=True,
+        default='',
+        verbose_name=_('Size'),
+        help_text=_('Optional size information for this stock item'),
+    )
+
+    sterile = models.CharField(
+        max_length=2,
+        blank=True,
+        default='',
+        choices=StockSterility.choices,
+        verbose_name=_('Sterile'),
+        help_text=_('Sterility status for this stock item'),
     )
 
     # When deleting a stock item with installed items, those installed items are also installed

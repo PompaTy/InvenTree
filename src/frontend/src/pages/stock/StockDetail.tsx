@@ -421,6 +421,18 @@ export default function StockDetail() {
       },
       {
         type: 'text',
+        name: 'size',
+        label: t`Size`,
+        hidden: !stockitem.size
+      },
+      {
+        type: 'text',
+        name: 'sterile',
+        label: t`Sterile (S/NS)`,
+        hidden: !stockitem.sterile
+      },
+      {
+        type: 'text',
         name: 'updated',
         icon: 'calendar',
         label: t`Last Updated`

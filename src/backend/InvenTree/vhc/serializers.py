@@ -10,7 +10,7 @@ from rest_framework.fields import empty
 from data_exporter.mixins import DataExportSerializerMixin
 from InvenTree.serializers import InvenTreeModelSerializer
 from part.models import Part
-from stock.models import StockItem, StockLocation
+from stock.models import StockItem, StockLocation, StockSterility
 from vhc.models import (
     Box,
     BoxEvent,
@@ -96,6 +96,15 @@ class BoxItemSerializer(serializers.Serializer):
     quantity = serializers.DecimalField(
         max_digits=15, decimal_places=5, min_value=Decimal('0.00001')
     )
+    size = serializers.CharField(
+        required=False, allow_blank=True, max_length=100, default=''
+    )
+    sterile = serializers.ChoiceField(
+        choices=StockSterility.choices, required=False, allow_blank=True, default=''
+    )
+    expiry_date = serializers.DateField(
+        required=False, allow_null=True, default=None
+    )
     created = serializers.DateTimeField(read_only=True)
     updated = serializers.DateTimeField(read_only=True)
 
@@ -109,6 +118,7 @@ class BoxItemSerializer(serializers.Serializer):
                 })
             attrs['part_name'] = name
         return attrs
+
 
 class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
     """Serializer for a VHC inventory box."""
@@ -294,6 +304,9 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                 })
             selected_parts.add(part.pk)
             quantity = item_data['quantity']
+            size = item_data.get('size', '').strip()
+            sterile = item_data.get('sterile', '')
+            expiry_date = item_data.get('expiry_date')
             box_item = existing.get(part.pk)
 
             if box_item is None:
@@ -301,6 +314,9 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                     part=part,
                     quantity=quantity,
                     location=box.current_location,
+                    size=size,
+                    sterile=sterile,
+                    expiry_date=expiry_date,
                 )
                 stock_item.save(user=user, notes=stock_note)
                 box_item = BoxItem.objects.create(
@@ -308,12 +324,33 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                     part=part,
                     stock_item=stock_item,
                     quantity=quantity,
+                    size=size,
+                    sterile=sterile,
+                    expiry_date=expiry_date,
                 )
             else:
-                if box_item.stock_item.quantity != quantity:
-                    box_item.stock_item.stocktake(quantity, user, notes=stock_note)
-                    box_item.quantity = quantity
-                    box_item.save(update_fields=['quantity', 'updated'])
+                stock_item = box_item.stock_item
+                if stock_item.quantity != quantity:
+                    stock_item.stocktake(quantity, user, notes=stock_note)
+
+                stock_item.size = size
+                stock_item.sterile = sterile
+                stock_item.expiry_date = expiry_date
+                stock_item.save(user=user, notes=stock_note)
+
+                box_item.quantity = quantity
+                box_item.size = size
+                box_item.sterile = sterile
+                box_item.expiry_date = expiry_date
+                box_item.save(
+                    update_fields=[
+                        'quantity',
+                        'size',
+                        'sterile',
+                        'expiry_date',
+                        'updated',
+                    ]
+                )
 
             retained_ids.append(box_item.pk)
 

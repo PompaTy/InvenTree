@@ -164,6 +164,9 @@ export default function BoxDetail() {
               <Table.Th>{t`Part`}</Table.Th>
               <Table.Th>{t`Description`}</Table.Th>
               <Table.Th>{t`Quantity`}</Table.Th>
+              <Table.Th>{t`Size`}</Table.Th>
+              <Table.Th>{t`Sterile (S/NS)`}</Table.Th>
+              <Table.Th>{t`Expiration date`}</Table.Th>
               <Table.Th>{t`Stock item`}</Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -178,6 +181,9 @@ export default function BoxDetail() {
                 </Table.Td>
                 <Table.Td>{item.part_detail.description || '-'}</Table.Td>
                 <Table.Td>{Number(item.quantity).toLocaleString()} {item.part_detail.units || ''}</Table.Td>
+                <Table.Td>{item.size || '-'}</Table.Td>
+                <Table.Td>{item.sterile || '-'}</Table.Td>
+                <Table.Td>{item.expiry_date || '-'}</Table.Td>
                 <Table.Td>
                   <Anchor component={Link} to={`/stock/item/${item.stock_item}`}>
                     #{item.stock_item}

@@ -1,0 +1,1354 @@
+{
+  "status": "complete",
+  "source_file": "Inventory for Container (2026)-3.xlsx",
+  "shipment": "Container 2026",
+  "import_user": "admin",
+  "expected": {
+    "boxes": 139,
+    "box_items": 456,
+    "parts": 315,
+    "imported_source_rows": 477,
+    "skipped_source_rows": 102,
+    "total_quantity": "40791"
+  },
+  "database": {
+    "users": 8,
+    "teams": 9,
+    "locations": 13,
+    "parts": 315,
+    "boxes": 139,
+    "box_items": 456,
+    "stock_items": 456,
+    "box_events": 139,
+    "shipments": 1,
+    "stock_quantity": "40791.00000"
+  },
+  "created_boxes": [
+    "260000",
+    "260001",
+    "260002",
+    "260003",
+    "260004",
+    "260005",
+    "260006",
+    "260007",
+    "260008",
+    "260009",
+    "260010",
+    "260011",
+    "260012",
+    "260013",
+    "260014",
+    "260015",
+    "260016",
+    "260017",
+    "260018",
+    "260019",
+    "260020",
+    "260021",
+    "260023",
+    "260024",
+    "260025",
+    "260026",
+    "260027",
+    "260028",
+    "260029",
+    "260030",
+    "260031",
+    "260032",
+    "260033",
+    "260034",
+    "260035",
+    "260036",
+    "260037",
+    "260038",
+    "260039",
+    "260043",
+    "260044",
+    "260045",
+    "260046",
+    "260047",
+    "260048",
+    "260049",
+    "260050",
+    "260051",
+    "260052",
+    "260053",
+    "260054",
+    "260055",
+    "260056",
+    "260058",
+    "260059",
+    "260060",
+    "260061",
+    "260062",
+    "260063",
+    "260064",
+    "260070",
+    "260071",
+    "260072",
+    "260073",
+    "260074",
+    "260075",
+    "260076",
+    "260078",
+    "260079",
+    "260080",
+    "260081",
+    "260082",
+    "260083",
+    "260084",
+    "260085",
+    "260086",
+    "260087",
+    "260090",
+    "260091",
+    "260092",
+    "260093",
+    "260094",
+    "260095",
+    "260096",
+    "260097",
+    "260098",
+    "260099",
+    "260100",
+    "260101",
+    "260102",
+    "260103",
+    "260104",
+    "260105",
+    "260106",
+    "260107",
+    "260108",
+    "260109",
+    "260110",
+    "260111",
+    "260114",
+    "260117",
+    "260118",
+    "260119",
+    "260120",
+    "260121",
+    "260122",
+    "260123",
+    "260124",
+    "260125",
+    "260126",
+    "260127",
+    "260128",
+    "260133",
+    "260135",
+    "260136",
+    "260137",
+    "260138",
+    "260141",
+    "260143",
+    "260144",
+    "260145",
+    "260146",
+    "260147",
+    "260148",
+    "260150",
+    "260152",
+    "260153",
+    "260154",
+    "260155",
+    "260156",
+    "260157",
+    "260158",
+    "260160",
+    "260161",
+    "260162",
+    "260163",
+    "260164",
+    "260165",
+    "260166"
+  ],
+  "skipped_rows": [
+    {
+      "row": 22,
+      "box": "260019",
+      "item": "HAND SANITIZER",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 59,
+      "box": "260029",
+      "item": "Sutures",
+      "reason": "Unusable quantity: mulit"
+    },
+    {
+      "row": 80,
+      "box": "260029",
+      "item": "Instruments",
+      "reason": "Unusable quantity: multi"
+    },
+    {
+      "row": 97,
+      "box": "260040",
+      "item": "Colostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 98,
+      "box": "260040",
+      "item": "Dressing suupplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 99,
+      "box": "260040",
+      "item": "Oral thermometer",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 100,
+      "box": "260041",
+      "item": "Dressing supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 101,
+      "box": "260041",
+      "item": "Colostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 102,
+      "box": "260042",
+      "item": "Sheets",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 103,
+      "box": "260042",
+      "item": "Towels",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 104,
+      "box": "260042",
+      "item": "Towels",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 105,
+      "box": "260042",
+      "item": "Comforter",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 106,
+      "box": "260042",
+      "item": "Tote bags",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 107,
+      "box": "260043",
+      "item": "Toothbrushes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 108,
+      "box": "260043",
+      "item": "Bandaids",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 109,
+      "box": "260043",
+      "item": "swabs",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 110,
+      "box": "260043",
+      "item": "Tapes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 111,
+      "box": "260043",
+      "item": "Syringes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 112,
+      "box": "260043",
+      "item": "Caps/IV",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 113,
+      "box": "260043",
+      "item": "Bedpan",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 114,
+      "box": "260043",
+      "item": "Cotton Balls",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 115,
+      "box": "260043",
+      "item": "Dressing",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 143,
+      "box": "260051",
+      "item": "Bovie Pads",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 170,
+      "box": "260056",
+      "item": "Stoma Powder",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 171,
+      "box": "260056",
+      "item": "Surgical gloves",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 172,
+      "box": "260056",
+      "item": "Elastic barrier straps",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 173,
+      "box": "260056",
+      "item": "Colostomy bags",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 174,
+      "box": "260056",
+      "item": "Colostomy bags",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 175,
+      "box": "260056",
+      "item": "bag support",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 176,
+      "box": "260056",
+      "item": "Urinal",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 177,
+      "box": "260056",
+      "item": "X-rays sponges",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 178,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 179,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 180,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 181,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 182,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 183,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 184,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 185,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 186,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 187,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 188,
+      "box": "260056",
+      "item": "Ostomy supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 228,
+      "box": "260061",
+      "item": "Gloves, exam",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 252,
+      "box": "260066",
+      "item": "Pack, major",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 253,
+      "box": "260066",
+      "item": "Pack, Minor",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 254,
+      "box": "260067",
+      "item": "Pack, major",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 255,
+      "box": "260068",
+      "item": "Pack, major",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 256,
+      "box": "260069",
+      "item": "Pack, major",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 281,
+      "box": "260077",
+      "item": "Pillows",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 285,
+      "box": "260080",
+      "item": "Instument Tray, Xtra Strabiss",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 323,
+      "box": "260086",
+      "item": "Insyte IV catheter",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 324,
+      "box": "260086",
+      "item": "Insyte IV catheter",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 337,
+      "box": "260088",
+      "item": "Multiple rehab",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 338,
+      "box": "260089",
+      "item": "Multiple rehab",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 341,
+      "box": "260090",
+      "item": "Comodes, crutches,canes",
+      "reason": "Unusable quantity: multi"
+    },
+    {
+      "row": 370,
+      "box": "260100",
+      "item": "Dressings, ABD",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 372,
+      "box": "260100",
+      "item": "Instruments, Kelly Clamps",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 400,
+      "box": "260103",
+      "item": "oral airway",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 416,
+      "box": "260106",
+      "item": "IV tubing",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 435,
+      "box": "260111",
+      "item": "IV catheters",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 438,
+      "box": "260112",
+      "item": "Shelving",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 439,
+      "box": "260113",
+      "item": "Shelving",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 440,
+      "box": "260114",
+      "item": "Scrubs, Pens, sharpies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 441,
+      "box": "260114",
+      "item": "Blank papers",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 442,
+      "box": "260114",
+      "item": "Batteries",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 449,
+      "box": "260115",
+      "item": "Linens",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 450,
+      "box": "260116",
+      "item": "Linens",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 453,
+      "box": "260117",
+      "item": "Solution, Saline, Pour",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 483,
+      "box": "260122",
+      "item": "Loose linens",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 489,
+      "box": "260122",
+      "item": "Loose linens",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 495,
+      "box": "260129",
+      "item": "Sterile sponges",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 496,
+      "box": "260129",
+      "item": "Nasal airways",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 497,
+      "box": "260129",
+      "item": "IV catheters",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 498,
+      "box": "260129",
+      "item": "IV catheters",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 499,
+      "box": "260129",
+      "item": "IV extensions",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 500,
+      "box": "260129",
+      "item": "Alcohol swabs",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 501,
+      "box": "260129",
+      "item": "IV start kits",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 502,
+      "box": "260129",
+      "item": "Syringes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 503,
+      "box": "260129",
+      "item": "Sterile Drpaes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 504,
+      "box": "260129",
+      "item": "Cotton balls",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 505,
+      "box": "260129",
+      "item": "Prefilled saline syringes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 506,
+      "box": "260129",
+      "item": "Insulin syringes",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 507,
+      "box": "260129",
+      "item": "Suction catheters",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 508,
+      "box": "260129",
+      "item": "Disposable leg bags",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 509,
+      "box": "260129",
+      "item": "Urinary catheter plugs",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 510,
+      "box": "260130",
+      "item": "Breast milk storage",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 511,
+      "box": "260130",
+      "item": "Medela Pump",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 512,
+      "box": "260130",
+      "item": "Medela accessories",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 513,
+      "box": "260130",
+      "item": "Breast pads",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 514,
+      "box": "260130",
+      "item": "Pumps and accessories",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 515,
+      "box": "260131",
+      "item": "Anesthesia supplies",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 548,
+      "box": "260142",
+      "item": "Sutures",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 567,
+      "box": "260149",
+      "item": "Socks, t-shirts",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 568,
+      "box": "260149",
+      "item": "scrub caps",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 569,
+      "box": "260149",
+      "item": "duct tape",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 570,
+      "box": "260149",
+      "item": "black trash bags",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 571,
+      "box": "260149",
+      "item": "lge pk tape",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 572,
+      "box": "260149",
+      "item": "Face masks",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 573,
+      "box": "260149",
+      "item": "Hygiene kits",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 574,
+      "box": "260149",
+      "item": "Glucometer",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 589,
+      "box": "260157",
+      "item": "b) cables, arms,",
+      "reason": "Missing quantity"
+    },
+    {
+      "row": 592,
+      "box": "260159",
+      "item": "Sutures",
+      "reason": "Missing quantity"
+    }
+  ],
+  "skipped_boxes": [
+    {
+      "box": "260040",
+      "rows": [
+        97,
+        98,
+        99
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260041",
+      "rows": [
+        100,
+        101
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260042",
+      "rows": [
+        102,
+        103,
+        104,
+        105,
+        106
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260066",
+      "rows": [
+        252,
+        253
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260067",
+      "rows": [
+        254
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260068",
+      "rows": [
+        255
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260069",
+      "rows": [
+        256
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260077",
+      "rows": [
+        281
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260088",
+      "rows": [
+        337
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260089",
+      "rows": [
+        338
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260112",
+      "rows": [
+        438
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260113",
+      "rows": [
+        439
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260115",
+      "rows": [
+        449
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260116",
+      "rows": [
+        450
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260129",
+      "rows": [
+        495,
+        496,
+        497,
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260130",
+      "rows": [
+        510,
+        511,
+        512,
+        513,
+        514
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260131",
+      "rows": [
+        515
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260142",
+      "rows": [
+        548
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260149",
+      "rows": [
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    },
+    {
+      "box": "260159",
+      "rows": [
+        592
+      ],
+      "reason": "All item rows lacked a usable quantity"
+    }
+  ],
+  "normalization_warnings": [
+    {
+      "row": 2,
+      "box": "260000",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 3,
+      "box": "260001",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 4,
+      "box": "260002",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 5,
+      "box": "260003",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 6,
+      "box": "260004",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 7,
+      "box": "260005",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 8,
+      "box": "260006",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 9,
+      "box": "260007",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 10,
+      "box": "260008",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 11,
+      "box": "260009",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 12,
+      "box": "260010",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 13,
+      "box": "260011",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 14,
+      "box": "260012",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 15,
+      "box": "260013",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 16,
+      "box": "260014",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 17,
+      "box": "260015",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 18,
+      "box": "260016",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 19,
+      "box": "260017",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 20,
+      "box": "260018",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 21,
+      "box": "260019",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 40,
+      "box": "260024",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 41,
+      "box": "260024",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 42,
+      "box": "260025",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 43,
+      "box": "260025",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 44,
+      "box": "260025",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 45,
+      "box": "260025",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 46,
+      "box": "260026",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 47,
+      "box": "260026",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 49,
+      "box": "260026",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 50,
+      "box": "260027",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 52,
+      "box": "260027",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 53,
+      "box": "260028",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 54,
+      "box": "260028",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 88,
+      "box": "260033",
+      "message": "Pack value 17/20 interpreted as 17 + 20 = 37"
+    },
+    {
+      "row": 101,
+      "box": "200041",
+      "message": "Box 200041 corrected to 260041"
+    },
+    {
+      "row": 159,
+      "box": "260053",
+      "message": "Month-only expiry 9/2026 normalized to month end"
+    },
+    {
+      "row": 160,
+      "box": "260053",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 166,
+      "box": "260055",
+      "message": "Month-only expiry 7/2029 normalized to month end"
+    },
+    {
+      "row": 273,
+      "box": "260075",
+      "message": "Unusable expiry value: 100"
+    },
+    {
+      "row": 316,
+      "box": "260085",
+      "message": "Malformed expiry 11/302028 normalized"
+    },
+    {
+      "row": 359,
+      "box": "260096",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 361,
+      "box": "260096",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 362,
+      "box": "260096",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 363,
+      "box": "260097",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 375,
+      "box": "260100",
+      "message": "Unusable sterility value ER; imported as unknown"
+    },
+    {
+      "row": 404,
+      "box": "260103",
+      "message": "Year-only expiry 2035 normalized to 2035-12-31"
+    },
+    {
+      "row": 405,
+      "box": "260103",
+      "message": "Year-only expiry 2035 normalized to 2035-12-31"
+    },
+    {
+      "row": 419,
+      "box": "260107",
+      "message": "Month-only expiry Apr. 2027 normalized to month end"
+    },
+    {
+      "row": 474,
+      "box": "260122",
+      "message": "Unusable sterility value ER; imported as unknown"
+    },
+    {
+      "row": 475,
+      "box": "260122",
+      "message": "Unusable sterility value ER; imported as unknown"
+    },
+    {
+      "row": 476,
+      "box": "260122",
+      "message": "Non-date expiry code/value: N/A"
+    },
+    {
+      "row": 546,
+      "box": "260141",
+      "message": "Non-date expiry code/value: S"
+    },
+    {
+      "row": 547,
+      "box": "260141",
+      "message": "Non-date expiry code/value: N/S"
+    },
+    {
+      "row": 549,
+      "box": "260143",
+      "message": "Non-date expiry code/value: S"
+    },
+    {
+      "row": 550,
+      "box": "260143",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 551,
+      "box": "260144",
+      "message": "Non-date expiry code/value: S"
+    },
+    {
+      "row": 552,
+      "box": "260144",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 553,
+      "box": "260144",
+      "message": "Non-date expiry code/value: S"
+    },
+    {
+      "row": 554,
+      "box": "260145",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 555,
+      "box": "260145",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 556,
+      "box": "260146",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 557,
+      "box": "260146",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 558,
+      "box": "260146",
+      "message": "Non-date expiry code/value: NS"
+    },
+    {
+      "row": 559,
+      "box": "260146",
+      "message": "Non-date expiry code/value: S"
+    },
+    {
+      "row": 560,
+      "box": "260146",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "row": 561,
+      "box": "260146",
+      "message": "Non-date expiry code/value: ER"
+    },
+    {
+      "box": "260029",
+      "message": "Multiple Dept. teams combined as Donation / OR"
+    },
+    {
+      "box": "260029",
+      "rows": [
+        62,
+        63
+      ],
+      "message": "Multiple expiry dates for Drape, Channel Round; quantity combined using earliest expiry 2030-05-06"
+    },
+    {
+      "box": "260029",
+      "rows": [
+        81,
+        83
+      ],
+      "message": "Multiple expiry dates for Feeding syringe; quantity combined using earliest expiry 2028-05-30"
+    },
+    {
+      "box": "260036",
+      "message": "Multiple Dept. teams combined as Donation / PACU"
+    },
+    {
+      "box": "260091",
+      "rows": [
+        342,
+        343,
+        344
+      ],
+      "message": "Multiple expiry dates for Pack, major; quantity combined using earliest expiry 2027-09-20"
+    },
+    {
+      "box": "260092",
+      "rows": [
+        345,
+        346,
+        348
+      ],
+      "message": "Multiple expiry dates for Pack, major; quantity combined using earliest expiry 2027-09-20"
+    },
+    {
+      "box": "260117",
+      "message": "Multiple Dept. teams combined as ANES / OR"
+    },
+    {
+      "box": "260122",
+      "message": "Multiple destinations combined as Golf Club / SBJ"
+    },
+    {
+      "box": "260133",
+      "message": "Multiple destinations combined as SBJ / ST"
+    },
+    {
+      "box": "260138",
+      "message": "Multiple locations (PACU, Pre-op); defaulted to VA Warehouse"
+    }
+  ],
+  "expired_items": [
+    {
+      "box_number": "260026",
+      "part": "Drape, c-arm",
+      "quantity": "10",
+      "expiry_date": "2026-05-29"
+    }
+  ]
+}
