@@ -40,6 +40,8 @@ interface LocalStateProps {
   addDetailDrawer: (value: number | false) => void;
   navigationOpen: boolean;
   setNavigationOpen: (value: boolean) => void;
+  navigationTabs: string[] | null;
+  setNavigationTabs: (value: string[] | null) => void;
   allowMobile: boolean;
   setAllowMobile: (value: boolean) => void;
 }
@@ -147,6 +149,10 @@ export const useLocalState = create<LocalStateProps>()(
       navigationOpen: false,
       setNavigationOpen: (value) => {
         set({ navigationOpen: value });
+      },
+      navigationTabs: null,
+      setNavigationTabs: (value) => {
+        set({ navigationTabs: value });
       },
       allowMobile: false,
       setAllowMobile: (value) => {

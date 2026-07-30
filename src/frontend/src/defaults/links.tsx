@@ -2,72 +2,10 @@ import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { openContextModal } from '@mantine/modals';
 
-import { UserRoles } from '@lib/enums/Roles';
 import type { SettingsStateProps } from '@lib/types/Settings';
 import type { UserStateProps } from '@lib/types/User';
-import {
-  IconBox,
-  IconBuildingFactory2,
-  IconDashboard,
-  IconPackages,
-  IconShoppingCart,
-  IconTruckDelivery
-} from '@tabler/icons-react';
-import type { ReactNode } from 'react';
 import type { MenuLinkItem } from '../components/items/MenuLinks';
 import { StylishText } from '../components/items/StylishText';
-
-type NavTab = {
-  name: string;
-  title: string;
-  icon: ReactNode;
-  role?: UserRoles;
-};
-
-export function getNavTabs(user: UserStateProps): NavTab[] {
-  const navTabs: NavTab[] = [
-    {
-      name: 'home',
-      title: t`Dashboard`,
-      icon: <IconDashboard />
-    },
-    {
-      name: 'part',
-      title: t`Parts`,
-      icon: <IconBox />,
-      role: UserRoles.part
-    },
-    {
-      name: 'stock',
-      title: t`Stock`,
-      icon: <IconPackages />,
-      role: UserRoles.stock
-    },
-    {
-      name: 'manufacturing',
-      title: t`Manufacturing`,
-      icon: <IconBuildingFactory2 />,
-      role: UserRoles.build
-    },
-    {
-      name: 'purchasing',
-      title: t`Purchasing`,
-      icon: <IconShoppingCart />,
-      role: UserRoles.purchase_order
-    },
-    {
-      name: 'sales',
-      title: t`Sales`,
-      icon: <IconTruckDelivery />,
-      role: UserRoles.sales_order
-    }
-  ];
-
-  return navTabs.filter((tab) => {
-    if (!tab.role) return true;
-    return user.hasViewRole(tab.role);
-  });
-}
 
 export const docLinks = {
   app: 'https://docs.inventree.org/en/latest/app/',

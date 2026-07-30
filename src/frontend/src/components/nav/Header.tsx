@@ -5,10 +5,8 @@ import {
   Group,
   Indicator,
   Paper,
-  Tabs,
   Text,
-  Tooltip,
-  UnstyledButton
+  Tooltip
 } from '@mantine/core';
 import {
   useDisclosure,
@@ -17,20 +15,13 @@ import {
 } from '@mantine/hooks';
 import { IconBell, IconSearch, IconUserBolt } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
 
 import { ApiEndpoints } from '@lib/enums/ApiEndpoints';
 import { apiUrl } from '@lib/functions/Api';
-import { getBaseUrl } from '@lib/functions/Navigation';
-import { navigateToLink } from '@lib/functions/Navigation';
 import { t } from '@lingui/core/macro';
 import { useShallow } from 'zustand/react/shallow';
 import { api } from '../../App';
-import type { NavigationUIFeature } from '../../components/plugins/PluginUIFeatureTypes';
-import { getNavTabs } from '../../defaults/links';
-import { generateUrl } from '../../functions/urls';
-import { usePluginUIFeature } from '../../hooks/UsePluginUIFeature';
 import * as classes from '../../main.css';
 import { useLocalState } from '../../states/LocalState';
 import { useServerApiState } from '../../states/ServerApiState';
@@ -45,6 +36,7 @@ import { Alerts, errorCodeLink } from './Alerts';
 import { MainMenu } from './MainMenu';
 import { NavHoverMenu } from './NavHoverMenu';
 import { NavigationDrawer } from './NavigationDrawer';
+import { NavigationTabs } from './NavigationTabs';
 import { NotificationDrawer } from './NotificationDrawer';
 import { SearchDrawer } from './SearchDrawer';
 
@@ -178,7 +170,7 @@ export function Header() {
         <Group justify='space-between'>
           <Group>
             <NavHoverMenu openDrawer={openNavDrawer} />
-            <NavTabs />
+            <NavigationTabs />
           </Group>
           {navbar_message && (
             <Text>
@@ -241,90 +233,5 @@ export function Header() {
           </Paper>
         )}
     </div>
-  );
-}
-
-function NavTabs() {
-  const user = useUserState();
-  const navigate = useNavigate();
-  const match = useMatch(':tabName/*');
-  const tabValue = match?.params.tabName;
-  const navTabs = getNavTabs(user);
-  const userSettings = useUserSettingsState();
-
-  const withIcons: boolean = useMemo(
-    () => userSettings.isSet('ICONS_IN_NAVBAR', false),
-    [userSettings]
-  );
-
-  const extraNavs = usePluginUIFeature<NavigationUIFeature>({
-    featureType: 'navigation',
-    context: {}
-  });
-
-  const tabs: ReactNode[] = useMemo(() => {
-    const _tabs: ReactNode[] = [];
-
-    const mainNavTabs = getNavTabs(user);
-
-    // static content
-    mainNavTabs.forEach((tab) => {
-      if (tab.role && !user.hasViewRole(tab.role)) {
-        return;
-      }
-
-      _tabs.push(
-        <Tabs.Tab
-          value={tab.name}
-          key={tab.name}
-          leftSection={
-            withIcons &&
-            tab.icon && (
-              <ActionIcon variant='transparent'>{tab.icon}</ActionIcon>
-            )
-          }
-          onClick={(event: any) =>
-            navigateToLink(`/${tab.name}`, navigate, event)
-          }
-        >
-          <UnstyledButton
-            component={'a'}
-            href={generateUrl(`/${getBaseUrl()}/${tab.name}`)}
-          >
-            {tab.title}
-          </UnstyledButton>
-        </Tabs.Tab>
-      );
-    });
-    // dynamic content
-    extraNavs.forEach((nav) => {
-      _tabs.push(
-        <Tabs.Tab
-          value={nav.options.title}
-          key={nav.options.key}
-          onClick={(event: any) =>
-            navigateToLink(nav.options.options.url, navigate, event)
-          }
-        >
-          {nav.options.title}
-        </Tabs.Tab>
-      );
-    });
-
-    return _tabs;
-  }, [extraNavs, navTabs, user, withIcons]);
-
-  return (
-    <Tabs
-      defaultValue='home'
-      classNames={{
-        root: classes.tabs,
-        list: classes.tabsList,
-        tab: classes.tab
-      }}
-      value={tabValue}
-    >
-      <Tabs.List>{tabs.map((tab) => tab)}</Tabs.List>
-    </Tabs>
   );
 }

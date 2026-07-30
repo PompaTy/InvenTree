@@ -91,14 +91,26 @@ export const layoutContent = style({
   width: '100%'
 });
 
-export const tabs = style({
+export const navigationTabs = style({
+  display: 'flex',
+  alignItems: 'center',
+  minWidth: 0,
+  maxWidth: '100%',
+
   [vars.smallerThan('sm')]: {
     display: 'none'
   }
 });
 
+export const tabs = style({
+  minWidth: 0,
+  overflowX: 'auto',
+  scrollbarWidth: 'none'
+});
+
 export const tabsList = style({
-  borderBottom: '0 !important'
+  borderBottom: '0 !important',
+  flexWrap: 'nowrap'
 });
 
 export const tab = style({
