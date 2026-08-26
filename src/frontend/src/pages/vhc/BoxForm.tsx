@@ -42,25 +42,6 @@ import {
   locationLabel
 } from './types';
 
-const STATUS_OPTIONS = [
-  { value: 'PACKED', label: t`Packed` },
-  { value: 'PALLETIZED', label: t`Palletized` },
-  { value: 'IN_TRANSIT', label: t`In transit` },
-  { value: 'HONDURAS_WAREHOUSE', label: t`Honduras warehouse` },
-  { value: 'DISTRIBUTED', label: t`Distributed` },
-  { value: 'RETURNED', label: t`Returned` },
-  { value: 'LOST', label: t`Lost` },
-  { value: 'CLOSED', label: t`Closed / empty` }
-];
-
-const SOURCE_OPTIONS = [
-  { value: 'DONATION_PURCHASE', label: t`Donation / purchase` },
-  { value: 'CONTAINER_ARRIVAL', label: t`Container arrival` },
-  { value: 'RETURNED_INVENTORY', label: t`Returned inventory` },
-  { value: 'HONDURAS_PURCHASE', label: t`Local Honduras purchase` },
-  { value: 'ADJUSTMENT', label: t`Stock adjustment` }
-];
-
 const STERILITY_OPTIONS = [
   { value: 'S', label: 'S' },
   { value: 'NS', label: 'NS' }
@@ -84,8 +65,6 @@ interface BoxFormValues {
   current_location: string | null;
   destination: string | null;
   note: string;
-  status: string;
-  source: string;
 }
 
 function nullablePk(value: string | null) {
@@ -228,9 +207,7 @@ export default function BoxForm() {
       other_team_description: '',
       current_location: null,
       destination: null,
-      note: '',
-      status: 'PACKED',
-      source: 'DONATION_PURCHASE'
+      note: ''
     },
     validate: {
       box_number: (value) =>
@@ -294,9 +271,7 @@ export default function BoxForm() {
           other_team_description: data.other_team_description,
           current_location: data.current_location ? String(data.current_location) : null,
           destination: data.destination ? String(data.destination) : null,
-          note: data.note,
-          status: data.status,
-          source: data.source
+          note: data.note
         });
       })
       .catch((error) => showApiErrorMessage({ error, title: t`Could not load box` }));
@@ -315,7 +290,6 @@ export default function BoxForm() {
   const save = form.onSubmit((values) => {
     setSaving(true);
     const payload = {
-      ...values,
       box_number: values.box_number.trim(),
       items: values.items.map((item) => ({
         ...(item.part ? { part: Number(item.part) } : { part_name: item.part_name.trim() }),
@@ -482,8 +456,6 @@ export default function BoxForm() {
                 data={locations.map((location) => ({ value: String(location.pk), label: locationLabel(location) }))}
                 {...form.getInputProps('destination')}
               />
-              <Select label={t`Source`} data={SOURCE_OPTIONS} {...form.getInputProps('source')} />
-              <Select label={t`Status`} data={STATUS_OPTIONS} {...form.getInputProps('status')} />
             </SimpleGrid>
             <Textarea label={t`Note`} minRows={2} maxLength={500} {...form.getInputProps('note')} />
             <Group justify='flex-end'>

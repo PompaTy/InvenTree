@@ -201,7 +201,6 @@ export default function BoxDetail() {
           <Fact label={t`Destination`} value={locationLabel(box.destination_detail)} />
           <Fact label={t`Shipment`} value={box.shipment_detail?.reference} />
           <Fact label={t`Pallet`} value={box.pallet_detail?.number} />
-          <Fact label={t`Source`} value={box.source_text} />
           <Fact label={t`Created by`} value={box.created_by_name} />
           <Fact label={t`Last updated by`} value={box.updated_by_name} />
           <Fact label={t`Revision`} value={box.revision} />

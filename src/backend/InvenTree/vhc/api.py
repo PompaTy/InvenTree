@@ -141,7 +141,8 @@ class BoxList(VhcAuthenticatedApi, DataExportViewMixin, ListCreateAPI):
     ]
     ordering_fields = [
         'box_number', 'created', 'updated', 'status', 'team__name',
-        'shipment__reference',
+        'shipment__reference', 'current_location__pathstring',
+        'destination__pathstring',
     ]
 
 

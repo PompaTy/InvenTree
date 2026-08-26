@@ -22,6 +22,9 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         cls.team = Team.objects.create(
             name='General Medicine', code='GENERAL_MEDICINE', color='#228BE6'
         )
+        cls.other_team = Team.objects.create(
+            name='Surgery', code='SURGERY', color='#FA5252'
+        )
         cls.va_location = StockLocation.objects.create(name='VA Warehouse')
         cls.hn_location = StockLocation.objects.create(name='Honduras Warehouse')
         cls.shipment = Shipment.objects.create(reference='Container 2026-1')
@@ -31,7 +34,7 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
             name='Bandages', description='Sterile wound dressings'
         )
 
-    def create_box(self):
+    def create_box(self, team=None):
         """Create a box through the public API."""
         return self.post(
             reverse('api-vhc-box-list'),
@@ -45,12 +48,22 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
                         'expiry_date': '2027-06-30',
                     }
                 ],
-                'team': self.team.pk,
+                'team': (team or self.team).pk,
                 'current_location': self.va_location.pk,
                 'source': 'DONATION_PURCHASE',
             },
             expected_code=201,
         )
+
+    def ordered_box_numbers(self, ordering):
+        """Return VHC box numbers for a requested API ordering."""
+        response = self.get(
+            reverse('api-vhc-box-list'),
+            {'ordering': ordering},
+            expected_code=200,
+        )
+
+        return [box['box_number'] for box in response.data]
 
     def test_create_and_scan_box(self):
         """A created box receives an annual number and initial audit event."""
@@ -104,7 +117,17 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         )
         self.assertEqual(
             stock_data['vhc_box'],
-            {'pk': box.pk, 'box_number': box.box_number},
+            {
+                'pk': box.pk,
+                'box_number': box.box_number,
+                'team_detail': {
+                    'pk': self.team.pk,
+                    'name': 'General Medicine',
+                    'code': 'GENERAL_MEDICINE',
+                    'color': '#228BE6',
+                    'active': True,
+                },
+            },
         )
         self.assertEqual(stock_data['size'], 'Large')
         self.assertEqual(stock_data['sterile'], 'S')
@@ -152,6 +175,74 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
             [item['vhc_box']['box_number'] for item in descending.data],
             [second_box.box_number, first_box.box_number],
         )
+
+    def test_stock_table_orders_by_team_name(self):
+        """Stock rows can be ordered by their linked VHC team name."""
+        general_box = Box.objects.get(pk=self.create_box(team=self.team).data['pk'])
+        surgery_box = Box.objects.get(
+            pk=self.create_box(team=self.other_team).data['pk']
+        )
+
+        ascending = self.get(
+            reverse('api-stock-list'),
+            {'part': self.bandages.pk, 'ordering': 'team'},
+            expected_code=200,
+        )
+        descending = self.get(
+            reverse('api-stock-list'),
+            {'part': self.bandages.pk, 'ordering': '-team'},
+            expected_code=200,
+        )
+
+        self.assertEqual(
+            [item['vhc_box']['box_number'] for item in ascending.data],
+            [general_box.box_number, surgery_box.box_number],
+        )
+        self.assertEqual(
+            [item['vhc_box']['box_number'] for item in descending.data],
+            [surgery_box.box_number, general_box.box_number],
+        )
+
+    def test_box_table_orders_by_related_fields(self):
+        """Box rows can be ordered by related table columns."""
+        general_box = Box.objects.get(pk=self.create_box(team=self.team).data['pk'])
+        surgery_box = Box.objects.get(
+            pk=self.create_box(team=self.other_team).data['pk']
+        )
+
+        general_box.shipment = self.shipment
+        general_box.current_location = self.va_location
+        general_box.destination = self.hn_location
+        general_box.save()
+
+        surgery_box.shipment = self.other_shipment
+        surgery_box.current_location = self.hn_location
+        surgery_box.destination = self.va_location
+        surgery_box.save()
+
+        ordering_cases = [
+            ('team__name', [general_box.box_number, surgery_box.box_number]),
+            (
+                'shipment__reference',
+                [general_box.box_number, surgery_box.box_number],
+            ),
+            (
+                'current_location__pathstring',
+                [surgery_box.box_number, general_box.box_number],
+            ),
+            (
+                'destination__pathstring',
+                [general_box.box_number, surgery_box.box_number],
+            ),
+        ]
+
+        for ordering, box_numbers in ordering_cases:
+            with self.subTest(ordering=ordering):
+                self.assertEqual(self.ordered_box_numbers(ordering), box_numbers)
+                self.assertEqual(
+                    self.ordered_box_numbers(f'-{ordering}'),
+                    list(reversed(box_numbers)),
+                )
 
     def test_edit_box_updates_quantity(self):
         """Editing a line item performs a native stocktake."""

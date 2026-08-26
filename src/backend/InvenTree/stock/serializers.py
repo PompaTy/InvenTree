@@ -56,6 +56,22 @@ class VhcBoxBriefSerializer(serializers.Serializer):
 
     pk = serializers.IntegerField(read_only=True)
     box_number = serializers.CharField(read_only=True)
+    team_detail = serializers.SerializerMethodField()
+
+    def get_team_detail(self, obj):
+        """Return the team assigned to this VHC box."""
+        team = getattr(obj, 'team', None)
+
+        if team is None:
+            return None
+
+        return {
+            'pk': team.pk,
+            'name': team.name,
+            'code': team.code,
+            'color': team.color,
+            'active': team.active,
+        }
 
 
 class GenerateBatchCodeSerializer(serializers.Serializer):
@@ -520,7 +536,12 @@ class StockItemSerializer(
             'belongs_to',
             'sales_order',
             'consumed_by',
-        ).select_related('part', 'part__pricing_data', 'vhc_box_item__box')
+        ).select_related(
+            'part',
+            'part__pricing_data',
+            'vhc_box_item__box',
+            'vhc_box_item__box__team',
+        )
 
         # Annotate the queryset with the total allocated to sales orders
         queryset = queryset.annotate(

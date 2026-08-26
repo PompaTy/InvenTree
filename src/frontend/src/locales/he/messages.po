@@ -66,8 +66,9 @@ msgstr "מחק"
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:148
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:323
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:414
-#: src/pages/vhc/BoxDetail.tsx:253
-#: src/pages/vhc/BoxForm.tsx:491
+#: src/pages/vhc/BoxDetail.tsx:252
+#: src/pages/vhc/BoxForm.tsx:463
+#: src/pages/vhc/BoxIndex.tsx:330
 #: src/pages/vhc/TeamManager.tsx:174
 #: src/tables/FilterSelectDrawer.tsx:382
 #: src/tables/build/BuildOutputTable.tsx:610
@@ -215,7 +216,7 @@ msgstr ""
 #: src/tables/part/PartPurchaseOrdersTable.tsx:50
 #: src/tables/purchasing/SupplierPartParametricTable.tsx:29
 #: src/tables/purchasing/SupplierPartTable.tsx:106
-#: src/tables/stock/StockItemTable.tsx:123
+#: src/tables/stock/StockItemTable.tsx:142
 msgid "Supplier Part"
 msgstr ""
 
@@ -228,7 +229,7 @@ msgstr ""
 #: src/pages/company/ManufacturerPartDetail.tsx:289
 #: src/pages/company/SupplierPartDetail.tsx:162
 #: src/tables/part/PartPurchaseOrdersTable.tsx:56
-#: src/tables/stock/StockItemTable.tsx:130
+#: src/tables/stock/StockItemTable.tsx:149
 msgid "Manufacturer Part"
 msgstr ""
 
@@ -365,7 +366,7 @@ msgstr "קוד פרויקט"
 #: src/pages/purchasing/PurchaseOrderDetail.tsx:565
 #: src/pages/stock/StockDetail.tsx:352
 #: src/tables/part/PartPurchaseOrdersTable.tsx:32
-#: src/tables/stock/StockItemTable.tsx:115
+#: src/tables/stock/StockItemTable.tsx:134
 #: src/tables/stock/StockTrackingTable.tsx:152
 msgid "Purchase Order"
 msgstr "הזמנות רכש"
@@ -483,7 +484,7 @@ msgstr "בעלים"
 #: lib/enums/ModelInformation.tsx:231
 #: src/pages/Auth/ChangePassword.tsx:36
 #: src/pages/core/UserDetail.tsx:220
-#: src/pages/vhc/BoxDetail.tsx:224
+#: src/pages/vhc/BoxDetail.tsx:223
 #: src/tables/ColumnRenderers.tsx:599
 #: src/tables/Filter.tsx:395
 #: src/tables/settings/ApiTokenTable.tsx:107
@@ -709,7 +710,7 @@ msgstr "בחר רמת תיקון שגיאות"
 #: src/components/barcodes/BarcodeInput.tsx:35
 #: src/components/barcodes/BarcodeKeyboardInput.tsx:18
 #: src/defaults/actions.tsx:137
-#: src/pages/vhc/BoxIndex.tsx:96
+#: src/pages/vhc/BoxIndex.tsx:256
 msgid "Scan"
 msgstr ""
 
@@ -2189,7 +2190,7 @@ msgstr "הנתונים יובאו בהצלחה"
 #: src/components/wizards/ImportPartWizard.tsx:773
 #: src/forms/BomForms.tsx:137
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:687
-#: src/pages/vhc/BoxDetail.tsx:219
+#: src/pages/vhc/BoxDetail.tsx:218
 msgid "Close"
 msgstr "סגור"
 
@@ -2391,7 +2392,7 @@ msgstr ""
 #: src/tables/build/BuildAllocatedStockTable.tsx:125
 #: src/tables/build/BuildLineTable.tsx:198
 #: src/tables/part/PartTable.tsx:138
-#: src/tables/stock/StockItemTable.tsx:233
+#: src/tables/stock/StockItemTable.tsx:252
 msgid "Available"
 msgstr ""
 
@@ -2899,7 +2900,7 @@ msgid "Attachments"
 msgstr ""
 
 #: src/components/panels/NotesPanel.tsx:25
-#: src/pages/vhc/BoxDetail.tsx:224
+#: src/pages/vhc/BoxDetail.tsx:223
 #: src/tables/part/PartTestResultTable.tsx:214
 #: src/tables/stock/StockTrackingTable.tsx:267
 msgid "Notes"
@@ -2992,7 +2993,7 @@ msgstr ""
 #: src/tables/purchasing/SupplierPartTable.tsx:249
 #: src/tables/settings/ApiTokenTable.tsx:63
 #: src/tables/settings/UserTable.tsx:401
-#: src/tables/stock/StockItemTable.tsx:212
+#: src/tables/stock/StockItemTable.tsx:231
 msgid "Active"
 msgstr ""
 
@@ -3108,7 +3109,7 @@ msgstr ""
 
 #: src/components/render/Order.tsx:122
 #: src/pages/vhc/BoxDetail.tsx:202
-#: src/pages/vhc/BoxIndex.tsx:65
+#: src/pages/vhc/BoxIndex.tsx:175
 #: src/tables/sales/SalesOrderAllocationTable.tsx:172
 msgid "Shipment"
 msgstr "משלוח"
@@ -3145,7 +3146,7 @@ msgstr "אין מלאי"
 #: src/pages/stock/LocationDetail.tsx:427
 #: src/pages/stock/LocationDetail.tsx:457
 #: src/pages/stock/StockDetail.tsx:655
-#: src/tables/stock/StockItemTable.tsx:99
+#: src/tables/stock/StockItemTable.tsx:118
 msgid "Stock"
 msgstr "מלאי"
 
@@ -3166,7 +3167,7 @@ msgstr ""
 #: src/pages/part/PartDetail.tsx:1024
 #: src/pages/stock/StockDetail.tsx:939
 #: src/tables/part/PartTestResultTable.tsx:306
-#: src/tables/stock/StockItemTable.tsx:249
+#: src/tables/stock/StockItemTable.tsx:268
 msgid "In Production"
 msgstr ""
 
@@ -3235,7 +3236,7 @@ msgstr "מספר סידורי"
 #: src/pages/stock/StockDetail.tsx:258
 #: src/pages/stock/StockDetail.tsx:950
 #: src/pages/vhc/BoxDetail.tsx:166
-#: src/pages/vhc/BoxForm.tsx:410
+#: src/pages/vhc/BoxForm.tsx:384
 #: src/tables/build/BuildLineTable.tsx:86
 #: src/tables/part/PartPurchaseOrdersTable.tsx:94
 #: src/tables/part/PartTestResultTable.tsx:277
@@ -3272,8 +3273,6 @@ msgid "Setting"
 msgstr ""
 
 #: src/components/settings/ConfigValueList.tsx:39
-#: src/pages/vhc/BoxDetail.tsx:204
-#: src/pages/vhc/BoxForm.tsx:485
 msgid "Source"
 msgstr ""
 
@@ -4483,7 +4482,7 @@ msgstr ""
 #~ msgstr "Combusken battles with the intensely hot flames it spews"
 
 #: src/defaults/navigation.tsx:47
-#: src/pages/vhc/BoxIndex.tsx:91
+#: src/pages/vhc/BoxIndex.tsx:251
 msgid "VHC Boxes"
 msgstr ""
 
@@ -4609,8 +4608,7 @@ msgstr ""
 #: src/pages/sales/ReturnOrderDetail.tsx:136
 #: src/pages/sales/SalesOrderDetail.tsx:126
 #: src/pages/stock/StockDetail.tsx:170
-#: src/pages/vhc/BoxForm.tsx:486
-#: src/pages/vhc/BoxIndex.tsx:57
+#: src/pages/vhc/BoxIndex.tsx:167
 #: src/tables/Filter.tsx:334
 #: src/tables/build/BuildOutputTable.tsx:442
 #: src/tables/machine/MachineListTable.tsx:387
@@ -4621,7 +4619,7 @@ msgstr ""
 #: src/tables/settings/CustomStateTable.tsx:79
 #: src/tables/settings/EmailTable.tsx:95
 #: src/tables/settings/ImportSessionTable.tsx:118
-#: src/tables/stock/StockItemTable.tsx:217
+#: src/tables/stock/StockItemTable.tsx:236
 #: src/tables/stock/StockTrackingTable.tsx:82
 msgid "Status"
 msgstr ""
@@ -4699,7 +4697,7 @@ msgstr ""
 #: src/tables/build/BuildAllocatedStockTable.tsx:129
 #: src/tables/build/BuildLineTable.tsx:188
 #: src/tables/sales/SalesOrderLineItemTable.tsx:340
-#: src/tables/stock/StockItemTable.tsx:228
+#: src/tables/stock/StockItemTable.tsx:247
 msgid "Allocated"
 msgstr ""
 
@@ -4758,7 +4756,7 @@ msgstr ""
 
 #: src/forms/BuildForms.tsx:938
 #: src/tables/build/BuildLineTable.tsx:193
-#: src/tables/stock/StockItemTable.tsx:257
+#: src/tables/stock/StockItemTable.tsx:276
 msgid "Consumed"
 msgstr ""
 
@@ -4930,7 +4928,7 @@ msgstr ""
 
 #: src/forms/PurchaseOrderForms.tsx:779
 #: src/pages/stock/StockDetail.tsx:382
-#: src/tables/stock/StockItemTable.tsx:184
+#: src/tables/stock/StockItemTable.tsx:203
 msgid "Expiry Date"
 msgstr ""
 
@@ -4949,7 +4947,7 @@ msgstr ""
 
 #: src/forms/PurchaseOrderForms.tsx:816
 #: src/pages/company/SupplierPartDetail.tsx:121
-#: src/pages/vhc/BoxForm.tsx:488
+#: src/pages/vhc/BoxForm.tsx:460
 #: src/tables/ColumnRenderers.tsx:517
 msgid "Note"
 msgstr ""
@@ -5060,8 +5058,8 @@ msgstr ""
 
 #: src/forms/StockForms.tsx:332
 #: src/pages/stock/StockDetail.tsx:699
-#: src/tables/stock/StockItemTable.tsx:442
-#: src/tables/stock/StockItemTable.tsx:491
+#: src/tables/stock/StockItemTable.tsx:461
+#: src/tables/stock/StockItemTable.tsx:510
 msgid "Add Stock Item"
 msgstr ""
 
@@ -5905,7 +5903,7 @@ msgid "Barcode Input"
 msgstr ""
 
 #: src/pages/Index/Scan.tsx:212
-#: src/pages/vhc/BoxDetail.tsx:224
+#: src/pages/vhc/BoxDetail.tsx:223
 msgid "Action"
 msgstr ""
 
@@ -7140,10 +7138,10 @@ msgstr ""
 #: src/pages/build/BuildDetail.tsx:234
 #: src/pages/part/PartDetail.tsx:457
 #: src/pages/stock/StockDetail.tsx:161
-#: src/pages/vhc/BoxDetail.tsx:207
+#: src/pages/vhc/BoxDetail.tsx:206
 #: src/tables/bom/UsedInTable.tsx:49
 #: src/tables/build/BuildOrderTable.tsx:87
-#: src/tables/stock/StockItemTable.tsx:90
+#: src/tables/stock/StockItemTable.tsx:109
 msgid "Revision"
 msgstr ""
 
@@ -8223,7 +8221,7 @@ msgstr ""
 #: src/pages/part/PartStockHistoryDetail.tsx:129
 #: src/pages/part/PartStockHistoryDetail.tsx:242
 #: src/pages/stock/StockDetail.tsx:402
-#: src/tables/stock/StockItemTable.tsx:149
+#: src/tables/stock/StockItemTable.tsx:168
 msgid "Stock Value"
 msgstr ""
 
@@ -8305,7 +8303,7 @@ msgstr ""
 #: src/tables/general/ExtraLineItemTable.tsx:66
 #: src/tables/purchasing/PurchaseOrderLineItemTable.tsx:255
 #: src/tables/purchasing/SupplierPriceBreakTable.tsx:84
-#: src/tables/stock/StockItemTable.tsx:137
+#: src/tables/stock/StockItemTable.tsx:156
 msgid "Unit Price"
 msgstr ""
 
@@ -8389,7 +8387,7 @@ msgstr ""
 #: src/pages/stock/StockDetail.tsx:438
 #: src/tables/general/ParameterTable.tsx:101
 #: src/tables/settings/TemplateTable.tsx:250
-#: src/tables/stock/StockItemTable.tsx:190
+#: src/tables/stock/StockItemTable.tsx:209
 msgid "Last Updated"
 msgstr ""
 
@@ -8485,8 +8483,9 @@ msgstr ""
 #: src/pages/purchasing/PurchaseOrderDetail.tsx:197
 #: src/pages/vhc/BoxDetail.tsx:154
 #: src/pages/vhc/BoxDetail.tsx:201
-#: src/pages/vhc/BoxForm.tsx:479
-#: src/pages/vhc/BoxIndex.tsx:80
+#: src/pages/vhc/BoxForm.tsx:453
+#: src/pages/vhc/BoxIndex.tsx:194
+#: src/pages/vhc/BoxIndex.tsx:291
 #: src/tables/purchasing/PurchaseOrderLineItemTable.tsx:270
 msgid "Destination"
 msgstr ""
@@ -8959,15 +8958,15 @@ msgstr ""
 
 #: src/pages/stock/StockDetail.tsx:425
 #: src/pages/vhc/BoxDetail.tsx:167
-#: src/pages/vhc/BoxForm.tsx:433
-#: src/tables/stock/StockItemTable.tsx:172
+#: src/pages/vhc/BoxForm.tsx:407
+#: src/tables/stock/StockItemTable.tsx:191
 msgid "Size"
 msgstr ""
 
 #: src/pages/stock/StockDetail.tsx:431
 #: src/pages/vhc/BoxDetail.tsx:168
-#: src/pages/vhc/BoxForm.tsx:443
-#: src/tables/stock/StockItemTable.tsx:178
+#: src/pages/vhc/BoxForm.tsx:417
+#: src/tables/stock/StockItemTable.tsx:197
 msgid "Sterile (S/NS)"
 msgstr ""
 
@@ -9096,12 +9095,12 @@ msgstr ""
 #~ msgstr "Assign to a customer"
 
 #: src/pages/stock/StockDetail.tsx:981
-#: src/tables/stock/StockItemTable.tsx:294
+#: src/tables/stock/StockItemTable.tsx:313
 msgid "Stale"
 msgstr ""
 
 #: src/pages/stock/StockDetail.tsx:987
-#: src/tables/stock/StockItemTable.tsx:288
+#: src/tables/stock/StockItemTable.tsx:307
 msgid "Expired"
 msgstr ""
 
@@ -9110,39 +9109,39 @@ msgid "Unavailable"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:38
-#: src/pages/vhc/BoxForm.tsx:46
+#: src/pages/vhc/BoxIndex.tsx:46
 msgid "Packed"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:39
-#: src/pages/vhc/BoxForm.tsx:47
+#: src/pages/vhc/BoxIndex.tsx:47
 msgid "Palletized"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:40
-#: src/pages/vhc/BoxForm.tsx:48
+#: src/pages/vhc/BoxIndex.tsx:48
 msgid "In transit"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:41
-#: src/pages/vhc/BoxForm.tsx:49
+#: src/pages/vhc/BoxIndex.tsx:49
 msgid "Honduras warehouse"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:42
-#: src/pages/vhc/BoxDetail.tsx:216
-#: src/pages/vhc/BoxForm.tsx:50
+#: src/pages/vhc/BoxDetail.tsx:215
+#: src/pages/vhc/BoxIndex.tsx:50
 msgid "Distributed"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:43
-#: src/pages/vhc/BoxDetail.tsx:217
-#: src/pages/vhc/BoxForm.tsx:51
+#: src/pages/vhc/BoxDetail.tsx:216
+#: src/pages/vhc/BoxIndex.tsx:51
 msgid "Returned"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:80
-#: src/pages/vhc/BoxForm.tsx:302
+#: src/pages/vhc/BoxForm.tsx:277
 msgid "Could not load box"
 msgstr ""
 
@@ -9164,12 +9163,12 @@ msgid "Print label"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:160
-#: src/pages/vhc/BoxForm.tsx:383
+#: src/pages/vhc/BoxForm.tsx:357
 msgid "Box items"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:169
-#: src/pages/vhc/BoxForm.tsx:452
+#: src/pages/vhc/BoxForm.tsx:426
 msgid "Expiration date"
 msgstr ""
 
@@ -9178,114 +9177,140 @@ msgid "Stock item"
 msgstr "Stock item"
 
 #: src/pages/vhc/BoxDetail.tsx:200
-#: src/pages/vhc/BoxForm.tsx:472
-#: src/pages/vhc/BoxIndex.tsx:75
+#: src/pages/vhc/BoxForm.tsx:446
+#: src/pages/vhc/BoxIndex.tsx:187
 msgid "Current location"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:203
-#: src/pages/vhc/BoxIndex.tsx:70
+#: src/pages/vhc/BoxIndex.tsx:182
 msgid "Pallet"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:205
+#: src/pages/vhc/BoxDetail.tsx:204
 msgid "Created by"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:206
+#: src/pages/vhc/BoxDetail.tsx:205
 msgid "Last updated by"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:214
+#: src/pages/vhc/BoxDetail.tsx:213
 msgid "Lifecycle"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:218
-#: src/pages/vhc/BoxForm.tsx:52
+#: src/pages/vhc/BoxDetail.tsx:217
 msgid "Lost"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:224
+#: src/pages/vhc/BoxDetail.tsx:223
 #: src/tables/settings/ErrorTable.tsx:103
 msgid "When"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:224
+#: src/pages/vhc/BoxDetail.tsx:223
 msgid "Movement"
 msgstr ""
 
 #. placeholder {0}: box.box_number
-#: src/pages/vhc/BoxDetail.tsx:240
+#: src/pages/vhc/BoxDetail.tsx:239
 msgid "Move box {0}"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:243
+#: src/pages/vhc/BoxDetail.tsx:242
+#: src/pages/vhc/BoxIndex.tsx:305
 msgid "New location"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:250
+#: src/pages/vhc/BoxDetail.tsx:249
+#: src/pages/vhc/BoxIndex.tsx:316
 msgid "New status"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:251
+#: src/pages/vhc/BoxDetail.tsx:250
+#: src/pages/vhc/BoxIndex.tsx:323
 msgid "Movement note"
 msgstr ""
 
-#: src/pages/vhc/BoxDetail.tsx:254
+#: src/pages/vhc/BoxDetail.tsx:253
 msgid "Move box"
 msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:53
-msgid "Closed / empty"
-msgstr ""
+#~ msgid "Closed / empty"
+#~ msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:57
-msgid "Donation / purchase"
-msgstr ""
+#~ msgid "Donation / purchase"
+#~ msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:58
-msgid "Container arrival"
-msgstr ""
+#~ msgid "Container arrival"
+#~ msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:59
-msgid "Returned inventory"
-msgstr ""
+#~ msgid "Returned inventory"
+#~ msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:60
-msgid "Local Honduras purchase"
-msgstr ""
+#~ msgid "Local Honduras purchase"
+#~ msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:61
-msgid "Stock adjustment"
-msgstr ""
+#~ msgid "Stock adjustment"
+#~ msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:100
 #~ msgid "Contents are required"
 #~ msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:154
+#: src/pages/vhc/BoxForm.tsx:133
 #: src/tables/general/BarcodeScanTable.tsx:35
 msgid "Item"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:157
+#: src/pages/vhc/BoxForm.tsx:136
 msgid "Search parts or enter a new item name"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:178
+#: src/pages/vhc/BoxForm.tsx:157
 msgid "Type at least two characters to search"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:179
+#: src/pages/vhc/BoxForm.tsx:158
 msgid "No existing part found. This item will be created."
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:196
+#: src/pages/vhc/BoxForm.tsx:175
 msgid "Existing part selected; stock will be linked automatically."
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:197
+#: src/pages/vhc/BoxForm.tsx:176
 msgid "If no exact part exists, a new part and stock record will be created."
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:214
+msgid "Use exactly six digits"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:216
+msgid "Add at least one item"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:217
+msgid "Every item needs a name"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:218
+msgid "Every quantity must be greater than zero"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:220
+msgid "The same item cannot be listed twice"
+msgstr ""
+
+#: src/pages/vhc/BoxForm.tsx:223
+msgid "Team is required"
 msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:227
@@ -9293,116 +9318,122 @@ msgstr ""
 #~ msgid "Contents"
 #~ msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:237
-msgid "Use exactly six digits"
-msgstr ""
-
-#: src/pages/vhc/BoxForm.tsx:239
-msgid "Add at least one item"
-msgstr ""
-
-#: src/pages/vhc/BoxForm.tsx:240
-msgid "Every item needs a name"
-msgstr ""
-
-#: src/pages/vhc/BoxForm.tsx:241
-msgid "Every quantity must be greater than zero"
-msgstr ""
-
-#: src/pages/vhc/BoxForm.tsx:243
-msgid "The same item cannot be listed twice"
-msgstr ""
-
-#: src/pages/vhc/BoxForm.tsx:246
-msgid "Team is required"
-msgstr ""
-
-#: src/pages/vhc/BoxForm.tsx:273
+#: src/pages/vhc/BoxForm.tsx:250
 msgid "Could not load box choices"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:340
+#: src/pages/vhc/BoxForm.tsx:314
 msgid "Box updated"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:340
+#: src/pages/vhc/BoxForm.tsx:314
 msgid "Box packed"
 msgstr ""
 
 #. placeholder {0}: data.box_number
-#: src/pages/vhc/BoxForm.tsx:341
+#: src/pages/vhc/BoxForm.tsx:315
 msgid "Box {0} was saved"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:345
+#: src/pages/vhc/BoxForm.tsx:319
 msgid "Could not save box"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:352
+#: src/pages/vhc/BoxForm.tsx:326
 msgid "Edit box"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:352
+#: src/pages/vhc/BoxForm.tsx:326
 msgid "Pack a box"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:353
+#: src/pages/vhc/BoxForm.tsx:327
 msgid "Record a packed box and its starting location"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:361
+#: src/pages/vhc/BoxForm.tsx:335
 msgid "Box number"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:362
+#: src/pages/vhc/BoxForm.tsx:336
 msgid "Leave blank to assign the next annual number"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:368
-#: src/pages/vhc/BoxIndex.tsx:48
+#: src/pages/vhc/BoxForm.tsx:342
+#: src/pages/vhc/BoxIndex.tsx:156
+#: src/tables/stock/StockItemTable.tsx:90
 msgid "Team"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:376
+#: src/pages/vhc/BoxForm.tsx:350
 msgid "Other team"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:384
+#: src/pages/vhc/BoxForm.tsx:358
 msgid "Select an existing part or type a new item name."
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:401
+#: src/pages/vhc/BoxForm.tsx:375
 msgid "Add item"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:424
+#: src/pages/vhc/BoxForm.tsx:398
 msgid "Remove item"
 msgstr ""
 
-#: src/pages/vhc/BoxForm.tsx:494
+#: src/pages/vhc/BoxForm.tsx:466
 msgid "Save box"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:32
+#: src/pages/vhc/BoxIndex.tsx:80
+msgid "Could not load locations"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:108
+msgid "Boxes transferred"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:109
+msgid "Selected boxes were moved to the new location."
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:117
+msgid "Could not transfer boxes"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:140
 #: src/tables/stock/StockItemTable.tsx:65
 msgid "Box"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:43
+#: src/pages/vhc/BoxIndex.tsx:151
 #: src/tables/sales/SalesOrderShipmentTable.tsx:159
 msgid "Items"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:83
+#: src/pages/vhc/BoxIndex.tsx:199
 msgid "Last updated"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:92
+#: src/pages/vhc/BoxIndex.tsx:209
+#: src/pages/vhc/BoxIndex.tsx:301
+msgid "Transfer selected boxes"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:216
+msgid "Print labels for selected boxes"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:252
 msgid "Pack, locate, move, and audit mission inventory boxes"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:100
+#: src/pages/vhc/BoxIndex.tsx:260
 msgid "Pack box"
+msgstr ""
+
+#: src/pages/vhc/BoxIndex.tsx:337
+msgid "Transfer boxes"
 msgstr ""
 
 #: src/pages/vhc/BoxScan.tsx:23
@@ -9819,7 +9850,7 @@ msgid "Show items completed after this date"
 msgstr ""
 
 #: src/tables/Filter.tsx:292
-#: src/tables/stock/StockItemTable.tsx:320
+#: src/tables/stock/StockItemTable.tsx:339
 msgid "Updated After"
 msgstr ""
 
@@ -9828,7 +9859,7 @@ msgid "Show orders updated after this date"
 msgstr ""
 
 #: src/tables/Filter.tsx:301
-#: src/tables/stock/StockItemTable.tsx:314
+#: src/tables/stock/StockItemTable.tsx:333
 msgid "Updated Before"
 msgstr ""
 
@@ -10304,7 +10335,7 @@ msgstr "לא ניתן לערוך את כתב החומרים, מכיוון שהפ
 #: src/tables/part/ParametricPartTable.tsx:29
 #: src/tables/part/PartBuildAllocationsTable.tsx:60
 #: src/tables/part/PartTable.tsx:210
-#: src/tables/stock/StockItemTable.tsx:223
+#: src/tables/stock/StockItemTable.tsx:242
 msgid "Assembly"
 msgstr ""
 
@@ -10436,7 +10467,7 @@ msgid "Testable"
 msgstr ""
 
 #: src/tables/build/BuildLineTable.tsx:223
-#: src/tables/stock/StockItemTable.tsx:278
+#: src/tables/stock/StockItemTable.tsx:297
 msgid "Tracked"
 msgstr ""
 
@@ -10653,7 +10684,7 @@ msgstr ""
 
 #: src/tables/build/BuildOutputTable.tsx:443
 #: src/tables/part/PartTestResultTable.tsx:319
-#: src/tables/stock/StockItemTable.tsx:218
+#: src/tables/stock/StockItemTable.tsx:237
 msgid "Filter by stock status"
 msgstr ""
 
@@ -11962,7 +11993,7 @@ msgid "Sample"
 msgstr ""
 
 #: src/tables/plugin/PluginListTable.tsx:440
-#: src/tables/stock/StockItemTable.tsx:262
+#: src/tables/stock/StockItemTable.tsx:281
 msgid "Installed"
 msgstr ""
 
@@ -12868,132 +12899,132 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:195
+#: src/tables/stock/StockItemTable.tsx:214
 msgid "Stocktake Date"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:213
+#: src/tables/stock/StockItemTable.tsx:232
 msgid "Show stock for active parts"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:224
+#: src/tables/stock/StockItemTable.tsx:243
 msgid "Show stock for assembled parts"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:229
+#: src/tables/stock/StockItemTable.tsx:248
 msgid "Show items which have been allocated"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:234
+#: src/tables/stock/StockItemTable.tsx:253
 msgid "Show items which are available"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:238
+#: src/tables/stock/StockItemTable.tsx:257
 #: src/tables/stock/StockLocationTable.tsx:38
 msgid "Include Sublocations"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:239
+#: src/tables/stock/StockItemTable.tsx:258
 msgid "Include stock in sublocations"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:243
+#: src/tables/stock/StockItemTable.tsx:262
 msgid "Depleted"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:244
+#: src/tables/stock/StockItemTable.tsx:263
 msgid "Show depleted stock items"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:250
+#: src/tables/stock/StockItemTable.tsx:269
 msgid "Show items which are in production"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:258
+#: src/tables/stock/StockItemTable.tsx:277
 msgid "Show items which have been consumed by a build order"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:263
+#: src/tables/stock/StockItemTable.tsx:282
 msgid "Show stock items which are installed in other items"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:267
+#: src/tables/stock/StockItemTable.tsx:286
 msgid "Sent to Customer"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:268
+#: src/tables/stock/StockItemTable.tsx:287
 msgid "Show items which have been sent to a customer"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:279
+#: src/tables/stock/StockItemTable.tsx:298
 msgid "Show tracked items"
-msgstr ""
-
-#: src/tables/stock/StockItemTable.tsx:283
-msgid "Has Purchase Price"
-msgstr ""
-
-#: src/tables/stock/StockItemTable.tsx:284
-msgid "Show items which have a purchase price"
-msgstr ""
-
-#: src/tables/stock/StockItemTable.tsx:289
-msgid "Show items which have expired"
-msgstr ""
-
-#: src/tables/stock/StockItemTable.tsx:295
-msgid "Show items which are stale"
-msgstr ""
-
-#: src/tables/stock/StockItemTable.tsx:300
-msgid "Expired Before"
-msgstr ""
-
-#: src/tables/stock/StockItemTable.tsx:301
-msgid "Show items which expired before this date"
 msgstr ""
 
 #: src/tables/stock/StockItemTable.tsx:301
 #~ msgid "Show stock for assmebled parts"
 #~ msgstr "Show stock for assmebled parts"
 
-#: src/tables/stock/StockItemTable.tsx:307
-msgid "Expired After"
+#: src/tables/stock/StockItemTable.tsx:302
+msgid "Has Purchase Price"
+msgstr ""
+
+#: src/tables/stock/StockItemTable.tsx:303
+msgid "Show items which have a purchase price"
 msgstr ""
 
 #: src/tables/stock/StockItemTable.tsx:308
-msgid "Show items which expired after this date"
+msgid "Show items which have expired"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:315
-msgid "Show items updated before this date"
+#: src/tables/stock/StockItemTable.tsx:314
+msgid "Show items which are stale"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:321
-msgid "Show items updated after this date"
+#: src/tables/stock/StockItemTable.tsx:319
+msgid "Expired Before"
+msgstr ""
+
+#: src/tables/stock/StockItemTable.tsx:320
+msgid "Show items which expired before this date"
 msgstr ""
 
 #: src/tables/stock/StockItemTable.tsx:326
-msgid "Stocktake Before"
+msgid "Expired After"
 msgstr ""
 
 #: src/tables/stock/StockItemTable.tsx:327
+msgid "Show items which expired after this date"
+msgstr ""
+
+#: src/tables/stock/StockItemTable.tsx:334
+msgid "Show items updated before this date"
+msgstr ""
+
+#: src/tables/stock/StockItemTable.tsx:340
+msgid "Show items updated after this date"
+msgstr ""
+
+#: src/tables/stock/StockItemTable.tsx:345
+msgid "Stocktake Before"
+msgstr ""
+
+#: src/tables/stock/StockItemTable.tsx:346
 msgid "Show items counted before this date"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:332
+#: src/tables/stock/StockItemTable.tsx:351
 msgid "Stocktake After"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:333
+#: src/tables/stock/StockItemTable.tsx:352
 msgid "Show items counted after this date"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:338
+#: src/tables/stock/StockItemTable.tsx:357
 msgid "External Location"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:339
+#: src/tables/stock/StockItemTable.tsx:358
 msgid "Show items in an external location"
 msgstr ""
 
@@ -13009,11 +13040,11 @@ msgstr ""
 #~ msgid "Serial Number GTE"
 #~ msgstr "Serial Number GTE"
 
-#: src/tables/stock/StockItemTable.tsx:456
+#: src/tables/stock/StockItemTable.tsx:475
 msgid "Stock item created"
 msgstr ""
 
-#: src/tables/stock/StockItemTable.tsx:478
+#: src/tables/stock/StockItemTable.tsx:497
 msgid "Order items"
 msgstr ""
 

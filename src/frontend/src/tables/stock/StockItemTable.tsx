@@ -1,5 +1,5 @@
 import { t } from '@lingui/core/macro';
-import { Anchor } from '@mantine/core';
+import { Anchor, Badge } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -82,6 +82,25 @@ function stockItemTableColumns({
           >
             {box.box_number}
           </Anchor>
+        );
+      }
+    },
+    {
+      accessor: 'vhc_box.team_detail.name',
+      title: t`Team`,
+      sortable: true,
+      ordering: 'team',
+      render: (record: any) => {
+        const team = record.vhc_box?.team_detail;
+
+        if (!team) {
+          return '-';
+        }
+
+        return (
+          <Badge color={team.color || 'blue'} variant='light'>
+            {team.name}
+          </Badge>
         );
       }
     },
