@@ -10,6 +10,7 @@ import useTable from '@lib/hooks/UseTable';
 import type { TableColumn } from '@lib/types/Tables';
 import { PageDetail } from '../../components/nav/PageDetail';
 import { InvenTreeTable } from '../../tables/InvenTreeTable';
+import TeamManager from './TeamManager';
 import { type VhcBox, locationLabel } from './types';
 
 function statusColor(status: string) {
@@ -94,6 +95,7 @@ export default function BoxIndex() {
           <Button key='scan' variant='default' leftSection={<IconBarcode />} onClick={() => navigate('/boxes/scan')}>
             {t`Scan`}
           </Button>,
+          <TeamManager key='teams' />,
           <Button key='new' leftSection={<IconPlus />} onClick={() => navigate('/boxes/new')}>
             {t`Pack box`}
           </Button>

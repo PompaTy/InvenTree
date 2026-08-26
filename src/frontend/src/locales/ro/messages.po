@@ -68,6 +68,7 @@ msgstr "Șterge"
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:414
 #: src/pages/vhc/BoxDetail.tsx:253
 #: src/pages/vhc/BoxForm.tsx:491
+#: src/pages/vhc/TeamManager.tsx:174
 #: src/tables/FilterSelectDrawer.tsx:382
 #: src/tables/build/BuildOutputTable.tsx:610
 msgid "Cancel"
@@ -156,7 +157,7 @@ msgstr "Piesă"
 
 #: lib/enums/ModelInformation.tsx:30
 #: lib/enums/Roles.tsx:35
-#: src/defaults/navigation.tsx:35
+#: src/defaults/navigation.tsx:33
 #: src/pages/Index/Settings/SystemSettings.tsx:199
 #: src/pages/part/CategoryDetail.tsx:135
 #: src/pages/part/CategoryDetail.tsx:285
@@ -496,7 +497,7 @@ msgid "User"
 msgstr "Utilizator"
 
 #: lib/enums/ModelInformation.tsx:232
-#: src/defaults/navigation.tsx:76
+#: src/defaults/navigation.tsx:74
 #: src/pages/Index/Settings/AdminCenter/UserManagementPanel.tsx:15
 #: src/pages/core/CoreIndex.tsx:21
 #: src/pages/core/UserDetail.tsx:226
@@ -509,7 +510,7 @@ msgid "Group"
 msgstr "Grup"
 
 #: lib/enums/ModelInformation.tsx:239
-#: src/defaults/navigation.tsx:82
+#: src/defaults/navigation.tsx:80
 #: src/pages/Index/Settings/AdminCenter/UserManagementPanel.tsx:23
 #: src/pages/core/CoreIndex.tsx:27
 #: src/pages/core/GroupDetail.tsx:82
@@ -708,7 +709,7 @@ msgstr "Cod de bare"
 #: src/components/barcodes/BarcodeInput.tsx:35
 #: src/components/barcodes/BarcodeKeyboardInput.tsx:18
 #: src/defaults/actions.tsx:137
-#: src/pages/vhc/BoxIndex.tsx:95
+#: src/pages/vhc/BoxIndex.tsx:96
 msgid "Scan"
 msgstr "Scanează"
 
@@ -738,7 +739,7 @@ msgstr "Introduceți datele codului de bare"
 
 #: src/components/barcodes/BarcodeScanDialog.tsx:56
 #: src/components/buttons/ScanButton.tsx:27
-#: src/defaults/navigation.tsx:120
+#: src/defaults/navigation.tsx:118
 #: src/forms/PurchaseOrderForms.tsx:507
 #: src/forms/PurchaseOrderForms.tsx:648
 msgid "Scan Barcode"
@@ -1009,7 +1010,7 @@ msgstr "Acceptați Aspectul"
 
 #: src/components/dashboard/DashboardMenu.tsx:94
 #: src/defaults/actions.tsx:42
-#: src/defaults/navigation.tsx:29
+#: src/defaults/navigation.tsx:27
 #: src/pages/Index/Home.tsx:8
 msgid "Dashboard"
 msgstr "Panou de bord"
@@ -1345,6 +1346,7 @@ msgstr "Eliminați imaginea asociată de la acest articol?"
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:898
 #: src/pages/Index/Settings/AccountSettings/MFASettings.tsx:917
 #: src/pages/Index/Settings/AccountSettings/SecurityContent.tsx:268
+#: src/pages/vhc/TeamManager.tsx:173
 #: src/tables/build/BuildAllocatedStockTable.tsx:180
 #: src/tables/build/BuildAllocatedStockTable.tsx:276
 #: src/tables/build/BuildLineTable.tsx:116
@@ -2642,7 +2644,7 @@ msgstr ""
 
 #: src/components/nav/Header.tsx:201
 #: src/components/nav/NotificationDrawer.tsx:181
-#: src/defaults/navigation.tsx:91
+#: src/defaults/navigation.tsx:89
 #: src/pages/Index/Settings/SystemSettings.tsx:124
 #: src/pages/Index/Settings/UserSettings.tsx:107
 #: src/pages/Notifications.tsx:45
@@ -2690,7 +2692,7 @@ msgstr ""
 #: src/components/nav/MainMenu.tsx:61
 #: src/components/nav/SettingsHeader.tsx:40
 #: src/defaults/actions.tsx:86
-#: src/defaults/navigation.tsx:97
+#: src/defaults/navigation.tsx:95
 #: src/pages/Index/Settings/UserSettings.tsx:142
 #: src/pages/Index/Settings/UserSettings.tsx:146
 msgid "User Settings"
@@ -2708,7 +2710,7 @@ msgstr ""
 #: src/components/nav/MainMenu.tsx:69
 #: src/components/nav/SettingsHeader.tsx:41
 #: src/defaults/actions.tsx:155
-#: src/defaults/navigation.tsx:103
+#: src/defaults/navigation.tsx:101
 #: src/pages/Index/Settings/SystemSettings.tsx:368
 #: src/pages/Index/Settings/SystemSettings.tsx:373
 msgid "System Settings"
@@ -2721,7 +2723,7 @@ msgstr ""
 #: src/components/nav/MainMenu.tsx:78
 #: src/components/nav/SettingsHeader.tsx:42
 #: src/defaults/actions.tsx:164
-#: src/defaults/navigation.tsx:110
+#: src/defaults/navigation.tsx:108
 #: src/pages/Index/Settings/AdminCenter/Index.tsx:293
 #: src/pages/Index/Settings/AdminCenter/Index.tsx:298
 msgid "Admin Center"
@@ -3106,7 +3108,7 @@ msgstr ""
 
 #: src/components/render/Order.tsx:122
 #: src/pages/vhc/BoxDetail.tsx:202
-#: src/pages/vhc/BoxIndex.tsx:64
+#: src/pages/vhc/BoxIndex.tsx:65
 #: src/tables/sales/SalesOrderAllocationTable.tsx:172
 msgid "Shipment"
 msgstr ""
@@ -3136,7 +3138,7 @@ msgstr "Nici un stoc"
 
 #: src/components/render/Part.tsx:36
 #: src/components/wizards/ImportPartWizard.tsx:808
-#: src/defaults/navigation.tsx:42
+#: src/defaults/navigation.tsx:40
 #: src/forms/StockForms.tsx:811
 #: src/pages/Index/Settings/SystemSettings.tsx:233
 #: src/pages/part/PartDetail.tsx:770
@@ -4480,18 +4482,18 @@ msgstr ""
 #~ msgid "Combusken battles with the intensely hot flames it spews"
 #~ msgstr "Combusken battles with the intensely hot flames it spews"
 
-#: src/defaults/navigation.tsx:49
-#: src/pages/vhc/BoxIndex.tsx:90
+#: src/defaults/navigation.tsx:47
+#: src/pages/vhc/BoxIndex.tsx:91
 msgid "VHC Boxes"
 msgstr ""
 
-#: src/defaults/navigation.tsx:55
+#: src/defaults/navigation.tsx:53
 #: src/pages/build/BuildDetail.tsx:775
 #: src/pages/build/BuildIndex.tsx:101
 msgid "Manufacturing"
 msgstr "Producție"
 
-#: src/defaults/navigation.tsx:62
+#: src/defaults/navigation.tsx:60
 #: src/pages/company/ManufacturerDetail.tsx:9
 #: src/pages/company/ManufacturerPartDetail.tsx:268
 #: src/pages/company/SupplierDetail.tsx:9
@@ -4501,7 +4503,7 @@ msgstr "Producție"
 msgid "Purchasing"
 msgstr "Achiziţie"
 
-#: src/defaults/navigation.tsx:69
+#: src/defaults/navigation.tsx:67
 #: src/pages/company/CustomerDetail.tsx:9
 #: src/pages/sales/ReturnOrderDetail.tsx:569
 #: src/pages/sales/SalesIndex.tsx:169
@@ -4510,7 +4512,7 @@ msgstr "Achiziţie"
 msgid "Sales"
 msgstr "Vânzare"
 
-#: src/defaults/navigation.tsx:127
+#: src/defaults/navigation.tsx:125
 msgid "Scan VHC Box"
 msgstr ""
 
@@ -4608,7 +4610,7 @@ msgstr ""
 #: src/pages/sales/SalesOrderDetail.tsx:126
 #: src/pages/stock/StockDetail.tsx:170
 #: src/pages/vhc/BoxForm.tsx:486
-#: src/pages/vhc/BoxIndex.tsx:56
+#: src/pages/vhc/BoxIndex.tsx:57
 #: src/tables/Filter.tsx:334
 #: src/tables/build/BuildOutputTable.tsx:442
 #: src/tables/machine/MachineListTable.tsx:387
@@ -8484,7 +8486,7 @@ msgstr ""
 #: src/pages/vhc/BoxDetail.tsx:154
 #: src/pages/vhc/BoxDetail.tsx:201
 #: src/pages/vhc/BoxForm.tsx:479
-#: src/pages/vhc/BoxIndex.tsx:79
+#: src/pages/vhc/BoxIndex.tsx:80
 #: src/tables/purchasing/PurchaseOrderLineItemTable.tsx:270
 msgid "Destination"
 msgstr ""
@@ -9177,12 +9179,12 @@ msgstr "Stock item"
 
 #: src/pages/vhc/BoxDetail.tsx:200
 #: src/pages/vhc/BoxForm.tsx:472
-#: src/pages/vhc/BoxIndex.tsx:74
+#: src/pages/vhc/BoxIndex.tsx:75
 msgid "Current location"
 msgstr ""
 
 #: src/pages/vhc/BoxDetail.tsx:203
-#: src/pages/vhc/BoxIndex.tsx:69
+#: src/pages/vhc/BoxIndex.tsx:70
 msgid "Pallet"
 msgstr ""
 
@@ -9357,7 +9359,7 @@ msgid "Leave blank to assign the next annual number"
 msgstr ""
 
 #: src/pages/vhc/BoxForm.tsx:368
-#: src/pages/vhc/BoxIndex.tsx:47
+#: src/pages/vhc/BoxIndex.tsx:48
 msgid "Team"
 msgstr ""
 
@@ -9381,25 +9383,25 @@ msgstr ""
 msgid "Save box"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:31
+#: src/pages/vhc/BoxIndex.tsx:32
 #: src/tables/stock/StockItemTable.tsx:65
 msgid "Box"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:42
+#: src/pages/vhc/BoxIndex.tsx:43
 #: src/tables/sales/SalesOrderShipmentTable.tsx:159
 msgid "Items"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:82
+#: src/pages/vhc/BoxIndex.tsx:83
 msgid "Last updated"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:91
+#: src/pages/vhc/BoxIndex.tsx:92
 msgid "Pack, locate, move, and audit mission inventory boxes"
 msgstr ""
 
-#: src/pages/vhc/BoxIndex.tsx:98
+#: src/pages/vhc/BoxIndex.tsx:100
 msgid "Pack box"
 msgstr ""
 
@@ -9429,6 +9431,118 @@ msgstr ""
 
 #: src/pages/vhc/BoxScan.tsx:53
 msgid "Find box"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:60
+msgid "Could not load teams"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:89
+#: src/pages/vhc/TeamManager.tsx:124
+msgid "Team name is required"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:90
+msgid "Enter a name before saving the team."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:105
+msgid "Team saved"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:106
+msgid "The team has been updated."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:113
+msgid "Could not save team"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:125
+msgid "Enter a name before adding a team."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:144
+msgid "Team added"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:145
+msgid "The team is now available when packing a box."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:154
+msgid "Could not add team"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:155
+msgid "A unique team name is required."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:163
+#: src/pages/vhc/TeamManager.tsx:288
+msgid "Remove team"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:166
+msgid "Remove this team? This cannot be undone. Teams assigned to boxes cannot be removed."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:186
+msgid "Team removed"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:187
+msgid "The team has been removed."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:194
+msgid "Could not remove team"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:195
+msgid "Teams assigned to boxes cannot be removed."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:212
+#: src/pages/vhc/TeamManager.tsx:217
+msgid "Edit teams"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:222
+msgid "Add teams and update their names or label colors. Removing a team is only possible when it is not assigned to a box."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:229
+msgid "New team name"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:230
+msgid "e.g. General Medicine"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:236
+#: src/pages/vhc/TeamManager.tsx:269
+msgid "Color"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:247
+msgid "Add team"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:252
+msgid "Loading teams..."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:255
+msgid "No teams have been added yet."
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:261
+msgid "Team name"
+msgstr ""
+
+#: src/pages/vhc/TeamManager.tsx:278
+msgid "Save team"
 msgstr ""
 
 #: src/states/IconState.tsx:47

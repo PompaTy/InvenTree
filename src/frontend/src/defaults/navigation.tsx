@@ -7,12 +7,10 @@ import type { UserStateProps } from '@lib/types/User';
 import type { MenuLinkItem } from '../components/items/MenuLinks';
 
 export const DEFAULT_NAVIGATION_TABS = [
-  'home',
+  'vhc-boxes',
   'parts',
   'stock',
-  'build',
-  'purchasing',
-  'sales'
+  'vhc-box-scan',
 ];
 
 /**
