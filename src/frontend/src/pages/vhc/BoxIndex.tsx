@@ -34,6 +34,7 @@ import { PageDetail } from '../../components/nav/PageDetail';
 import { useApi } from '../../contexts/ApiContext';
 import { showApiErrorMessage } from '../../functions/notifications';
 import { InvenTreeTable } from '../../tables/InvenTreeTable';
+import CurrentShipmentManager from './CurrentShipmentManager';
 import TeamManager from './TeamManager';
 import {
   type VhcBox,
@@ -166,6 +167,7 @@ export default function BoxIndex() {
         accessor: 'status',
         title: t`Status`,
         sortable: true,
+        defaultVisible: false,
         render: (record) => (
           <Badge color={statusColor(record.status)}>{record.status_text}</Badge>
         )
@@ -180,6 +182,7 @@ export default function BoxIndex() {
       {
         accessor: 'pallet',
         title: t`Pallet`,
+        defaultVisible: false,
         render: (record) => record.pallet_detail?.number ?? '?'
       },
       {
@@ -196,7 +199,7 @@ export default function BoxIndex() {
         ordering: 'destination__pathstring',
         render: (record) => locationLabel(record.destination_detail)
       },
-      { accessor: 'updated', title: t`Last updated`, sortable: true }
+      { accessor: 'updated', title: t`Last updated`, sortable: true, defaultVisible: false }
     ],
     []
   );
@@ -256,6 +259,7 @@ export default function BoxIndex() {
             {t`Scan`}
           </Button>,
           <TeamManager key='teams' />,
+          <CurrentShipmentManager key='current-shipment' />,
           <Button key='new' leftSection={<IconPlus />} onClick={() => navigate('/boxes/new')}>
             {t`Pack box`}
           </Button>

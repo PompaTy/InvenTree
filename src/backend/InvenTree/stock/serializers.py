@@ -376,6 +376,7 @@ class StockItemSerializer(
             'customer',
             'delete_on_deplete',
             'expiry_date',
+            'expiry_label',
             'in_stock',
             'is_building',
             'link',

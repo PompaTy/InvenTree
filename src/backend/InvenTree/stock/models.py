@@ -1185,6 +1185,8 @@ class StockItem(
         blank=True,
     )
 
+    expiry_label = models.CharField(max_length=3, blank=True, default='', choices=[('ER', 'ER'), ('N/A', 'N/A')])
+
     expiry_date = models.DateField(
         blank=True,
         null=True,

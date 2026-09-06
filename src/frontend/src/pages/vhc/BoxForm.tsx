@@ -54,6 +54,7 @@ interface BoxItemFormValue {
   size: string;
   sterile: string | null;
   expiry_date: string | null;
+  expiry_label?: string;
   part_detail?: VhcPartSummary;
 }
 
@@ -265,6 +266,7 @@ export default function BoxForm() {
             size: item.size || '',
             sterile: item.sterile || null,
             expiry_date: item.expiry_date || null,
+            expiry_label: item.expiry_label || '',
             part_detail: item.part_detail
           })),
           team: String(data.team),
@@ -296,7 +298,8 @@ export default function BoxForm() {
         quantity: Number(item.quantity),
         size: item.size.trim(),
         sterile: item.sterile || '',
-        expiry_date: item.expiry_date || null
+        expiry_date: item.expiry_date || null,
+        expiry_label: item.expiry_label || ''
       })),
       team: Number(values.team),
       current_location: nullablePk(values.current_location),
@@ -419,11 +422,21 @@ export default function BoxForm() {
                           data={STERILITY_OPTIONS}
                           value={item.sterile}
                           onChange={(sterile) =>
-                            updateItem(index, { ...item, sterile })
+                            updateItem(index, { ...item, sterile, expiry_label: item.expiry_label ? (sterile === 'S' ? 'ER' : sterile === 'NS' ? 'N/A' : '') : '' })
                           }
                         />
-                        <TextInput
+                        <Stack gap='xs'>
+                        <Select
                           label={t`Expiration date`}
+                          value={item.expiry_label || 'date'}
+                          data={[
+                            { value: 'date', label: t`Date` },
+                            ...(item.sterile === 'S' ? [{ value: 'ER', label: 'ER' }] : item.sterile === 'NS' ? [{ value: 'N/A', label: 'N/A' }] : [])
+                          ]}
+                          onChange={(value) => updateItem(index, { ...item, expiry_label: value === 'date' ? '' : value || '', expiry_date: value === 'date' ? item.expiry_date : null })}
+                        />
+                        {!item.expiry_label && <TextInput
+                          aria-label={t`Expiration date`}
                           type='date'
                           value={item.expiry_date ?? ''}
                           onChange={(event) =>
@@ -432,7 +445,8 @@ export default function BoxForm() {
                               expiry_date: event.currentTarget.value || null
                             })
                           }
-                        />
+                        />}
+                        </Stack>
                       </SimpleGrid>
                     </Stack>
                   </Card>

@@ -145,6 +145,7 @@ export enum ApiEndpoints {
   vhc_team_list = 'vhc/team/',
   vhc_shipment_list = 'vhc/shipment/',
   vhc_pallet_list = 'vhc/pallet/',
+  vhc_current_shipment = 'vhc/current-shipment/',
   vhc_box_list = 'vhc/box/',
   vhc_box_scan = 'vhc/box/scan/',
   vhc_box_bulk_move = 'vhc/box/bulk-move/',

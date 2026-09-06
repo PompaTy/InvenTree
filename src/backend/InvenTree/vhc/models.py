@@ -133,6 +133,54 @@ class Pallet(InvenTree.models.InvenTreeModel):
         return f'{self.shipment.reference} / Pallet {self.number:02d}'
 
 
+class CurrentShipmentWindow(InvenTree.models.InvenTreeModel):
+    """Date window used to automatically assign new boxes to a shipment."""
+
+    shipment = models.ForeignKey(
+        Shipment,
+        on_delete=models.CASCADE,
+        related_name='current_windows',
+        verbose_name=_('Shipment'),
+    )
+    start_date = models.DateField(verbose_name=_('Start date'))
+    end_date = models.DateField(verbose_name=_('End date'))
+    updated = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name='vhc_current_shipment_updates',
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        ordering = ['-updated', '-pk']
+        verbose_name = _('VHC Current Shipment Window')
+        verbose_name_plural = _('VHC Current Shipment Windows')
+
+    def __str__(self):
+        return f'{self.shipment.reference}: {self.start_date} - {self.end_date}'
+
+    def clean(self):
+        """Validate the configured date range."""
+        super().clean()
+        if self.end_date < self.start_date:
+            raise ValidationError({
+                'end_date': _('End date must be on or after the start date')
+            })
+
+    @classmethod
+    def current_for_date(cls, target_date=None):
+        """Return the active shipment window for the requested local date."""
+        target_date = target_date or date.today()
+        return (
+            cls.objects.select_related('shipment')
+            .filter(start_date__lte=target_date, end_date__gte=target_date)
+            .order_by('-updated', '-pk')
+            .first()
+        )
+
+
 class BoxStatus(models.TextChoices):
     """Operational state of a VHC box."""
 
@@ -310,6 +358,7 @@ class BoxItem(InvenTree.models.InvenTreeModel):
         max_length=2, blank=True, default='', choices=StockSterility.choices
     )
     expiry_date = models.DateField(blank=True, null=True)
+    expiry_label = models.CharField(max_length=3, blank=True, default='', choices=[('ER', 'ER'), ('N/A', 'N/A')])
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

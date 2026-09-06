@@ -13,6 +13,16 @@ export interface VhcShipment {
   status_text: string;
 }
 
+export interface VhcCurrentShipmentWindow {
+  pk: number;
+  shipment: number;
+  shipment_detail: VhcShipment;
+  start_date: string;
+  end_date: string;
+  updated: string;
+  updated_by_name: string | null;
+}
+
 export interface VhcPallet {
   pk: number;
   shipment: number;
@@ -43,6 +53,7 @@ export interface VhcBoxItem {
   size: string;
   sterile: '' | 'S' | 'NS';
   expiry_date: string | null;
+  expiry_label?: string;
 }
 
 export interface VhcBox {

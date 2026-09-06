@@ -2,7 +2,16 @@
 
 from django.contrib import admin
 
-from vhc.models import Box, BoxEvent, BoxItem, BoxSequence, Pallet, Shipment, Team
+from vhc.models import (
+    Box,
+    BoxEvent,
+    BoxItem,
+    BoxSequence,
+    CurrentShipmentWindow,
+    Pallet,
+    Shipment,
+    Team,
+)
 
 
 @admin.register(Team)
@@ -31,6 +40,15 @@ class PalletAdmin(admin.ModelAdmin):
     list_filter = ['shipment']
     search_fields = ['shipment__reference']
     autocomplete_fields = ['shipment']
+
+
+@admin.register(CurrentShipmentWindow)
+class CurrentShipmentWindowAdmin(admin.ModelAdmin):
+    """Admin configuration for automatic shipment assignment."""
+
+    list_display = ['shipment', 'start_date', 'end_date', 'updated', 'updated_by']
+    autocomplete_fields = ['shipment', 'updated_by']
+
 
 class BoxItemInline(admin.TabularInline):
     """Structured part and stock records contained in a box."""

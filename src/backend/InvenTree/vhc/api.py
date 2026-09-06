@@ -1,6 +1,7 @@
 """REST API views for the VHC box inventory workflow."""
 
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from django.urls import include, path
 
 import django_filters.rest_framework.filters as rest_filters
@@ -13,13 +14,23 @@ import InvenTree.permissions
 from data_exporter.mixins import DataExportViewMixin
 from InvenTree.filters import SEARCH_ORDER_FILTER
 from InvenTree.mixins import ListAPI, ListCreateAPI, RetrieveUpdateDestroyAPI
-from vhc.models import Box, BoxEvent, BoxEventAction, BoxStatus, Pallet, Shipment, Team
+from vhc.models import (
+    Box,
+    BoxEvent,
+    BoxEventAction,
+    BoxStatus,
+    CurrentShipmentWindow,
+    Pallet,
+    Shipment,
+    Team,
+)
 from vhc.serializers import (
     BoxBulkMoveSerializer,
     BoxEventSerializer,
     BoxMoveSerializer,
     BoxSerializer,
     BoxStatusSerializer,
+    CurrentShipmentWindowSerializer,
     PalletSerializer,
     ShipmentSerializer,
     TeamSerializer,
@@ -97,6 +108,60 @@ class PalletDetail(VhcAuthenticatedApi, RetrieveUpdateDestroyAPI):
 
     queryset = Pallet.objects.select_related('shipment')
     serializer_class = PalletSerializer
+
+
+class CurrentShipmentWindowDetail(GenericAPIView):
+    """Read, create, or clear automatic shipment assignment windows."""
+
+    serializer_class = CurrentShipmentWindowSerializer
+    permission_classes = [InvenTree.permissions.IsStaffOrReadOnlyScope]
+
+    def get_queryset(self):
+        """Return configured shipment windows."""
+        return CurrentShipmentWindow.objects.select_related(
+            'shipment', 'updated_by'
+        ).order_by('start_date', 'end_date', 'shipment__reference')
+
+    def get(self, request, *args, **kwargs):
+        """Read the configured shipment windows."""
+        return Response(self.get_serializer(self.get_queryset(), many=True).data)
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        """Create a shipment and its automatic assignment window."""
+        shipment_name = request.data.get('shipment_name', '').strip()
+        if not shipment_name:
+            return Response(
+                {'shipment_name': 'Shipment name is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        shipment, _created = Shipment.objects.get_or_create(reference=shipment_name)
+        serializer = self.get_serializer(data={
+            'shipment': shipment.pk,
+            'start_date': request.data.get('start_date'),
+            'end_date': request.data.get('end_date'),
+        })
+        serializer.is_valid(raise_exception=True)
+        window = serializer.save(updated_by=request.user)
+        return Response(self.get_serializer(window).data, status=status.HTTP_201_CREATED)
+
+    @transaction.atomic
+    def put(self, request, *args, **kwargs):
+        """Update an existing shipment window."""
+        instance = get_object_or_404(self.get_queryset(), pk=kwargs['pk'])
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        window = serializer.save(updated_by=request.user)
+        return Response(self.get_serializer(window).data)
+
+    def delete(self, request, *args, **kwargs):
+        """Clear one shipment window, or all windows if no pk is provided."""
+        if 'pk' in kwargs:
+            get_object_or_404(self.get_queryset(), pk=kwargs['pk']).delete()
+        else:
+            CurrentShipmentWindow.objects.all().delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BoxFilter(FilterSet):
@@ -332,6 +397,17 @@ vhc_api_urls = [
         include([
             path('<int:pk>/', PalletDetail.as_view(), name='api-vhc-pallet-detail'),
             path('', PalletList.as_view(), name='api-vhc-pallet-list'),
+        ]),
+    ),
+    path(
+        'current-shipment/',
+        include([
+            path(
+                '<int:pk>/',
+                CurrentShipmentWindowDetail.as_view(),
+                name='api-vhc-current-shipment-detail',
+            ),
+            path('', CurrentShipmentWindowDetail.as_view(), name='api-vhc-current-shipment'),
         ]),
     ),
     path('box/scan/', BoxScan.as_view(), name='api-vhc-box-scan'),

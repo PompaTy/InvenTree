@@ -8,7 +8,14 @@ from InvenTree.unit_test import InvenTreeAPITestCase
 from part.models import Part
 from stock.models import StockItem, StockLocation
 from vhc.models import (
-    Box, BoxEvent, BoxEventAction, BoxItem, Pallet, Shipment, Team,
+    Box,
+    BoxEvent,
+    BoxEventAction,
+    BoxItem,
+    CurrentShipmentWindow,
+    Pallet,
+    Shipment,
+    Team,
 )
 
 
@@ -54,6 +61,30 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
             },
             expected_code=201,
         )
+
+    def test_expiration_labels(self):
+        """Labels are validated and persisted to linked stock on creation."""
+        from vhc.serializers import BoxItemSerializer
+
+        for sterile, label in [('S', 'ER'), ('NS', 'N/A')]:
+            response = self.post(reverse('api-vhc-box-list'), {
+                'team': self.team.pk,
+                'items': [{'part': self.bandages.pk, 'quantity': 1,
+                           'sterile': sterile, 'expiry_label': label}],
+            }, expected_code=201)
+            item = BoxItem.objects.get(box_id=response.data['pk'])
+            self.assertEqual(item.expiry_label, label)
+            self.assertEqual(item.stock_item.expiry_label, label)
+            self.assertIsNone(item.stock_item.expiry_date)
+
+        for sterile, label, expiry in [('S', 'N/A', None), ('NS', 'ER', None),
+                                       ('', 'ER', None), ('S', 'ER', '2027-01-01')]:
+            serializer = BoxItemSerializer(data={
+                'part': self.bandages.pk, 'quantity': 1, 'sterile': sterile,
+                'expiry_label': label, 'expiry_date': expiry,
+            })
+            self.assertFalse(serializer.is_valid())
+            self.assertIn('expiry_label', serializer.errors)
 
     def ordered_box_numbers(self, ordering):
         """Return VHC box numbers for a requested API ordering."""
@@ -150,6 +181,66 @@ class VhcBoxApiTests(InvenTreeAPITestCase):
         stock_item = StockItem.objects.get(pk=box_item.stock_item_id)
         self.assertEqual(stock_item.quantity, 4)
         self.assertEqual(stock_item.location, self.va_location)
+
+    def test_current_shipment_window_assigns_box_shipment(self):
+        """New boxes are assigned to the configured current shipment."""
+        CurrentShipmentWindow.objects.create(
+            shipment=self.shipment,
+            start_date=date.today(),
+            end_date=date.today(),
+            updated_by=self.user,
+        )
+
+        response = self.create_box()
+        box = Box.objects.get(pk=response.data['pk'])
+
+        self.assertEqual(box.shipment, self.shipment)
+        self.assertEqual(response.data['shipment'], self.shipment.pk)
+
+    def test_current_shipment_window_api(self):
+        """Staff users can create and clear shipment windows."""
+        response = self.post(
+            reverse('api-vhc-current-shipment'),
+            {
+                'shipment_name': 'Container 2026-3',
+                'start_date': date.today().isoformat(),
+                'end_date': date.today().isoformat(),
+            },
+            expected_code=201,
+        )
+
+        self.assertEqual(response.data['shipment_detail']['reference'], 'Container 2026-3')
+        self.assertEqual(CurrentShipmentWindow.objects.count(), 1)
+        self.assertTrue(Shipment.objects.filter(reference='Container 2026-3').exists())
+
+        list_response = self.get(reverse('api-vhc-current-shipment'), expected_code=200)
+        self.assertEqual(len(list_response.data), 1)
+
+        self.delete(reverse('api-vhc-current-shipment'), expected_code=204)
+        self.assertFalse(CurrentShipmentWindow.objects.exists())
+
+    def test_current_shipment_window_api_deletes_one_window(self):
+        """Staff users can remove one shipment window without clearing all."""
+        first = CurrentShipmentWindow.objects.create(
+            shipment=self.shipment,
+            start_date=date.today(),
+            end_date=date.today(),
+            updated_by=self.user,
+        )
+        second = CurrentShipmentWindow.objects.create(
+            shipment=self.other_shipment,
+            start_date=date.today(),
+            end_date=date.today(),
+            updated_by=self.user,
+        )
+
+        self.delete(
+            reverse('api-vhc-current-shipment-detail', kwargs={'pk': first.pk}),
+            expected_code=204,
+        )
+
+        self.assertFalse(CurrentShipmentWindow.objects.filter(pk=first.pk).exists())
+        self.assertTrue(CurrentShipmentWindow.objects.filter(pk=second.pk).exists())
 
     def test_stock_table_orders_by_box_number(self):
         """Stock rows can be ordered by their linked VHC box number."""

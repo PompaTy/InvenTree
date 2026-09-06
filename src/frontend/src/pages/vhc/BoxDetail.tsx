@@ -183,7 +183,7 @@ export default function BoxDetail() {
                 <Table.Td>{Number(item.quantity).toLocaleString()} {item.part_detail.units || ''}</Table.Td>
                 <Table.Td>{item.size || '-'}</Table.Td>
                 <Table.Td>{item.sterile || '-'}</Table.Td>
-                <Table.Td>{item.expiry_date || '-'}</Table.Td>
+                <Table.Td>{item.expiry_date || item.expiry_label || '-'}</Table.Td>
                 <Table.Td>
                   <Anchor component={Link} to={`/stock/item/${item.stock_item}`}>
                     #{item.stock_item}

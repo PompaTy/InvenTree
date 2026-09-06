@@ -18,6 +18,7 @@ from vhc.models import (
     BoxItem,
     BoxSequence,
     BoxStatus,
+    CurrentShipmentWindow,
     Pallet,
     Shipment,
     Team,
@@ -65,6 +66,41 @@ class PalletSerializer(InvenTreeModelSerializer):
         fields = ['pk', 'shipment', 'shipment_detail', 'number', 'display_name', 'notes']
 
 
+class CurrentShipmentWindowSerializer(InvenTreeModelSerializer):
+    """Serializer for the automatic box shipment assignment window."""
+
+    shipment_detail = ShipmentSerializer(source='shipment', read_only=True)
+    updated_by_name = serializers.CharField(
+        source='updated_by.username', read_only=True, allow_null=True
+    )
+
+    class Meta:
+        model = CurrentShipmentWindow
+        fields = [
+            'pk',
+            'shipment',
+            'shipment_detail',
+            'start_date',
+            'end_date',
+            'updated',
+            'updated_by',
+            'updated_by_name',
+        ]
+        read_only_fields = ['updated', 'updated_by']
+
+    def validate(self, attrs):
+        """Ensure the date range is valid."""
+        start_date = attrs.get(
+            'start_date', getattr(self.instance, 'start_date', None)
+        )
+        end_date = attrs.get('end_date', getattr(self.instance, 'end_date', None))
+        if start_date and end_date and end_date < start_date:
+            raise serializers.ValidationError({
+                'end_date': 'End date must be on or after the start date.'
+            })
+        return attrs
+
+
 class VhcLocationSerializer(InvenTreeModelSerializer):
     """Small stock-location representation used by VHC screens."""
 
@@ -105,11 +141,15 @@ class BoxItemSerializer(serializers.Serializer):
     expiry_date = serializers.DateField(
         required=False, allow_null=True, default=None
     )
+    expiry_label = serializers.ChoiceField(choices=['ER', 'N/A'], required=False, allow_blank=True, default='')
     created = serializers.DateTimeField(read_only=True)
     updated = serializers.DateTimeField(read_only=True)
 
     def validate(self, attrs):
         """Require either an existing part selection or a new part name."""
+        label = attrs.get('expiry_label', '')
+        if label and (attrs.get('expiry_date') or label != {'S': 'ER', 'NS': 'N/A'}.get(attrs.get('sterile'))):
+            raise serializers.ValidationError({'expiry_label': 'Use ER for sterile items or N/A for non-sterile items, or enter a date without a label.'})
         if attrs.get('part') is None:
             name = attrs.get('part_name', '').strip()
             if not name:
@@ -307,6 +347,7 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
             size = item_data.get('size', '').strip()
             sterile = item_data.get('sterile', '')
             expiry_date = item_data.get('expiry_date')
+            expiry_label = item_data.get('expiry_label', '')
             box_item = existing.get(part.pk)
 
             if box_item is None:
@@ -317,6 +358,7 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                     size=size,
                     sterile=sterile,
                     expiry_date=expiry_date,
+                    expiry_label=expiry_label,
                 )
                 stock_item.save(user=user, notes=stock_note)
                 box_item = BoxItem.objects.create(
@@ -327,6 +369,7 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                     size=size,
                     sterile=sterile,
                     expiry_date=expiry_date,
+                    expiry_label=expiry_label,
                 )
             else:
                 stock_item = box_item.stock_item
@@ -336,18 +379,21 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                 stock_item.size = size
                 stock_item.sterile = sterile
                 stock_item.expiry_date = expiry_date
+                stock_item.expiry_label = expiry_label
                 stock_item.save(user=user, notes=stock_note)
 
                 box_item.quantity = quantity
                 box_item.size = size
                 box_item.sterile = sterile
                 box_item.expiry_date = expiry_date
+                box_item.expiry_label = expiry_label
                 box_item.save(
                     update_fields=[
                         'quantity',
                         'size',
                         'sterile',
                         'expiry_date',
+                        'expiry_label',
                         'updated',
                     ]
                 )
@@ -372,6 +418,10 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
         user = request.user if request and request.user.is_authenticated else None
         if not validated_data.get('box_number'):
             validated_data['box_number'] = BoxSequence.next_number()
+        if not validated_data.get('shipment'):
+            current_window = CurrentShipmentWindow.current_for_date()
+            if current_window:
+                validated_data['shipment'] = current_window.shipment
         validated_data['created_by'] = user
         validated_data['updated_by'] = user
         validated_data['revision'] = 1

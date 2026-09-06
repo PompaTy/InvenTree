@@ -202,6 +202,7 @@ function stockItemTableColumns({
     DateColumn({
       title: t`Expiry Date`,
       accessor: 'expiry_date',
+      render: (record: any) => record.expiry_date || record.expiry_label || '-',
       hidden: !useGlobalSettingsState.getState().isSet('STOCK_ENABLE_EXPIRY'),
       defaultVisible: false
     }),
