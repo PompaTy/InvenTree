@@ -1,14 +1,16 @@
 """REST API views for the VHC box inventory workflow."""
 
 from django.db import transaction
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import get_object_or_404
 from django.urls import include, path
 
 import django_filters.rest_framework.filters as rest_filters
 from django_filters.rest_framework.filterset import FilterSet
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 import InvenTree.permissions
 from data_exporter.mixins import DataExportViewMixin
@@ -32,6 +34,7 @@ from vhc.serializers import (
     BoxStatusSerializer,
     CurrentShipmentWindowSerializer,
     PalletSerializer,
+    RevisionConflict,
     ShipmentSerializer,
     TeamSerializer,
 )
@@ -43,6 +46,51 @@ class VhcAuthenticatedApi:
     permission_classes = [InvenTree.permissions.IsAuthenticatedOrReadScope]
 
 
+class VhcCapabilities(VhcAuthenticatedApi, APIView):
+    """Describe the custom contract for the authenticated client."""
+
+    def get(self, request, *args, **kwargs):
+        """Return capabilities without depending on the upstream API version."""
+        staff = bool(request.user.is_staff)
+        return Response(
+            {
+                'version': 1,
+                'features': {
+                    'boxes': True,
+                    'box_scan': True,
+                    'bulk_move': True,
+                    'structured_item_history': True,
+                    'shipment_windows': True,
+                },
+                'actions': {
+                    'read': True,
+                    'create_box': True,
+                    'edit_box': True,
+                    'move_box': True,
+                    'change_box_status': True,
+                    'bulk_move': True,
+                    'delete_box': True,
+                    'manage_shipments': True,
+                    'manage_pallets': True,
+                    'manage_teams': staff,
+                    'manage_shipment_windows': staff,
+                },
+                'stock_fields': [
+                    'size',
+                    'sterile',
+                    'expiry_date',
+                    'expiry_label',
+                    'vhc_box',
+                ],
+                'stock_ownership': 'box',
+                'item_removal': 'deletes_linked_stock',
+                'revision_required': ['edit', 'move', 'status', 'bulk_move'],
+                'bulk_revision_field': 'revisions',
+                'sterility_choices': ['', 'S', 'NS'],
+                'expiry_labels': {'S': 'ER', 'NS': 'N/A'},
+            }
+        )
+
 
 class TeamFilter(FilterSet):
     """Filters for VHC teams."""
@@ -50,6 +98,8 @@ class TeamFilter(FilterSet):
     active = rest_filters.BooleanFilter()
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Team
         fields = ['active']
 
@@ -137,14 +187,18 @@ class CurrentShipmentWindowDetail(GenericAPIView):
             )
 
         shipment, _created = Shipment.objects.get_or_create(reference=shipment_name)
-        serializer = self.get_serializer(data={
-            'shipment': shipment.pk,
-            'start_date': request.data.get('start_date'),
-            'end_date': request.data.get('end_date'),
-        })
+        serializer = self.get_serializer(
+            data={
+                'shipment': shipment.pk,
+                'start_date': request.data.get('start_date'),
+                'end_date': request.data.get('end_date'),
+            }
+        )
         serializer.is_valid(raise_exception=True)
         window = serializer.save(updated_by=request.user)
-        return Response(self.get_serializer(window).data, status=status.HTTP_201_CREATED)
+        return Response(
+            self.get_serializer(window).data, status=status.HTTP_201_CREATED
+        )
 
     @transaction.atomic
     def put(self, request, *args, **kwargs):
@@ -170,10 +224,18 @@ class BoxFilter(FilterSet):
     active = rest_filters.BooleanFilter(method='filter_active')
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Box
         fields = [
-            'box_number', 'team', 'shipment', 'pallet', 'current_location',
-            'destination', 'status', 'source',
+            'box_number',
+            'team',
+            'shipment',
+            'pallet',
+            'current_location',
+            'destination',
+            'status',
+            'source',
         ]
 
     def filter_active(self, queryset, name, value):
@@ -186,8 +248,13 @@ class BoxFilter(FilterSet):
 
 
 BOX_QUERYSET = Box.objects.select_related(
-    'team', 'shipment', 'pallet', 'current_location', 'destination',
-    'created_by', 'updated_by',
+    'team',
+    'shipment',
+    'pallet',
+    'current_location',
+    'destination',
+    'created_by',
+    'updated_by',
 ).prefetch_related('items__part', 'items__stock_item')
 
 
@@ -199,14 +266,26 @@ class BoxList(VhcAuthenticatedApi, DataExportViewMixin, ListCreateAPI):
     filterset_class = BoxFilter
     filter_backends = SEARCH_ORDER_FILTER
     search_fields = [
-        'box_number', 'contents', 'note', 'team__name', 'shipment__reference',
-        'current_location__name', 'current_location__pathstring',
-        'destination__name', 'destination__pathstring', 'items__part__name',
+        'box_number',
+        'contents',
+        'note',
+        'team__name',
+        'shipment__reference',
+        'current_location__name',
+        'current_location__pathstring',
+        'destination__name',
+        'destination__pathstring',
+        'items__part__name',
         'items__part__IPN',
     ]
     ordering_fields = [
-        'box_number', 'created', 'updated', 'status', 'team__name',
-        'shipment__reference', 'current_location__pathstring',
+        'box_number',
+        'created',
+        'updated',
+        'status',
+        'team__name',
+        'shipment__reference',
+        'current_location__pathstring',
         'destination__pathstring',
     ]
 
@@ -216,6 +295,19 @@ class BoxDetail(VhcAuthenticatedApi, RetrieveUpdateDestroyAPI):
 
     queryset = BOX_QUERYSET
     serializer_class = BoxSerializer
+
+    @transaction.atomic
+    def destroy(self, request, *args, **kwargs):
+        """Serialize deletion with edits and report protected linked stock."""
+        self.queryset = Box.objects.select_for_update()
+        try:
+            return super().destroy(request, *args, **kwargs)
+        except ProtectedError:
+            raise serializers.ValidationError(
+                {
+                    'items': 'Linked stock is in use. Resolve its protected relationships before deleting the box.'
+                }
+            )
 
 
 class BoxEventList(VhcAuthenticatedApi, DataExportViewMixin, ListAPI):
@@ -253,14 +345,11 @@ class BoxMove(VhcAuthenticatedApi, GenericAPIView):
         """Move a single box."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        box = Box.objects.select_for_update().get(pk=pk)
+        box = get_object_or_404(Box.objects.select_for_update(), pk=pk)
         self.check_object_permissions(request, box)
         supplied_revision = serializer.validated_data.get('revision')
-        if supplied_revision is not None and supplied_revision != box.revision:
-            return Response(
-                {'revision': 'This box was changed by another user. Reload and try again.'},
-                status=status.HTTP_409_CONFLICT,
-            )
+        if supplied_revision != box.revision:
+            raise RevisionConflict()
 
         old_location = box.current_location
         old_status = box.status
@@ -297,14 +386,11 @@ class BoxStatusUpdate(VhcAuthenticatedApi, GenericAPIView):
         """Update a box status and audit the action."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        box = Box.objects.select_for_update().get(pk=pk)
+        box = get_object_or_404(Box.objects.select_for_update(), pk=pk)
         self.check_object_permissions(request, box)
         supplied_revision = serializer.validated_data.get('revision')
-        if supplied_revision is not None and supplied_revision != box.revision:
-            return Response(
-                {'revision': 'This box was changed by another user. Reload and try again.'},
-                status=status.HTTP_409_CONFLICT,
-            )
+        if supplied_revision != box.revision:
+            raise RevisionConflict()
 
         old_status = box.status
         box.status = serializer.validated_data['status']
@@ -333,15 +419,20 @@ class BoxBulkMove(VhcAuthenticatedApi, GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         ids = serializer.validated_data['boxes']
-        boxes = list(Box.objects.select_for_update().filter(pk__in=ids))
+        boxes = list(Box.objects.select_for_update().filter(pk__in=ids).order_by('pk'))
         if len(boxes) != len(set(ids)):
             return Response(
                 {'boxes': 'One or more selected boxes do not exist.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        revisions = serializer.validated_data['revisions']
         for box in boxes:
             self.check_object_permissions(request, box)
+            if revisions[str(box.pk)] != box.revision:
+                raise RevisionConflict()
+
+        for box in boxes:
             old_location = box.current_location
             old_status = box.status
             box.current_location = serializer.validated_data['location']
@@ -363,7 +454,9 @@ class BoxBulkMove(VhcAuthenticatedApi, GenericAPIView):
                 changes={'status': {'from': old_status, 'to': box.status}},
             )
 
-        return Response(BoxSerializer(boxes, many=True, context={'request': request}).data)
+        return Response(
+            BoxSerializer(boxes, many=True, context={'request': request}).data
+        )
 
 
 class BoxScan(VhcAuthenticatedApi, ListAPI):
@@ -378,47 +471,66 @@ class BoxScan(VhcAuthenticatedApi, ListAPI):
 
 
 vhc_api_urls = [
+    path('capabilities/', VhcCapabilities.as_view(), name='api-vhc-capabilities'),
     path(
         'team/',
-        include([
-            path('<int:pk>/', TeamDetail.as_view(), name='api-vhc-team-detail'),
-            path('', TeamList.as_view(), name='api-vhc-team-list'),
-        ]),
+        include(
+            [
+                path('<int:pk>/', TeamDetail.as_view(), name='api-vhc-team-detail'),
+                path('', TeamList.as_view(), name='api-vhc-team-list'),
+            ]
+        ),
     ),
     path(
         'shipment/',
-        include([
-            path('<int:pk>/', ShipmentDetail.as_view(), name='api-vhc-shipment-detail'),
-            path('', ShipmentList.as_view(), name='api-vhc-shipment-list'),
-        ]),
+        include(
+            [
+                path(
+                    '<int:pk>/',
+                    ShipmentDetail.as_view(),
+                    name='api-vhc-shipment-detail',
+                ),
+                path('', ShipmentList.as_view(), name='api-vhc-shipment-list'),
+            ]
+        ),
     ),
     path(
         'pallet/',
-        include([
-            path('<int:pk>/', PalletDetail.as_view(), name='api-vhc-pallet-detail'),
-            path('', PalletList.as_view(), name='api-vhc-pallet-list'),
-        ]),
+        include(
+            [
+                path('<int:pk>/', PalletDetail.as_view(), name='api-vhc-pallet-detail'),
+                path('', PalletList.as_view(), name='api-vhc-pallet-list'),
+            ]
+        ),
     ),
     path(
         'current-shipment/',
-        include([
-            path(
-                '<int:pk>/',
-                CurrentShipmentWindowDetail.as_view(),
-                name='api-vhc-current-shipment-detail',
-            ),
-            path('', CurrentShipmentWindowDetail.as_view(), name='api-vhc-current-shipment'),
-        ]),
+        include(
+            [
+                path(
+                    '<int:pk>/',
+                    CurrentShipmentWindowDetail.as_view(),
+                    name='api-vhc-current-shipment-detail',
+                ),
+                path(
+                    '',
+                    CurrentShipmentWindowDetail.as_view(),
+                    name='api-vhc-current-shipment',
+                ),
+            ]
+        ),
     ),
     path('box/scan/', BoxScan.as_view(), name='api-vhc-box-scan'),
     path('box/bulk-move/', BoxBulkMove.as_view(), name='api-vhc-box-bulk-move'),
     path(
         'box/<int:pk>/',
-        include([
-            path('move/', BoxMove.as_view(), name='api-vhc-box-move'),
-            path('status/', BoxStatusUpdate.as_view(), name='api-vhc-box-status'),
-            path('', BoxDetail.as_view(), name='api-vhc-box-detail'),
-        ]),
+        include(
+            [
+                path('move/', BoxMove.as_view(), name='api-vhc-box-move'),
+                path('status/', BoxStatusUpdate.as_view(), name='api-vhc-box-status'),
+                path('', BoxDetail.as_view(), name='api-vhc-box-detail'),
+            ]
+        ),
     ),
     path('box/', BoxList.as_view(), name='api-vhc-box-list'),
     path('event/', BoxEventList.as_view(), name='api-vhc-box-event-list'),

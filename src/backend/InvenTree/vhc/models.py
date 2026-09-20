@@ -1,5 +1,7 @@
 """Database models for the VHC box inventory workflow."""
 
+from contextlib import contextmanager
+from contextvars import ContextVar
 from datetime import date
 from decimal import Decimal
 
@@ -7,7 +9,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models, transaction
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +17,65 @@ from django.utils.translation import gettext_lazy as _
 import InvenTree.models
 from part.models import Part
 from stock.models import StockItem, StockLocation, StockSterility
+
+_stock_write_boxes = ContextVar('vhc_stock_write_boxes', default=frozenset())
+
+
+@contextmanager
+def box_stock_write(box_id):
+    """Allow stock synchronization only within this box's server workflow."""
+    token = _stock_write_boxes.set(_stock_write_boxes.get() | {box_id})
+    try:
+        yield
+    finally:
+        _stock_write_boxes.reset(token)
+
+
+@receiver(pre_save, sender=StockItem)
+def protect_box_stock(
+    sender, instance, raw=False, using=None, update_fields=None, **kwargs
+):
+    """Reject direct changes to fields owned by a box, including stock actions."""
+    if raw or instance._state.adding:
+        return
+    box_id = (
+        BoxItem.objects.using(using)
+        .filter(stock_item_id=instance.pk)
+        .values_list('box_id', flat=True)
+        .first()
+    )
+    if box_id is None or box_id in _stock_write_boxes.get():
+        return
+    # StockItem.save holds an atomic transaction through this check and the write.
+    previous = StockItem.objects.using(using).select_for_update().get(pk=instance.pk)
+    owned = [
+        'part_id',
+        'quantity',
+        'location_id',
+        'size',
+        'sterile',
+        'expiry_date',
+        'expiry_label',
+    ]
+    changed = [
+        field
+        for field in owned
+        if (
+            update_fields is None
+            or field in update_fields
+            or field.removesuffix('_id') in update_fields
+        )
+        and getattr(previous, field) != getattr(instance, field)
+    ]
+    if changed:
+        raise ValidationError(
+            {
+                field.removesuffix('_id'): _(
+                    'This stock belongs to a VHC box. Edit or move the box instead.'
+                )
+                for field in changed
+            }
+        )
 
 
 HEX_COLOR_VALIDATOR = RegexValidator(
@@ -28,8 +89,6 @@ BOX_NUMBER_VALIDATOR = RegexValidator(
 def current_year():
     """Return the current local year for model field defaults."""
     return date.today().year
-
-
 
 
 class Team(InvenTree.models.InvenTreeModel):
@@ -54,11 +113,14 @@ class Team(InvenTree.models.InvenTreeModel):
     )
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['display_order', 'name']
         verbose_name = _('VHC Team')
         verbose_name_plural = _('VHC Teams')
 
     def __str__(self):
+        """Return the display label."""
         return self.name
 
 
@@ -91,20 +153,21 @@ class Shipment(InvenTree.models.InvenTreeModel):
         max_length=20, choices=ShipmentKind.choices, default=ShipmentKind.CONTAINER
     )
     status = models.CharField(
-        max_length=20,
-        choices=ShipmentStatus.choices,
-        default=ShipmentStatus.PLANNING,
+        max_length=20, choices=ShipmentStatus.choices, default=ShipmentStatus.PLANNING
     )
     departure_date = models.DateField(blank=True, null=True)
     arrival_date = models.DateField(blank=True, null=True)
     notes = models.TextField(blank=True, max_length=500)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['-year', 'reference']
         verbose_name = _('VHC Shipment')
         verbose_name_plural = _('VHC Shipments')
 
     def __str__(self):
+        """Return the display label."""
         return self.reference
 
 
@@ -120,6 +183,8 @@ class Pallet(InvenTree.models.InvenTreeModel):
     notes = models.TextField(blank=True, max_length=500)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['shipment', 'number']
         constraints = [
             models.UniqueConstraint(
@@ -130,6 +195,7 @@ class Pallet(InvenTree.models.InvenTreeModel):
         verbose_name_plural = _('VHC Pallets')
 
     def __str__(self):
+        """Return the display label."""
         return f'{self.shipment.reference} / Pallet {self.number:02d}'
 
 
@@ -154,20 +220,23 @@ class CurrentShipmentWindow(InvenTree.models.InvenTreeModel):
     )
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['-updated', '-pk']
         verbose_name = _('VHC Current Shipment Window')
         verbose_name_plural = _('VHC Current Shipment Windows')
 
     def __str__(self):
+        """Return the display label."""
         return f'{self.shipment.reference}: {self.start_date} - {self.end_date}'
 
     def clean(self):
         """Validate the configured date range."""
         super().clean()
         if self.end_date < self.start_date:
-            raise ValidationError({
-                'end_date': _('End date must be on or after the start date')
-            })
+            raise ValidationError(
+                {'end_date': _('End date must be on or after the start date')}
+            )
 
     @classmethod
     def current_for_date(cls, target_date=None):
@@ -211,6 +280,8 @@ class BoxSequence(InvenTree.models.InvenTreeModel):
     next_value = models.PositiveSmallIntegerField(default=1)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         verbose_name = _('VHC Box Number Sequence')
 
     @classmethod
@@ -256,18 +327,10 @@ class Box(InvenTree.models.InvenTreeAttachmentMixin, InvenTree.models.InvenTreeM
         max_length=100, blank=True, verbose_name=_('Other team description')
     )
     shipment = models.ForeignKey(
-        Shipment,
-        on_delete=models.SET_NULL,
-        related_name='boxes',
-        blank=True,
-        null=True,
+        Shipment, on_delete=models.SET_NULL, related_name='boxes', blank=True, null=True
     )
     pallet = models.ForeignKey(
-        Pallet,
-        on_delete=models.SET_NULL,
-        related_name='boxes',
-        blank=True,
-        null=True,
+        Pallet, on_delete=models.SET_NULL, related_name='boxes', blank=True, null=True
     )
     current_location = models.ForeignKey(
         StockLocation,
@@ -290,9 +353,7 @@ class Box(InvenTree.models.InvenTreeAttachmentMixin, InvenTree.models.InvenTreeM
         max_length=30, choices=BoxStatus.choices, default=BoxStatus.PACKED
     )
     source = models.CharField(
-        max_length=30,
-        choices=BoxSource.choices,
-        default=BoxSource.DONATION_PURCHASE,
+        max_length=30, choices=BoxSource.choices, default=BoxSource.DONATION_PURCHASE
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -313,30 +374,44 @@ class Box(InvenTree.models.InvenTreeAttachmentMixin, InvenTree.models.InvenTreeM
     revision = models.PositiveIntegerField(default=1)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['-created', '-pk']
         verbose_name = _('VHC Box')
         verbose_name_plural = _('VHC Boxes')
 
     def __str__(self):
+        """Return the display label."""
         return self.box_number
 
     @staticmethod
     def get_api_url():
+        """Return the box collection API URL."""
         return reverse('api-vhc-box-list')
 
     @property
     def barcode(self):
+        """Return the six-digit label payload."""
         return self.box_number
 
     def clean(self):
         """Validate relationships between shipment and pallet."""
         super().clean()
-        if self.pallet and self.shipment and self.pallet.shipment_id != self.shipment_id:
-            raise ValidationError({
-                'pallet': _('Selected pallet does not belong to the selected shipment')
-            })
+        if (
+            self.pallet
+            and self.shipment
+            and self.pallet.shipment_id != self.shipment_id
+        ):
+            raise ValidationError(
+                {
+                    'pallet': _(
+                        'Selected pallet does not belong to the selected shipment'
+                    )
+                }
+            )
         if self.pallet and not self.shipment:
             self.shipment = self.pallet.shipment
+
 
 class BoxItem(InvenTree.models.InvenTreeModel):
     """A quantified part and its corresponding stock record inside a VHC box."""
@@ -358,11 +433,15 @@ class BoxItem(InvenTree.models.InvenTreeModel):
         max_length=2, blank=True, default='', choices=StockSterility.choices
     )
     expiry_date = models.DateField(blank=True, null=True)
-    expiry_label = models.CharField(max_length=3, blank=True, default='', choices=[('ER', 'ER'), ('N/A', 'N/A')])
+    expiry_label = models.CharField(
+        max_length=3, blank=True, default='', choices=[('ER', 'ER'), ('N/A', 'N/A')]
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['part__name', 'pk']
         constraints = [
             models.UniqueConstraint(
@@ -373,6 +452,7 @@ class BoxItem(InvenTree.models.InvenTreeModel):
         verbose_name_plural = _('VHC Box Items')
 
     def __str__(self):
+        """Return the display label."""
         return f'{self.box.box_number}: {self.part.name} ({self.quantity:g})'
 
 
@@ -422,9 +502,12 @@ class BoxEvent(InvenTree.models.InvenTreeModel):
     changes = models.JSONField(default=dict, blank=True)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         ordering = ['-timestamp', '-pk']
         verbose_name = _('VHC Box Event')
         verbose_name_plural = _('VHC Box Events')
 
     def __str__(self):
+        """Return the display label."""
         return f'{self.box.box_number}: {self.get_action_display()}'

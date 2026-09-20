@@ -100,6 +100,9 @@ export default function BoxIndex() {
     api
       .post(apiUrl(ApiEndpoints.vhc_box_bulk_move), {
         boxes: selectedBoxes.map((box) => box.pk),
+        revisions: Object.fromEntries(
+          selectedBoxes.map((box) => [String(box.pk), box.revision])
+        ),
         location: Number(transferLocation),
         ...(transferStatus ? { status: transferStatus } : {}),
         notes: transferNotes

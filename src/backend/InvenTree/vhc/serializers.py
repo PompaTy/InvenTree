@@ -3,8 +3,11 @@
 from decimal import Decimal
 
 from django.db import transaction
+from django.db.models.deletion import ProtectedError
+from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers
+from rest_framework.exceptions import APIException
 from rest_framework.fields import empty
 
 from data_exporter.mixins import DataExportSerializerMixin
@@ -22,13 +25,38 @@ from vhc.models import (
     Pallet,
     Shipment,
     Team,
+    box_stock_write,
 )
+
+
+class RevisionConflict(APIException):
+    """A client attempted to replace a newer version of a box."""
+
+    status_code = 409
+    default_code = 'revision_conflict'
+    default_detail = {
+        'revision': 'This box was changed by another user. Reload and try again.'
+    }
+
+
+def delete_box_items(items):
+    """Remove linked stock atomically, reporting protected relationships."""
+    try:
+        items.delete()
+    except ProtectedError:
+        raise serializers.ValidationError(
+            {
+                'items': 'Linked stock is in use. Resolve its protected relationships before removing it.'
+            }
+        )
 
 
 class TeamSerializer(InvenTreeModelSerializer):
     """Serializer for a packing team."""
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Team
         fields = ['pk', 'name', 'code', 'color', 'active', 'display_order']
 
@@ -40,6 +68,8 @@ class ShipmentSerializer(InvenTreeModelSerializer):
     kind_text = serializers.CharField(source='get_kind_display', read_only=True)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Shipment
         fields = [
             'pk',
@@ -62,8 +92,17 @@ class PalletSerializer(InvenTreeModelSerializer):
     display_name = serializers.CharField(source='__str__', read_only=True)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Pallet
-        fields = ['pk', 'shipment', 'shipment_detail', 'number', 'display_name', 'notes']
+        fields = [
+            'pk',
+            'shipment',
+            'shipment_detail',
+            'number',
+            'display_name',
+            'notes',
+        ]
 
 
 class CurrentShipmentWindowSerializer(InvenTreeModelSerializer):
@@ -75,6 +114,8 @@ class CurrentShipmentWindowSerializer(InvenTreeModelSerializer):
     )
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = CurrentShipmentWindow
         fields = [
             'pk',
@@ -90,14 +131,12 @@ class CurrentShipmentWindowSerializer(InvenTreeModelSerializer):
 
     def validate(self, attrs):
         """Ensure the date range is valid."""
-        start_date = attrs.get(
-            'start_date', getattr(self.instance, 'start_date', None)
-        )
+        start_date = attrs.get('start_date', getattr(self.instance, 'start_date', None))
         end_date = attrs.get('end_date', getattr(self.instance, 'end_date', None))
         if start_date and end_date and end_date < start_date:
-            raise serializers.ValidationError({
-                'end_date': 'End date must be on or after the start date.'
-            })
+            raise serializers.ValidationError(
+                {'end_date': 'End date must be on or after the start date.'}
+            )
         return attrs
 
 
@@ -105,13 +144,18 @@ class VhcLocationSerializer(InvenTreeModelSerializer):
     """Small stock-location representation used by VHC screens."""
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = StockLocation
         fields = ['pk', 'name', 'pathstring', 'external']
+
 
 class BoxPartSerializer(InvenTreeModelSerializer):
     """Compact part representation for a box line item."""
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Part
         fields = ['pk', 'name', 'description', 'IPN', 'revision', 'units']
         read_only_fields = fields
@@ -138,24 +182,31 @@ class BoxItemSerializer(serializers.Serializer):
     sterile = serializers.ChoiceField(
         choices=StockSterility.choices, required=False, allow_blank=True, default=''
     )
-    expiry_date = serializers.DateField(
-        required=False, allow_null=True, default=None
+    expiry_date = serializers.DateField(required=False, allow_null=True, default=None)
+    expiry_label = serializers.ChoiceField(
+        choices=['ER', 'N/A'], required=False, allow_blank=True, default=''
     )
-    expiry_label = serializers.ChoiceField(choices=['ER', 'N/A'], required=False, allow_blank=True, default='')
     created = serializers.DateTimeField(read_only=True)
     updated = serializers.DateTimeField(read_only=True)
 
     def validate(self, attrs):
         """Require either an existing part selection or a new part name."""
         label = attrs.get('expiry_label', '')
-        if label and (attrs.get('expiry_date') or label != {'S': 'ER', 'NS': 'N/A'}.get(attrs.get('sterile'))):
-            raise serializers.ValidationError({'expiry_label': 'Use ER for sterile items or N/A for non-sterile items, or enter a date without a label.'})
+        if label and (
+            attrs.get('expiry_date')
+            or label != {'S': 'ER', 'NS': 'N/A'}.get(attrs.get('sterile'))
+        ):
+            raise serializers.ValidationError(
+                {
+                    'expiry_label': 'Use ER for sterile items or N/A for non-sterile items, or enter a date without a label.'
+                }
+            )
         if attrs.get('part') is None:
             name = attrs.get('part_name', '').strip()
             if not name:
-                raise serializers.ValidationError({
-                    'part_name': 'Select an existing part or enter a new part name.'
-                })
+                raise serializers.ValidationError(
+                    {'part_name': 'Select an existing part or enter a new part name.'}
+                )
             attrs['part_name'] = name
         return attrs
 
@@ -163,9 +214,7 @@ class BoxItemSerializer(serializers.Serializer):
 class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
     """Serializer for a VHC inventory box."""
 
-    box_number = serializers.CharField(
-        required=False, allow_blank=True, max_length=6
-    )
+    box_number = serializers.CharField(required=False, allow_blank=True, max_length=6)
     team_detail = TeamSerializer(source='team', read_only=True)
     shipment_detail = ShipmentSerializer(source='shipment', read_only=True)
     pallet_detail = PalletSerializer(source='pallet', read_only=True)
@@ -193,6 +242,8 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
     ]
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = Box
         fields = [
             'pk',
@@ -238,17 +289,19 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
         """Validate revision and pallet-to-shipment consistency."""
         instance = self.instance
         incoming_revision = attrs.get('revision')
-        if instance and incoming_revision is not None and incoming_revision != instance.revision:
-            raise serializers.ValidationError({
-                'revision': 'This box was changed by another user. Reload and try again.'
-            })
+        if instance and incoming_revision is None:
+            raise serializers.ValidationError(
+                {'revision': 'The current box revision is required.'}
+            )
+        if instance and incoming_revision != instance.revision:
+            raise RevisionConflict()
 
         pallet = attrs.get('pallet', getattr(instance, 'pallet', None))
         shipment = attrs.get('shipment', getattr(instance, 'shipment', None))
         if pallet and shipment and pallet.shipment_id != shipment.pk:
-            raise serializers.ValidationError({
-                'pallet': 'Selected pallet does not belong to the selected shipment.'
-            })
+            raise serializers.ValidationError(
+                {'pallet': 'Selected pallet does not belong to the selected shipment.'}
+            )
         if pallet and not shipment:
             attrs['shipment'] = pallet.shipment
 
@@ -263,18 +316,18 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
 
         validated_data = super().run_validation(data)
         if self.instance is None and items_input is empty:
-            raise serializers.ValidationError({
-                'items': 'Add at least one item to the box.'
-            })
+            raise serializers.ValidationError(
+                {'items': 'Add at least one item to the box.'}
+            )
         if items_input is not empty:
             item_serializer = BoxItemSerializer(
                 data=items_input, many=True, context=self.context
             )
             item_serializer.is_valid(raise_exception=True)
             if not item_serializer.validated_data:
-                raise serializers.ValidationError({
-                    'items': 'Add at least one item to the box.'
-                })
+                raise serializers.ValidationError(
+                    {'items': 'Add at least one item to the box.'}
+                )
             validated_data['items'] = item_serializer.validated_data
         return validated_data
 
@@ -286,9 +339,11 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
             matches = Part.objects.select_for_update().filter(name__iexact=name)
             match_count = matches.count()
             if match_count > 1:
-                raise serializers.ValidationError({
-                    'items': f'Multiple parts are named "{name}". Select the intended part from the suggestions.'
-                })
+                raise serializers.ValidationError(
+                    {
+                        'items': f'Multiple parts are named "{name}". Select the intended part from the suggestions.'
+                    }
+                )
             part = matches.first()
             if part is None:
                 part = Part(
@@ -299,9 +354,9 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                 part.save()
 
         if part.virtual:
-            raise serializers.ValidationError({
-                'items': f'Virtual part "{part.name}" cannot be added to stock.'
-            })
+            raise serializers.ValidationError(
+                {'items': f'Virtual part "{part.name}" cannot be added to stock.'}
+            )
         return part
 
     @staticmethod
@@ -310,11 +365,17 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
 
     @staticmethod
     def _format_quantity(quantity):
-        return format(quantity, 'f').rstrip('0').rstrip('.')
+        value = format(quantity, 'f')
+        return value.rstrip('0').rstrip('.') if '.' in value else value
 
     @classmethod
     def sync_stock_locations(cls, box, user, notes=''):
         """Keep each line item's native stock record at the box location."""
+        with box_stock_write(box.pk):
+            cls._sync_stock_locations(box, user, notes)
+
+    @classmethod
+    def _sync_stock_locations(cls, box, user, notes):
         stock_note = notes or cls._stock_note(box)
         for box_item in box.items.select_related('stock_item'):
             stock_item = box_item.stock_item
@@ -328,6 +389,10 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
 
     def _sync_items(self, box, items_data, user):
         """Synchronize nested line items and their dedicated stock records."""
+        with box_stock_write(box.pk):
+            self._write_items(box, items_data, user)
+
+    def _write_items(self, box, items_data, user):
         existing = {
             item.part_id: item
             for item in box.items.select_related('part', 'stock_item')
@@ -339,9 +404,9 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
         for item_data in items_data:
             part = self._resolve_part(item_data, user)
             if part.pk in selected_parts:
-                raise serializers.ValidationError({
-                    'items': f'Part "{part.name}" is listed more than once.'
-                })
+                raise serializers.ValidationError(
+                    {'items': f'Part "{part.name}" is listed more than once.'}
+                )
             selected_parts.add(part.pk)
             quantity = item_data['quantity']
             size = item_data.get('size', '').strip()
@@ -400,7 +465,7 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
 
             retained_ids.append(box_item.pk)
 
-        box.items.exclude(pk__in=retained_ids).delete()
+        delete_box_items(box.items.exclude(pk__in=retained_ids))
         self.sync_stock_locations(box, user)
 
         summary = ', '.join(
@@ -435,18 +500,51 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
         )
         return box
 
+    @staticmethod
+    def item_snapshot(box):
+        """Capture every owned item field as JSON-safe audit data."""
+        return [
+            {
+                'part': item.part_id,
+                'stock_item': item.stock_item_id,
+                'quantity': str(item.quantity),
+                'size': item.size,
+                'sterile': item.sterile,
+                'expiry_date': item.expiry_date.isoformat()
+                if item.expiry_date
+                else None,
+                'expiry_label': item.expiry_label,
+            }
+            for item in box.items.order_by('part_id')
+        ]
+
     @transaction.atomic
     def update(self, instance, validated_data):
         """Update a box, its line items, native stock, and audit history."""
+        instance = get_object_or_404(Box.objects.select_for_update(), pk=instance.pk)
+        self.instance = instance
+        validated_data = self.validate(validated_data)
         request = self.context.get('request')
         user = request.user if request and request.user.is_authenticated else None
         items_data = validated_data.pop('items', None)
         relationship_fields = {
-            'team', 'shipment', 'pallet', 'current_location', 'destination'
+            'team',
+            'shipment',
+            'pallet',
+            'current_location',
+            'destination',
         }
         tracked_fields = [
-            'box_number', 'team', 'shipment', 'pallet', 'current_location',
-            'destination', 'note', 'status', 'source',
+            'box_number',
+            'team',
+            'shipment',
+            'pallet',
+            'current_location',
+            'destination',
+            'note',
+            'status',
+            'source',
+            'other_team_description',
         ]
         changes = {}
         for field in tracked_fields:
@@ -461,7 +559,7 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
                 if old != new:
                     changes[field] = {'from': old, 'to': new}
 
-        old_contents = instance.contents
+        old_items = self.item_snapshot(instance)
         validated_data.pop('revision', None)
         validated_data['updated_by'] = user
         validated_data['revision'] = instance.revision + 1
@@ -472,13 +570,15 @@ class BoxSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
         else:
             self.sync_stock_locations(box, user)
 
-        if old_contents != box.contents:
-            changes['items'] = {'from': old_contents, 'to': box.contents}
+        new_items = self.item_snapshot(box)
+        if old_items != new_items:
+            changes['items'] = {'from': old_items, 'to': new_items}
         if changes:
             BoxEvent.objects.create(
                 box=box, action=BoxEventAction.EDITED, user=user, changes=changes
             )
         return box
+
 
 class BoxEventSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
     """Read-only serializer for box history."""
@@ -489,11 +589,23 @@ class BoxEventSerializer(DataExportSerializerMixin, InvenTreeModelSerializer):
     to_location_detail = VhcLocationSerializer(source='to_location', read_only=True)
 
     class Meta:
+        """Model metadata and serializer fields."""
+
         model = BoxEvent
         fields = [
-            'pk', 'box', 'action', 'action_text', 'user', 'user_name',
-            'timestamp', 'from_location', 'from_location_detail', 'to_location',
-            'to_location_detail', 'notes', 'changes',
+            'pk',
+            'box',
+            'action',
+            'action_text',
+            'user',
+            'user_name',
+            'timestamp',
+            'from_location',
+            'from_location_detail',
+            'to_location',
+            'to_location_detail',
+            'notes',
+            'changes',
         ]
         read_only_fields = fields
 
@@ -504,7 +616,7 @@ class BoxMoveSerializer(serializers.Serializer):
     location = serializers.PrimaryKeyRelatedField(queryset=StockLocation.objects.all())
     status = serializers.ChoiceField(choices=BoxStatus.choices, required=False)
     notes = serializers.CharField(required=False, allow_blank=True, max_length=500)
-    revision = serializers.IntegerField(required=False)
+    revision = serializers.IntegerField(min_value=1)
 
 
 class BoxStatusSerializer(serializers.Serializer):
@@ -512,10 +624,29 @@ class BoxStatusSerializer(serializers.Serializer):
 
     status = serializers.ChoiceField(choices=BoxStatus.choices)
     notes = serializers.CharField(required=False, allow_blank=True, max_length=500)
-    revision = serializers.IntegerField(required=False)
+    revision = serializers.IntegerField(min_value=1)
 
 
-class BoxBulkMoveSerializer(BoxMoveSerializer):
+class BoxBulkMoveSerializer(serializers.Serializer):
     """Input for moving multiple boxes."""
 
-    boxes = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+    boxes = serializers.ListField(
+        child=serializers.IntegerField(min_value=1), allow_empty=False
+    )
+    revisions = serializers.DictField(child=serializers.IntegerField(min_value=1))
+    location = serializers.PrimaryKeyRelatedField(queryset=StockLocation.objects.all())
+    status = serializers.ChoiceField(choices=BoxStatus.choices, required=False)
+    notes = serializers.CharField(required=False, allow_blank=True, max_length=500)
+
+    def validate(self, attrs):
+        """Require exactly one revision for every distinct selected box."""
+        boxes = attrs['boxes']
+        if len(boxes) != len(set(boxes)):
+            raise serializers.ValidationError({'boxes': 'Select each box only once.'})
+        if set(attrs['revisions']) != {str(pk) for pk in boxes}:
+            raise serializers.ValidationError(
+                {
+                    'revisions': 'Supply a revision for every selected box, and no others.'
+                }
+            )
+        return attrs
